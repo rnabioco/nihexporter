@@ -1,8 +1,8 @@
 Package: nihexporter
 Title: NIH EXPORTER 1985-2014
 Version: 0.1
-Author: 'Jay Hesselberth <jay.hesselberth@gmail.com> [aut,cre]'
-Maintainer: 'Jay Hesselberth <jay.hesselberth@gmail.com>'
+Author: Jay Hesselberth <jay.hesselberth@gmail.com> [aut,cre]
+Maintainer: Jay Hesselberth <jay.hesselberth@gmail.com>
 Description: NIH EXPORTER data describing biomedical funding from
              1985-2014. 
 Depends: R (>= 3.1.0)
