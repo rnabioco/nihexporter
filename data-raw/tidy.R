@@ -8,7 +8,8 @@ library(data.table)
 
 # load projects data
 path = 'data-raw//PROJECTS'
-csvfiles <- dir(path, pattern = '\\.csv', full.names = TRUE)[1]
+# csvfiles <- dir(path, pattern = '\\.csv', full.names = TRUE)
+csvfiles <- tail(dir(path, pattern = '\\.csv', full.names = TRUE), 1)
 tables <- lapply(csvfiles, read.csv, header = TRUE)
 
 projects.tbl <- rbindlist(tables)
@@ -21,7 +22,7 @@ names(projects.tbl) <- names(projects.tbl) %>%
 
 # org table
 project.orgs <- projects.tbl %>%
-  select(org.city:org.zipcode) %>%
+  select(org.city:org.state) %>%
   select(-(org.dept:org.fips)) %>%
   distinct()
 save(project.orgs, file = 'data/project.orgs.rdata')
@@ -37,9 +38,16 @@ project.pis <- projects.tbl %>%
   mutate(application.id = as.factor(application.id))
 save(project.pis, file = 'data/project.pis.rdata')
 
-# projects table TODO
+# projects table
 projects <- projects.tbl %>%
-  select(application.id, actvitiy, XXX
+  select(application.id, activity, core.project.num, full.project.num,
+         fy, org.name, project.start, project.end,
+         study.section, support.year, total.cost, total.cost.sub.project) %>%
+  rename(project.num = core.project.num) %>%  
+  mutate(project.end = mdy(project.end),
+         project.start = mdy(project.start),
+         support.year = factor(support.year))
+save(project, file = 'data/projects.rdata')         
 
 # PUBLINKS tables
 path = 'data-raw//PUBLINKS'
