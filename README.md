@@ -24,5 +24,5 @@ The package contains the following tables:
 Install it from github with:
   
 ```
-devtools::install_github("jayhesselberth/nih-exporter")
+devtools::install_github("jayhesselberth/nihexporter")
 ```
