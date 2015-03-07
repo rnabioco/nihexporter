@@ -1,0 +1,12 @@
+Package: nih-exporter
+Title: NIH EXPORTER 1985-2014
+Version: 0.1
+Authors@R: 'Jay Hesselberth <jay.hesselberth@gmail.com> [aut,cre]'
+Description: NIH EXPORTER data describing biomedical funding from
+             1985-2014. 
+    Depends:
+        R (>= 3.1.0)
+License: CC0
+LazyData: true
+URL: http://github.com/jayhesselberth/nih-exporter
+
