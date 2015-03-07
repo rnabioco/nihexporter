@@ -1,6 +1,6 @@
-# nih-exporter
+# nihexporter
 
-This package providesa minimal set of data from NIH EXPORTER
+This package provides a minimal set of data from NIH EXPORTER
 <http://exporter.nih.gov/default.aspx>, which contains data on NIH
 biomedical research funding from 1985-2014 (and continues).
 
@@ -9,21 +9,15 @@ The package contains the following tables:
 * `projects`: provides data on funded projects by NIH. The following
   columns are available: 
 
-    - 
-    -
-    -
-
-* `project.orgs`: information about funded organizations. The following
-  columns are available:
-
-    - ``
-    -
-    -
-    -
-    -
-
-* `pi.names`: links PI names (`pi.name`) to project numbers
-  (`project.num`)
+    - `application.id`
+    - `institute`
+    - `activity` (i.e., grant type)
+    - `project.num` (i.e., ref to `publinks`)
+    - `fiscal.year`
+    - `project.start`
+    - `project.end`
+    - `study.section`
+    - `total.cost`
 
 * `publinks`: links Pubmed IDs (`pmid`) to project numbers (`project.num`)
 
