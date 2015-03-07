@@ -3,4 +3,4 @@
 .RData
 .zip
 .csv
-data/
+data-raw/

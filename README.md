@@ -13,7 +13,14 @@ The package contains the following tables:
     -
     -
 
-* `org`: information by funded organizations.
+* `project.orgs`: information about funded organizations. The following
+  columns are available:
+
+    - ``
+    -
+    -
+    -
+    -
 
 * `pi.names`: links PI names (`pi.name`) to project numbers
   (`project.num`)

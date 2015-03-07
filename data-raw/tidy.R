@@ -22,8 +22,9 @@ names(projects.tbl) <- names(projects.tbl) %>%
 # org table
 project.orgs <- projects.tbl %>%
   select(org.city:org.zipcode) %>%
+  select(-(org.dept:org.fips)) %>%
   distinct()
-save(project.orgs, 'data/project.orgs.rdata')
+save(project.orgs, file = 'data/project.orgs.rdata')
 
 # project.pis table
 project.pis <- projects.tbl %>%
