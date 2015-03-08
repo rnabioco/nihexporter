@@ -18,6 +18,8 @@ names(publinks.tbl) <- names(publinks.tbl) %>%
   str_replace_all('_','.')
 
 publinks <- publinks.tbl %>%
-  mutate(pmid = as.factor(pmid))
+  mutate(pmid = as.character(pmid)) %>%
+  rename(project.num = project.number) %>%
+  arrange(project.num)
 
 save(publinks, file = 'data/publinks.rdata')
