@@ -1,7 +1,7 @@
 # nihexporter
 
 This package provides a minimal set of data from NIH EXPORTER
-<http://exporter.nih.gov/default.aspx>, which contains data on NIH
+<http://exporter.nih.gov/default.aspx>, which contains information on NIH
 biomedical research funding from 1985-2014 (and continues).
 
 The package contains the following tables:
