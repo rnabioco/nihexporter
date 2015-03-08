@@ -2,88 +2,124 @@
 title: "nihexporter"
 author: "Jay Hesselberth <jay.hesselberth@gmail.com>"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+output:
+  rmarkdown::html_vignette:
+    fig_caption: yes
 vignette: >
   %\VignetteIndexEntry{nihexporter}
   %\VignetteEngine{knitr::rmarkdown} \usepackage[utf8]{inputenc}
 ---
 
-Vignettes are long form documentation commonly included in packages. Because they are part of the distribution of the package, they need to be as compact as possible. The `html_vignette` output type provides a custom style sheet (and tweaks some options) to ensure that the resulting html is as small as possible. The `html_vignette` format:
+# Overview
 
-- Never uses retina figures
-- Has a smaller default figure size
-- Uses a custom CSS stylesheet instead of the default Twitter Bootstrap style
+The `nihexporter` package provides the following tables of data:
 
-## Vignette Info
+* `projects`: information about funded projects
 
-Note the various macros within the `vignette` setion of the metadata block above. These are required in order to instruct R how to build the vignette. Note that you should change the `title` field and the `\VignetteIndexEntry` to match the title of your vignette.
+* `publinks`: links grants (`project.num`) to PUBMED IDs (`pmid`).
 
-## Figures
+# Examples
 
-The figure sizes have been customised so that you can easily put two images side-by-side. 
+Many of the examples generate project numbers that you can use to look up project specifics in NIH REPORTER <http://projectreporter.nih.gov/reporter.cfm>
 
-```{r, fig.show='hold'}
-plot(1:10)
-plot(10:1)
-```
-
-You can enable figure captions by `fig_caption: yes` in YAML:
-
-    output:
-      rmarkdown::html_vignette:
-        fig_caption: yes
-
-Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
-
-```{r, message=FALSE}
+```{r load.libs, message=FALSE, echo=FALSE}
 library(dplyr)
 library(ggplot2)
 library(knitr)
 library(nihexporter)
 ```
 
-```{r}
-projects %>%
+## Spending
+
+The `total.cost` column from the `projects` table has many `NA` values. Some of these are from years where the NIH apprarently wasn't keeping such data, but there are many in other, more recent, years. You need to use `na.rm` in aggregation functions to ensure robust handling of these values.
+
+Let's look at spending over time for NIGMS in years that have such data:
+
+```{r inst.cost.over.time, message=FALSE, fig.cap = 'Spending at NIGMS'}
+cost.over.time <- projects %>%
+  select(institute, total.cost, fiscal.year) %>%
+  filter(institute == 'GM') %>%
   group_by(fiscal.year, institute) %>%
   summarize(yearly.cost = sum(total.cost, na.rm = TRUE)) %>%
-  filter(yearly.cost > 0) %>%
-  arrange(yearly.cost) %>%
+  filter(yearly.cost > 0)
+
+cost.over.time %>%
   ggplot(aes(x = fiscal.year, y = yearly.cost)) +
-  geom_line() +
-  facet_wrap(~ institute)
+  geom_line()
 ```
 
-```{r biggest.losers}
-projects %>%
-  filter(total.cost > 0 & activity == 'R01') %>%
+## Productivity
+
+The NIH puts a premium on *bang-for-your-buck*, or some measurable return on the money they invest in the research enterprise. A key way to quantitate this is by measuring scholarly output (i.e., publications) per dollar invested.
+
+Here we identify to highest performing grants outside of the R01 category. Much has been made of the wasteful spending outside of investigator-initiated research. Here we can see that this is not always the case ...
+
+```{r high.perf.no.r01, message=FALSE}
+high.perf.not.r01 <- projects %>%
+  filter(activity != 'R01') %>%
   group_by(project.num) %>%
-  summarise(overall.cost = sum(total.cost)) %>%
+  summarise(overall.cost = sum(total.cost, na.rm = TRUE)) %>%
+  filter(overall.cost > 1e6) %>%
   left_join(publinks) %>%
   filter(!is.na(pmid)) %>%
   group_by(project.num, overall.cost) %>%
   summarize(n.pubs = n()) %>%
   mutate(cost.per.pub = overall.cost / n.pubs) %>%
   ungroup() %>%
-  arrange(desc(cost.per.pub)) %>%
-  head(50) %>%
+  arrange(cost.per.pub)
+
+high.perf.not.r01 %>%
+  head(10) %>%
   kable()
 ```
 
-```{r}
-projects %>%
-  group_by(fiscal.year, institute) %>%
-  summarize(yearly.cost = sum(total.cost)) %>%
-  head()
+The highest performer has `r high.perf.not.r01 %>% head(1) %>% select(n.pubs)` publications at a cost of `r high.perf.not.r01 %>% head(1) %>% select(cost.per.pub)` dollars per publication. Here are some of those publications:
+
+```{r cheap.pubs, echo=FALSE, message=FALSE}
+high.perf.not.r01 %>%
+  head(1) %>%
+  select(project.num) %>%
+  left_join(publinks) %>%
+  head(10) %>%
+  kable()
 ```
 
-```{r spending.over.time}
-projects %>%
-  group_by(institute, activity, fiscal.year) %>%
-  summarize(total = sum(total.cost, na.rm = TRUE)) %>%
-  filter(total > 0) %>%
-  ggplot(aes(x = fiscal.year, y = total, color = institute)) +
-  geom_line() +
-  facet_wrap(~ activity) +
-  scale_y_log10()
+Here we quantitate the return on R01 investment. One might argue that grants with higher `cost.per.pub` are less good investments. Or that the PIs of those grants do a poor job entering linking their grants to publications in MyNCBI (no small chore).
+
+```{r costly.pubs.r01, message=FALSE}
+costly.pubs.r01 <- projects %>%
+  filter(activity == 'R01') %>%
+  group_by(project.num) %>%
+  summarise(overall.cost = sum(total.cost, na.rm = TRUE)) %>%
+  left_join(publinks) %>%
+  filter(!is.na(pmid)) %>%
+  group_by(project.num, overall.cost) %>%
+  summarize(n.pubs = n()) %>%
+  mutate(cost.per.pub = overall.cost / n.pubs) %>%
+  ungroup() %>%
+  arrange(desc(cost.per.pub))
+
+costly.pubs.r01 %>%
+  head(10) %>%
+  kable()
 ```
 
+## Duration
+
+I am always impressed at how long people keep their grants. Let's identify the longest running R01 projects ...
+
+```{r grant.stamina, message=FALSE}
+long.grants <- projects %>%
+  filter(activity == 'R01') %>%
+  select(project.num, project.start, project.end) %>%
+  group_by(project.num) %>%
+  summarize(longest.run = max(project.end) - min(project.start)) %>%
+  arrange(desc(longest.run)) %>%
+  mutate(in.years = as.numeric(longest.run) / 365)
+
+long.grants %>%
+  head(10) %>%
+  kable()
+```
+
+**A `r long.grants %>% head(1) %>% select(in.years) %>% round()` year R01?** Wow.
