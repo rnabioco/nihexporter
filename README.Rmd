@@ -1,6 +1,12 @@
-# nihexporter
+---
+title: nihexporter README
+author: Jay Hesselberth <jay.hesselberth@gmail.com>
+output: md_document
+---
 
-This package provides a minimal set of data from NIH EXPORTER
+# Overview
+
+The `nihexporter` package provides a minimal set of data from NIH EXPORTER
 <http://exporter.nih.gov/default.aspx>, which contains information on NIH
 biomedical research funding from 1985-2014 (and continues monthly in a given fiscal year).
 
@@ -22,8 +28,52 @@ see the who and where of NIH investment. See #1.
 
 ## Install
 
-Install the `nihexporeter` package from github with:
+Install the `nihexporter` package from github with:
   
 ```
 devtools::install_github("jayhesselberth/nihexporter")
 ```
+
+# Examples
+
+```{r, message=FALSE}
+library(dplyr)
+library(knitr)
+library(ggplot2)
+library(nihexporter)
+```
+
+List the all-time most expensive grants from each institute:
+
+```{r expensive.projects}
+expensive.projects <- projects %>%
+  select(project.num, institute, total.cost, project.start, project.end) %>%
+  group_by(project.num, institute) %>%
+  summarise(overall.cost = sum(total.cost, na.rm = TRUE)) %>%
+  ungroup() %>%
+  group_by(institute) %>%
+  arrange(desc(overall.cost)) %>%
+  slice(1:1) %>%
+  ungroup() %>%
+  arrange(desc(overall.cost)) %>%
+  mutate(cost.in.billions = overall.cost / 1e9)
+
+head(expensive.projects)
+```
+
+Let's look at the amounts spent on grants at each institute since fiscal year 2000:
+
+```{r grant.spending}
+grant.spending <- projects %>% 
+  filter(fiscal.year >= 2000) %>%
+  select(institute, total.cost) %>%
+  filter(total.cost > 0)
+
+grant.spending %>%
+  ggplot(aes(factor(institute), total.cost)) +
+  geom_boxplot() +
+  scale_y_log10() +
+  coord_flip()
+```
+
+See the [vignette](vignettes/nihexporter.Rmd) for more examples.
