@@ -76,8 +76,9 @@ year 2000:
     grant.spending %>%
       ggplot(aes(factor(institute), total.cost)) +
       geom_boxplot() +
-      scale_y_log10() 
+      scale_y_log10() +
+      coord_flip()
 
 ![](README_files/figure-markdown_strict/grant.spending-1.png)
 
-See the [vignette](vignette/nihexporter.Rmd) for more examples.
+See the [vignette](vignettes/nihexporter.Rmd) for more examples.
