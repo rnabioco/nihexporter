@@ -20,7 +20,9 @@ The `nihexporter` package provides the following tables of data:
 
 # Examples
 
-Many of the examples generate project numbers that you can use to look up project specifics in NIH REPORTER <http://projectreporter.nih.gov/reporter.cfm>
+Many of the examples generate project numbers that you can use to look up
+project specifics in NIH REPORTER
+<http://projectreporter.nih.gov/reporter.cfm>
 
 ```{r load.libs, message=FALSE, echo=FALSE}
 library(dplyr)
@@ -31,7 +33,11 @@ library(nihexporter)
 
 ## Spending
 
-The `total.cost` column from the `projects` table has many `NA` values. Some of these are from years where the NIH apprarently wasn't keeping such data, but there are many in other, more recent, years. You need to use `na.rm` in aggregation functions to ensure robust handling of these values.
+The `total.cost` column from the `projects` table has many `NA` values.
+Some of these are from years where the NIH apprarently wasn't keeping such
+data, but there are many in other, more recent, years. You need to use
+`na.rm` in aggregation functions to ensure robust handling of these
+values.
 
 Let's look at spending over time for NIGMS in years that have such data:
 
@@ -50,9 +56,15 @@ cost.over.time %>%
 
 ## Productivity
 
-The NIH puts a premium on *bang-for-your-buck*, or some measurable return on the money they invest in the research enterprise. A key way to quantitate this is by measuring scholarly output (i.e., publications) per dollar invested.
+The NIH puts a premium on *bang-for-your-buck*, or some measurable return
+on the money they invest in the research enterprise. A key way to
+quantitate this is by measuring scholarly output (i.e., publications) per
+dollar invested.
 
-Here we identify to highest performing grants outside of the R01 category. Much has been made of the wasteful spending outside of investigator-initiated research. Here we can see that this is not always the case ...
+Here we identify to highest performing grants outside of the R01 category.
+Much has been made of the wasteful spending outside of
+investigator-initiated research. Here we can see that this is not always
+the case ...
 
 ```{r high.perf.no.r01, message=FALSE}
 high.perf.not.r01 <- projects %>%
@@ -73,7 +85,10 @@ high.perf.not.r01 %>%
   kable()
 ```
 
-The highest performer has `r high.perf.not.r01 %>% head(1) %>% select(n.pubs)` publications at a cost of `r high.perf.not.r01 %>% head(1) %>% select(cost.per.pub)` dollars per publication. Here are some of those publications:
+The highest performer has `r high.perf.not.r01 %>% head(1) %>%
+select(n.pubs)` publications at a cost of `r high.perf.not.r01 %>% head(1)
+%>% select(cost.per.pub)` dollars per publication. Here are some of those
+publications:
 
 ```{r cheap.pubs, echo=FALSE, message=FALSE}
 high.perf.not.r01 %>%
@@ -84,7 +99,10 @@ high.perf.not.r01 %>%
   kable()
 ```
 
-Here we quantitate the return on R01 investment. One might argue that grants with higher `cost.per.pub` are less good investments. Or that the PIs of those grants do a poor job entering linking their grants to publications in MyNCBI (no small chore).
+Here we quantitate the return on R01 investment. One might argue that
+grants with higher `cost.per.pub` are less good investments. Or that the
+PIs of those grants do a poor job entering linking their grants to
+publications in MyNCBI (no small chore).
 
 ```{r costly.pubs.r01, message=FALSE}
 costly.pubs.r01 <- projects %>%
@@ -106,7 +124,8 @@ costly.pubs.r01 %>%
 
 ## Duration
 
-I am always impressed at how long people keep their grants. Let's identify the longest running R01 projects ...
+I am always impressed at how long people keep their grants. Let's identify
+the longest running R01 projects ...
 
 ```{r grant.stamina, message=FALSE}
 long.grants <- projects %>%
