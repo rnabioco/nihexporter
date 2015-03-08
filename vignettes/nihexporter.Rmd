@@ -3,6 +3,8 @@ title: "nihexporter"
 author: "Jay Hesselberth <jay.hesselberth@gmail.com>"
 date: "`r Sys.Date()`"
 output:
+  html_document:
+    keep_md: true
   rmarkdown::html_vignette:
     fig_caption: yes
 vignette: >
@@ -85,10 +87,7 @@ high.perf.not.r01 %>%
   kable()
 ```
 
-The highest performer has `r high.perf.not.r01 %>% head(1) %>%
-select(n.pubs)` publications at a cost of `r high.perf.not.r01 %>% head(1)
-%>% select(cost.per.pub)` dollars per publication. Here are some of those
-publications:
+The highest performer has `r high.perf.not.r01 %>% head(1) %>% select(n.pubs)` publications at a cost of `r high.perf.not.r01 %>% head(1) %>% select(cost.per.pub)` dollars per publication. Here are some of those publications:
 
 ```{r cheap.pubs, echo=FALSE, message=FALSE}
 high.perf.not.r01 %>%

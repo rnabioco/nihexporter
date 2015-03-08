@@ -76,4 +76,4 @@ grant.spending %>%
   coord_flip()
 ```
 
-See the [vignette](vignettes/nihexporter.Rmd) for more examples.
+See the [vignette](http://rpubs.com/jayhesselberth/64386) or the [vignette source](vignettes/nihexporter.Rmd) for more examples.

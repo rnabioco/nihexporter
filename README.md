@@ -81,4 +81,5 @@ year 2000:
 
 ![](README_files/figure-markdown_strict/grant.spending-1.png)
 
-See the [vignette](vignettes/nihexporter.Rmd) for more examples.
+See the [vignette](http://rpubs.com/jayhesselberth/64386) or the
+[vignette source](vignettes/nihexporter.Rmd) for more examples.
