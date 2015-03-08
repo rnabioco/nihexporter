@@ -3,7 +3,8 @@
 \name{publinks}
 \alias{publinks}
 \title{Publinks.}
-\format A data frame with two variables: \code{pmid}, \code{project.num}
+\format{A data frame with two variables: \code{pmid}, \code{project.num}
+}
 \usage{
 publinks
 }

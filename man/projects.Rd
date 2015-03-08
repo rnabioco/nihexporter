@@ -3,9 +3,10 @@
 \name{projects}
 \alias{projects}
 \title{Projects.}
-\format A data frame with nine variables: \code{application.id}, \code{institute},
+\format{A data frame with nine variables: \code{application.id}, \code{institute},
   \code{activity}, \code{project.num}, \code{fiscal.year}, \code{project.start},
   \code{project.end}, \code{study.section}, \code{total.cost} 
+}  
 \usage{
 projects
 }
