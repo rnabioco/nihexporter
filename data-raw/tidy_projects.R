@@ -45,7 +45,7 @@ names(projects.tbl) <- names(projects.tbl) %>%
 
 # projects table
 projects <- projects.tbl %>%
-  select(application.id, administering.ic, activity,
+  select(administering.ic, activity,
          core.project.num, fy,
          project.start, project.end,
          study.section, total.cost) %>%
