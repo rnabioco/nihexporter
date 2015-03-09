@@ -22,13 +22,17 @@ The package contains the following tables:
 -   `publinks`: links Pubmed IDs (`pmid`) to project numbers
     (`project.num`)
 
+There are also a few helper variables that make exploratory analysis a
+bit easier:
+
+-   `nih.institutes`: 27 NIH institutes in two-letter format
+
 Data summary
 ------------
 
 There is a lot of data in NIH EXPORTER, so this package aims to provide
 a minimal set of data without being too unwieldy. There are download and
-import (`tidy_projects.R`) scripts in the `data-raw/` directory in the
-package.
+import scripts in the `data-raw/` directory in the package.
 
 Because `total.cost` is only available from fiscal year 2000 and onward,
 only data from those years is provided in the `projects` table. The
@@ -75,20 +79,25 @@ List the all-time most expensive grants from each institute:
     ## 5 ZIIMD000005        MD    373377914        0.3733779
     ## 6 U62PS223540        PS    298137847        0.2981378
 
-Let's look at the amounts spent on grants at each institute since fiscal
-year 2000:
+Let's look at the amounts spent on R01 grants at each NIH institute.
+Note this filters for NIH institutes.
 
-    grant.spending <- projects %>% 
-      select(institute, total.cost) %>%
-      filter(total.cost > 0)
+    library(scales)
+    grant.costs <- projects %>% 
+      filter(institute %in% nih.institutes) %>%
+      filter(activity == 'R01' & total.cost > 0) %>%
+      select(institute, total.cost)
 
-    grant.spending %>%
+    grant.costs %>%
       ggplot(aes(reorder(institute, total.cost, median, order=TRUE), total.cost)) +
-      geom_boxplot() +
-      scale_y_log10() +
-      coord_flip()
+      geom_boxplot(outlier.shape = NA) +
+      coord_flip() +
+      scale_y_continuous(limits = c(0, 8e5), labels = comma) +
+      ylab('Total cost (dollars)') +
+      xlab('NIH institute') + 
+      ggtitle('Total cost of R01 grants from 2000-2014')
 
-![](README_files/figure-markdown_strict/grant.spending-1.png)
+![](README_files/figure-markdown_strict/grant.costs-1.png)
 
 See the [vignette](http://rpubs.com/jayhesselberth/nihexporter-vignette)
 or the [vignette source](vignettes/nihexporter.Rmd) for more examples.
