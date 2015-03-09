@@ -4,6 +4,8 @@ author: Jay Hesselberth <jay.hesselberth@gmail.com>
 output: md_document
 ---
 
+[![Travis-CI Build Status](https://travis-ci.org/jayhesselberth/nihexporter.png?branch=master)](https://travis-ci.org/jayhesselberth/nihexporter)
+
 # Overview
 
 The `nihexporter` package provides a minimal set of data from NIH EXPORTER
