@@ -18,6 +18,8 @@ The `nihexporter` package provides the following tables of data:
 
 * `projects`: information about funded projects
 
+* `project.pis`: PI information (look these up in NIH REPORTER) for each `project.num`
+
 * `publinks`: links grants (`project.num`) to PUBMED IDs (`pmid`).
 
 # Examples
