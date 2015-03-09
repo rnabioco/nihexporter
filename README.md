@@ -1,11 +1,11 @@
 [![Travis-CI Build Status](https://travis-ci.org/jayhesselberth/nihexporter.png?branch=master)](https://travis-ci.org/jayhesselberth/nihexporter)
 
-Overview
-========
+nihexporter
+===========
 
-The `nihexporter` package provides a minimal set of data from NIH EXPORTER <http://exporter.nih.gov/default.aspx>, which contains information on NIH biomedical research funding from 1985-2014 (and continues monthly in a given fiscal year).
+The `nihexporter` package provides a minimal set of data from [NIH EXPORTER](http://exporter.nih.gov/default.aspx), which contains information on NIH biomedical research funding from 1985-2014 (and continues monthly in a given fiscal year).
 
-Information about specific columns in the tables is at <http://exporter.nih.gov/about.aspx>.
+Information about specific columns in the tables is [here](http://exporter.nih.gov/about.aspx).
 
 The package contains the following tables:
 
@@ -36,7 +36,7 @@ Install the `nihexporter` package from github with:
     devtools::install_github("jayhesselberth/nihexporter")
 
 Examples
-========
+--------
 
 ``` r
 library(dplyr)
@@ -93,5 +93,8 @@ grant.costs %>%
 ```
 
 ![](README_files/figure-markdown_github/grant.costs-1.png)
+
+Vignettes
+---------
 
 See the [vignette](http://rpubs.com/jayhesselberth/nihexporter-vignette) or the [vignette source](vignettes/nihexporter.Rmd) for more examples.
