@@ -20,7 +20,12 @@ The `nihexporter` package provides the following tables of data:
 
 * `project.pis`: PI information (look these up in NIH REPORTER) for each `project.num`
 
+* `project.orgs`: links DUNS numbers (`org.duns`) from `projects` table to information on specific organizations 
+
 * `publinks`: links grants (`project.num`) to PUBMED IDs (`pmid`).
+
+The `nihexporter` package is avavilable at
+<https://github.com/jayhesselberth/nihexporter>.
 
 # Examples
 

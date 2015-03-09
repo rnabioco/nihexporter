@@ -7,6 +7,7 @@ library(stringr)
 library(tidyr)
 library(lubridate)
 library(data.table)
+library(pbapply)
 
 ## PROJECTS tables
 
@@ -15,7 +16,7 @@ path = 'data-raw//PROJECTS'
 csvfiles <- dir(path, pattern = '\\.csv', full.names = TRUE)
 # csvfiles <- tail(dir(path, pattern = '\\.csv', full.names = TRUE), 1)
 
-tables <- lapply(csvfiles, read.csv, header = TRUE)
+tables <- pblapply(csvfiles, read.csv, header = TRUE)
 
 projects.tbl <- rbindlist(tables, fill = TRUE)
 projects.tbl <- tbl_df(projects.tbl)
@@ -25,13 +26,13 @@ names(projects.tbl) <- names(projects.tbl) %>%
   str_to_lower() %>%
   str_replace_all('_','.')
 
-# org table
-#project.orgs <- projects.tbl %>%
-#  select(org.city:org.state) %>%
-#  select(-(org.dept:org.fips)) %>%
-#  distinct() %>%
-#  mutate(org.id = seq_along(org.name))
-#save(project.orgs, file = 'data/project.orgs.rdata')
+# org table - link on org.duns
+project.orgs <- projects.tbl %>%
+  select(org.city, org.state, org.duns, org.name) %>%
+  filter(org.duns != '') %>%
+  distinct() %>%
+  arrange(org.duns)
+save(project.orgs, file = 'data/project.orgs.rdata')
 
 # project.pis table
 project.pis <- projects.tbl %>%
@@ -41,8 +42,8 @@ project.pis <- projects.tbl %>%
   gather(project.num) %>%
   setNames(c('project.num', 'pi.num', 'pi.id')) %>%
   filter(pi.id != '') %>%
-  group_by(project.num) %>%
-  select(project.num, pi.id)
+  select(project.num, pi.id) %>%
+  arrange(project.num)
 save(project.pis, file = 'data/project.pis.rdata')
 
 # projects table - only provide data after fy 2000 as costs are only available 2000 and onward.

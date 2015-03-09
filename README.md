@@ -16,6 +16,9 @@ The package contains the following tables:
 -   `project.pis`: links project numbers (`project.num`) to PI ID
     (`pi.id`), which can used in NIH REPORTER searches
 
+-   `project.orgs`: links DUNS numbers (`org.duns`) from `projects`
+    table to information on specific organizations
+
 -   `publinks`: links Pubmed IDs (`pmid`) to project numbers
     (`project.num`)
 

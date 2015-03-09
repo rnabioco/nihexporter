@@ -20,6 +20,15 @@
 #' PIs in NIH REPORTER.
 "project.pis"
 
+#' project.orgs
+#'
+#' @format A data frame with 4 variables: \code{org.duns},
+#'   \code{org.city}, \code{org.state} and \code{org.name}
+#'
+#' The org.duns is a unique identifier that links the `project.orgs` and
+#' `projects` tables 
+"project.orgs"
+
 #' publinks
 #'
 #' Links Pubmed IDs to Project IDs. 
