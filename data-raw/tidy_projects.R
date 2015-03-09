@@ -33,13 +33,12 @@ names(projects.tbl) <- names(projects.tbl) %>%
 #  mutate(org.id = seq_along(org.name))
 #save(project.orgs, file = 'data/project.orgs.rdata')
 
-# project.pis table - select the last PI from the list
+# project.pis table
 project.pis <- projects.tbl %>%
-  filter(fy >= 2000) %>%
   select(core.project.num, pi.ids) %>%
   rename(project.num = core.project.num) %>%
   separate(pi.ids, into = c(1:20), sep = ';', extra = 'drop') %>%
-  gather(application.id) %>%
+  gather(project.num) %>%
   setNames(c('project.num', 'pi.num', 'pi.id')) %>%
   filter(!is.na(pi.id)) %>%
   group_by(project.num) %>%
@@ -48,7 +47,6 @@ save(project.pis, file = 'data/project.pis.rdata')
 
 # projects table - only provide data after fy 2000 as costs are only available 2000 and onward.
 projects <- projects.tbl %>%
-  filter(fy >= 2000) %>%
   select(administering.ic, activity,
          core.project.num, fy, org.duns,
          project.start, project.end,
