@@ -6,9 +6,15 @@ EXPORTER <http://exporter.nih.gov/default.aspx>, which contains
 information on NIH biomedical research funding from 1985-2014 (and
 continues monthly in a given fiscal year).
 
+Information about specific columns in the tables is at
+<http://exporter.nih.gov/about.aspx>.
+
 The package contains the following tables:
 
 -   `projects`: provides data on funded projects by NIH.
+
+-   `project.pis`: links project numbers (`project.num`) to PI ID
+    (`pi.id`), which can used in NIH REPORTER searches
 
 -   `publinks`: links Pubmed IDs (`pmid`) to project numbers
     (`project.num`)
@@ -21,8 +27,9 @@ a minimal set of data without being too unwieldy. There are download and
 import (`tidy_projects.R`) scripts in the `data-raw/` directory in the
 package.
 
-In the future, we might offer `project.pis` and `project.org` tables, to
-see the who and where of NIH investment. See \#1.
+Because `total.cost` is only available from fiscal year 2000 and onward,
+only data from those years is provided in the `projects` table. The
+`publinks` table goes back to 1985.
 
 Install
 -------
@@ -69,12 +76,11 @@ Let's look at the amounts spent on grants at each institute since fiscal
 year 2000:
 
     grant.spending <- projects %>% 
-      filter(fiscal.year >= 2000) %>%
       select(institute, total.cost) %>%
       filter(total.cost > 0)
 
     grant.spending %>%
-      ggplot(aes(factor(institute), total.cost)) +
+      ggplot(aes(reorder(institute, total.cost, median, order=TRUE), total.cost)) +
       geom_boxplot() +
       scale_y_log10() +
       coord_flip()
