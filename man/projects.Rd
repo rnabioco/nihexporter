@@ -3,20 +3,18 @@
 \docType{data}
 \name{projects}
 \alias{projects}
-\title{NIH EXPORTER}
+\title{projects}
 \format{A data frame with 11 variables: \code{application.id}, \code{institute},
   \code{activity}, \code{project.num}, \code{fiscal.year},
   \code{org.duns}, \code{suffix}, \code{project.start},
-  \code{project.end}, \code{study.section}, \code{total.cost}
-
-For further details, see \url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=4&index=0}}
+  \code{project.end}, \code{study.section}, \code{total.cost}}
+\source{
+\url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=4&index=0}
+}
 \usage{
 projects
 }
 \description{
-Minimal set of data provided by NIH EXPORTER describing funded biomedical research projects from 2000-2014.
-}
-\details{
 projects
 }
 \keyword{datasets}

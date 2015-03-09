@@ -4,9 +4,10 @@
 \name{publinks}
 \alias{publinks}
 \title{publinks}
-\format{A data frame with two variables: \code{pmid}, \code{project.num}
-
-For further details, see \url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=0&index=4}}
+\format{A data frame with two variables: \code{pmid}, \code{project.num}}
+\source{
+\url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=0&index=4}
+}
 \usage{
 publinks
 }

@@ -8,6 +8,9 @@
 
 The pi.id is a unique identifier that can be used to identify specific
 PIs in NIH REPORTER.}
+\source{
+\url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=4&index=0}
+}
 \usage{
 project.pis
 }

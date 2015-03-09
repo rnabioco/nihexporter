@@ -1,7 +1,3 @@
-#' NIH EXPORTER 
-#'
-#' Minimal set of data provided by NIH EXPORTER describing funded biomedical research projects from 2000-2014.
-#'
 #' projects
 #'
 #' @format A data frame with 11 variables: \code{application.id}, \code{institute},
@@ -9,7 +5,7 @@
 #'   \code{org.duns}, \code{suffix}, \code{project.start},
 #'   \code{project.end}, \code{study.section}, \code{total.cost} 
 #'
-#' For further details, see \url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=4&index=0}
+#' @source \url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=4&index=0}
 "projects"
 
 #' project.pis
@@ -18,6 +14,9 @@
 #'
 #' The pi.id is a unique identifier that can be used to identify specific
 #' PIs in NIH REPORTER.
+#' 
+#' @source \url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=4&index=0}
+#'
 "project.pis"
 
 #' project.orgs
@@ -27,6 +26,9 @@
 #'
 #' The org.duns is a unique identifier that links the `project.orgs` and
 #' `projects` tables 
+#' 
+#' @source \url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=4&index=0}
+#'
 "project.orgs"
 
 #' publinks
@@ -35,6 +37,6 @@
 #'
 #' @format A data frame with two variables: \code{pmid}, \code{project.num}
 #'
-#' For further details, see \url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=0&index=4}
+#' @source \url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=0&index=4}
 "publinks"
-
+ 

@@ -9,6 +9,9 @@
 
 The org.duns is a unique identifier that links the `project.orgs` and
 `projects` tables}
+\source{
+\url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=4&index=0}
+}
 \usage{
 project.orgs
 }

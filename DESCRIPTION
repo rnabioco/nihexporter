@@ -1,11 +1,16 @@
 Package: nihexporter
 Title: NIH EXPORTER 2000-2014
-Version: 0.1
+Version: 0.3
 Author: Jay Hesselberth <jay.hesselberth@gmail.com> [aut,cre]
 Maintainer: Jay Hesselberth <jay.hesselberth@gmail.com>
-Description: NIH EXPORTER data describing biomedical funding from
-             2000-2014. 
+Description: `nihexporter` provides NIH EXPORTER data describing biomedical funding from
+             2000-2014. Examples are provided for analying data with `dplyr` and `ggplot2`.
 Depends: R (>= 3.1.0)
+Imports: dplyr,
+         ggplot2,
+         knitr,
+         stringr,
+         data.table
 License: CC0
 LazyData: true
 URL: http://github.com/jayhesselberth/nihexporter
