@@ -1,0 +1,146 @@
+---
+title: "nihexporter - grant productivity vignette"
+author: "Jay Hesselberth"
+date: "March 9, 2015"
+output: html_document
+---
+
+# Overview
+When Jeremy Berg was head of NIGMS, he routinely provided a variety of summary statistics on NIH funding in his "Feedback loop" blog. One of the classics is a [plot](http://loop.nigms.nih.gov/2010/09/measuring-the-scientific-output-and-impact-of-nigms-grants/) of direct costs versus "productivity", as measured by number of publications. In the plot, there is an increase in productivity per dollar, until an inflection point at $800K, after which productivity *drops*.
+
+Here we flesh out this analysis and look at under- and overperformers by this measure. In addition, Berg was focused on GM, and here we can easily look at similar measures across the NIH institutes. One caveat is that we only have access to `total.cost` in NIH EXPORTER, so the numbers include indirect costs. But, this is real cost to the tax-payer.
+
+# Analysis
+```{r, message = FALSE}
+library(dplyr)
+library(ggplot2)
+library(knitr)
+library(nihexporter)
+```
+
+First, we need to calculate the lifetime costs of all R01 grants.
+
+```{r grant.costs, message = FALSE}
+# calculate costs of all grants, over the entire lifetime of the grant
+grant_costs <- projects %>%
+  filter(institute %in% nih.institutes & activity == 'R01' & suffix == '') %>%
+  select(project.num, institute, total.cost) %>%
+  group_by(project.num, institute) %>%
+  summarise(lifetime.cost = sum(total.cost, na.rm = TRUE)) %>%
+  filter(lifetime.cost > 1e4)
+
+grant_costs
+```
+
+Here are some summary stats on that table, with PI counts, grant counts and median grant cost.
+
+```
+# not working quite yet
+grant_costs %>%
+  left_join(project.pis) %>%
+    group_by(pi.id) %>%
+      summarise(n.pis)
+  group_by(institute) %>%
+  summarize(median.cost = median(lifetime.cost),
+            n.grants = n())
+```
+
+Next, we need to identify grants in each of the bins that Berg previously alluded to. `dplyr` makes this easy with the `ntile` function. Berg previously divided grants into ~15 bins, we'll bin into ~5%.
+
+```{r bin.grant.costs, message = FALSE, warning=FALSE}
+bin_grant_costs <- grant_costs %>%
+  group_by(institute) %>%
+  group_by(n.tile = ntile(lifetime.cost, 20)) 
+
+bin_grant_costs
+```
+
+Now we need to measure grant productivity. We'll get the total number of publications in the PUBLINKS table associated with each `project.num` ...
+
+```{r grant.pubs, message = FALSE, warning=FALSE}
+grant_pubs <- bin_grant_costs %>%
+  select(project.num) %>%
+  left_join(publinks) %>%
+  group_by(project.num) %>%
+  summarise(n.pubs = n())
+
+grant_pubs
+```
+
+... and now we can join the two tables for a complete picture of productivity.
+
+```{r grant.productivity, warning=FALSE}
+grant_productivity <- bin_grant_costs %>%
+  left_join(grant_pubs)
+
+grant_productivity
+```
+
+Now we can make plots reminiscent of Berg's original.
+
+```{r plot.productivity, message = FALSE, warning=FALSE}
+grant_productivity %>%
+  ggplot(aes(x = factor(n.tile), y = n.pubs)) +
+  geom_boxplot() +
+  scale_y_log10() +
+  facet_wrap(~ institute)
+```
+
+Let's redo the divisions more closely to Berg's plot.
+
+```{r by.dollar.breaks, warning = FALSE, message = FALSE}
+# Berg's original values ...
+# breaks <- c(175000, 200000, 225000, 250000, 300000, 375000, 400000,
+#           450000, 500000, 600000, 700000, 800000, 900000, 1000000)
+min.lifetime.cost <- round(min(grant_costs$lifetime.cost), -4) # round to 10,000s
+max.lifetime.cost <- round(max(grant_costs$lifetime.cost), -5) 
+# step is average size of an award
+step <- 1e6
+
+breaks <- seq(min.lifetime.cost, max.lifetime.cost, step)
+breaks
+
+dollar_bin_grant_costs <- grant_costs %>%
+  group_by(institute) %>%
+  mutate(dollar.tile = findInterval(lifetime.cost, vec = breaks, 
+                                    all.inside = TRUE, rightmost.closed = TRUE))
+
+dollar_bin_grant_costs
+
+dollar_bin_grant_costs %>% group_by(dollar.tile) %>% summarize(count = n())
+```
+
+That looks better. Now we can remake the summary plots ...
+
+```{r plot.dollar.bins, warning = FALSE, message = FALSE}
+dollar_grant_pubs <- dollar_bin_grant_costs %>%
+  select(project.num) %>%
+  left_join(publinks) %>%
+  group_by(project.num) %>%
+  summarise(n.pubs = n())
+
+dollar_grant_productivity <- dollar_bin_grant_costs %>%
+  left_join(dollar_grant_pubs)
+
+tile.counts <- dollar_grant_productivity %>%
+  group_by(institute, dollar.tile) %>%
+  summarize(tile.counts = n())
+
+productivity_with_counts <- dollar_grant_productivity %>%
+  left_join(tile.counts)
+
+library(scales)
+productivity_with_counts %>%
+  # need to remove higher tiles because there are too few grants
+  filter(dollar.tile <= 13) %>%
+  ggplot(aes(x = factor(dollar.tile), y = n.pubs, fill = tile.counts)) +
+  geom_boxplot() +
+  scale_x_discrete(labels = breaks / 1e6) + 
+  theme(axis.text.x = element_text(angle=45, vjust=0.8)) + 
+  scale_y_log10() +
+  facet_wrap(~ institute) +
+  ylab('Number of publications') +
+  xlab('Total costs (minimum, in millions)')
+```
+
+This looks more like the original plot, with an inflection point. We need more transformation to get back to the per-year space of the original plot, but this is pretty close. For the most part, the number of publications seems to just level out, not decline. Exceptions include CA, HD, (esp.) MH, where there is a pretty big drop off in publication number at the higher end of total costs. 
