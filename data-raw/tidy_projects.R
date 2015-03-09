@@ -1,3 +1,7 @@
+# tidy_projects
+# 
+# loads CSV files from NIH EXPORTER into tbl_df format
+#
 library(dplyr)
 library(stringr)
 library(tidyr)
@@ -30,25 +34,25 @@ names(projects.tbl) <- names(projects.tbl) %>%
 #save(project.orgs, file = 'data/project.orgs.rdata')
 
 # project.pis table - select the last PI from the list
-#project.pis <- projects.tbl %>%
-#  select(application.id, pi.names) %>%
-#  separate(pi.names, into = c(1:20), sep = ';', extra = 'drop') %>%
-#  gather(application.id) %>%
-#  setNames(c('application.id', 'pi.num', 'pi.name')) %>%
-#  filter(!is.na(pi.name)) %>%
-#  group_by(application.id) %>%
-#  arrange(desc(pi.num)) %>%
-#  slice(1:1) %>%
-#  select(application.id, pi.name) %>%
-#  mutate(application.id = as.factor(application.id))
-#save(project.pis, file = 'data/project.pis.rdata')
+project.pis <- projects.tbl %>%
+  filter(fy >= 2000) %>%
+  select(core.project.num, pi.ids) %>%
+  rename(project.num = core.project.num) %>%
+  separate(pi.ids, into = c(1:20), sep = ';', extra = 'drop') %>%
+  gather(application.id) %>%
+  setNames(c('project.num', 'pi.num', 'pi.id')) %>%
+  filter(!is.na(pi.id)) %>%
+  group_by(project.num) %>%
+  select(project.num, pi.id)
+save(project.pis, file = 'data/project.pis.rdata')
 
-# projects table
+# projects table - only provide data after fy 2000 as costs are only available 2000 and onward.
 projects <- projects.tbl %>%
+  filter(fy >= 2000) %>%
   select(administering.ic, activity,
-         core.project.num, fy,
+         core.project.num, fy, org.duns,
          project.start, project.end,
-         study.section, total.cost) %>%
+         study.section, suffix, total.cost) %>%
   rename(project.num = core.project.num,
          fiscal.year = fy,
          institute = administering.ic) %>%  
