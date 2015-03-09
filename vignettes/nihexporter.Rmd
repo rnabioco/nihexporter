@@ -40,7 +40,7 @@ library(knitr)
 library(nihexporter)
 ```
 
-## Cost of awards
+## Award amounts
 
 The `total.cost` column from the `projects` table has many `NA` values.
 You need to use `na.rm` in aggregation functions to ensure robust handling of these
@@ -61,7 +61,7 @@ cost.over.time %>%
   geom_line()
 ```
 
-Let's look at WHERE the money is going to:
+Let's look at WHERE the money is going. This example illustrates linking of the `project` and `project.orgs` tables via the `org.duns` column.
 
 ```{r money.per.institution, message = FALSE}
 money.per.institution <- projects %>%
@@ -70,17 +70,15 @@ money.per.institution <- projects %>%
   group_by(org.duns, fiscal.year) %>%
   summarise(total.award.billions = sum(total.cost, na.rm = TRUE) / 1e9) %>%
   ungroup() %>%
-  arrange(desc(total.award.billions))
+  arrange(desc(total.award.billions)) %>%
+  left_join(project.orgs) %>%
+  select(fiscal.year, org.name, total.award.billions)
 
 money.per.institution %>%
   head(10) %>% kable()
 ```
 
-Use govbudgets.com to look up the DUNS number <http://www.govbudgets.com/dunsNumber/042250712>.
-
-Mmmm ... cheese steak ...
-
-And WHO are the big winners?
+And WHO are the big winners? Look these PIs up in NIH REPORTER ...
 
 ```{r money.per.pi, message = FALSE}
 
@@ -101,16 +99,12 @@ money.per.pi %>%
   head(10) %>% kable()
 ```
 
-Go Blue ...
-
 ## Productivity
 
-The NIH puts a premium on *bang-for-your-buck*, or some measurable return
-on the money they invest in the research enterprise. A key way to
-quantitate this is by measuring scholarly output (i.e., publications) per
-dollar invested.
+In order to measure the "return"" on the money the NIH invests in the research enterprise,
+we can measure scholarly output (i.e., publications) per dollar invested.
 
-Here we identify to highest performing grants outside of the R01 category.
+Here we identify th highest performing grants outside of the R01 category.
 Much has been made of the wasteful spending outside of
 investigator-initiated research. Here we can see that this is not always
 the case ...
@@ -146,9 +140,7 @@ high.perf.not.r01 %>%
 ```
 
 Here we quantitate the return on R01 investment. One might argue that
-grants with higher `cost.per.pub` are less good investments. Or that the
-PIs of those grants do a poor job entering linking their grants to
-publications in MyNCBI (no small chore).
+grants with higher `cost.per.pub` are less good investments.
 
 ```{r costly.pubs.r01, message=FALSE}
 costly.pubs.r01 <- projects %>%
