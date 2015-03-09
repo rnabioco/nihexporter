@@ -40,7 +40,7 @@ project.pis <- projects.tbl %>%
   separate(pi.ids, into = c(1:20), sep = ';', extra = 'drop') %>%
   gather(project.num) %>%
   setNames(c('project.num', 'pi.num', 'pi.id')) %>%
-  filter(!is.na(pi.id)) %>%
+  filter(pi.id != '') %>%
   group_by(project.num) %>%
   select(project.num, pi.id)
 save(project.pis, file = 'data/project.pis.rdata')
