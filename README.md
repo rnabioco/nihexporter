@@ -1,42 +1,32 @@
+[![Travis-CI Build Status](https://travis-ci.org/jayhesselberth/nihexporter.png?branch=master)](https://travis-ci.org/jayhesselberth/nihexporter)
+
 Overview
 ========
 
-The `nihexporter` package provides a minimal set of data from NIH
-EXPORTER <http://exporter.nih.gov/default.aspx>, which contains
-information on NIH biomedical research funding from 1985-2014 (and
-continues monthly in a given fiscal year).
+The `nihexporter` package provides a minimal set of data from NIH EXPORTER <http://exporter.nih.gov/default.aspx>, which contains information on NIH biomedical research funding from 1985-2014 (and continues monthly in a given fiscal year).
 
-Information about specific columns in the tables is at
-<http://exporter.nih.gov/about.aspx>.
+Information about specific columns in the tables is at <http://exporter.nih.gov/about.aspx>.
 
 The package contains the following tables:
 
 -   `projects`: provides data on funded projects by NIH.
 
--   `project.pis`: links project numbers (`project.num`) to PI ID
-    (`pi.id`), which can used in NIH REPORTER searches
+-   `project.pis`: links project numbers (`project.num`) to PI ID (`pi.id`), which can used in NIH REPORTER searches
 
--   `project.orgs`: links DUNS numbers (`org.duns`) from `projects`
-    table to information on specific organizations
+-   `project.orgs`: links DUNS numbers (`org.duns`) from `projects` table to information on specific organizations
 
--   `publinks`: links Pubmed IDs (`pmid`) to project numbers
-    (`project.num`)
+-   `publinks`: links Pubmed IDs (`pmid`) to project numbers (`project.num`)
 
-There are also a few helper variables that make exploratory analysis a
-bit easier:
+There are also a few helper variables that make exploratory analysis a bit easier:
 
 -   `nih.institutes`: 27 NIH institutes in two-letter format
 
 Data summary
 ------------
 
-There is a lot of data in NIH EXPORTER, so this package aims to provide
-a minimal set of data without being too unwieldy. There are download and
-import scripts in the `data-raw/` directory in the package.
+There is a lot of data in NIH EXPORTER, so this package aims to provide a minimal set of data without being too unwieldy. There are download and import scripts in the `data-raw/` directory in the package.
 
-Because `total.cost` is only available from fiscal year 2000 and onward,
-only data from those years is provided in the `projects` table. The
-`publinks` table goes back to 1985.
+Because `total.cost` is only available from fiscal year 2000 and onward, only data from those years is provided in the `projects` table. The `publinks` table goes back to 1985.
 
 Install
 -------
@@ -48,26 +38,30 @@ Install the `nihexporter` package from github with:
 Examples
 ========
 
-    library(dplyr)
-    library(knitr)
-    library(ggplot2)
-    library(nihexporter)
+``` r
+library(dplyr)
+library(knitr)
+library(ggplot2)
+library(nihexporter)
+```
 
 List the all-time most expensive grants from each institute:
 
-    expensive.projects <- projects %>%
-      select(project.num, institute, total.cost, project.start, project.end) %>%
-      group_by(project.num, institute) %>%
-      summarise(overall.cost = sum(total.cost, na.rm = TRUE)) %>%
-      ungroup() %>%
-      group_by(institute) %>%
-      arrange(desc(overall.cost)) %>%
-      slice(1:1) %>%
-      ungroup() %>%
-      arrange(desc(overall.cost)) %>%
-      mutate(cost.in.billions = overall.cost / 1e9)
+``` r
+expensive.projects <- projects %>%
+  select(project.num, institute, total.cost, project.start, project.end) %>%
+  group_by(project.num, institute) %>%
+  summarise(overall.cost = sum(total.cost, na.rm = TRUE)) %>%
+  ungroup() %>%
+  group_by(institute) %>%
+  arrange(desc(overall.cost)) %>%
+  slice(1:1) %>%
+  ungroup() %>%
+  arrange(desc(overall.cost)) %>%
+  mutate(cost.in.billions = overall.cost / 1e9)
 
-    head(expensive.projects)
+head(expensive.projects)
+```
 
     ## Source: local data frame [6 x 4]
     ## 
@@ -79,25 +73,25 @@ List the all-time most expensive grants from each institute:
     ## 5 ZIIMD000005        MD    373377914        0.3733779
     ## 6 U62PS223540        PS    298137847        0.2981378
 
-Let's look at the amounts spent on R01 grants at each NIH institute.
-Note this filters for NIH institutes.
+Let's look at the amounts spent on R01 grants at each NIH institute. Note this filters for NIH institutes.
 
-    library(scales)
-    grant.costs <- projects %>% 
-      filter(institute %in% nih.institutes) %>%
-      filter(activity == 'R01' & total.cost > 0) %>%
-      select(institute, total.cost)
+``` r
+grant.costs <- projects %>% 
+  filter(institute %in% nih.institutes) %>%
+  filter(activity == 'R01' & total.cost > 0) %>%
+  select(institute, total.cost)
 
-    grant.costs %>%
-      ggplot(aes(reorder(institute, total.cost, median, order=TRUE), total.cost)) +
-      geom_boxplot(outlier.shape = NA) +
-      coord_flip() +
-      scale_y_continuous(limits = c(0, 8e5), labels = comma) +
-      ylab('Total cost (dollars)') +
-      xlab('NIH institute') + 
-      ggtitle('Total cost of R01 grants from 2000-2014')
+library(scales)
+grant.costs %>%
+  ggplot(aes(reorder(institute, total.cost, median, order=TRUE), total.cost)) +
+  geom_boxplot(outlier.shape = NA) +
+  coord_flip() +
+  scale_y_continuous(limits = c(0, 8e5), labels = comma) +
+  ylab('Total cost (dollars)') +
+  xlab('NIH institute') + 
+  ggtitle('Total cost of R01 grants from 2000-2014')
+```
 
-![](README_files/figure-markdown_strict/grant.costs-1.png)
+![](README_files/figure-markdown_github/grant.costs-1.png)
 
-See the [vignette](http://rpubs.com/jayhesselberth/nihexporter-vignette)
-or the [vignette source](vignettes/nihexporter.Rmd) for more examples.
+See the [vignette](http://rpubs.com/jayhesselberth/nihexporter-vignette) or the [vignette source](vignettes/nihexporter.Rmd) for more examples.
