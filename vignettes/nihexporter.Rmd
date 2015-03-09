@@ -3,13 +3,12 @@ title: "nihexporter"
 author: "Jay Hesselberth <jay.hesselberth@gmail.com>"
 date: "`r Sys.Date()`"
 output:
-  html_document:
-    keep_md: true
   rmarkdown::html_vignette:
     fig_caption: yes
 vignette: >
   %\VignetteIndexEntry{nihexporter}
-  %\VignetteEngine{knitr::rmarkdown} \usepackage[utf8]{inputenc}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
 ---
 
 # Overview

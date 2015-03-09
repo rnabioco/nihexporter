@@ -1,8 +1,14 @@
 ---
 title: "nihexporter - grant productivity vignette"
 author: "Jay Hesselberth"
-date: "March 9, 2015"
-output: html_document
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_vignette:
+    fig_caption: yes
+vignette: >
+  %\VignetteIndexEntry{nihexporter}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
 ---
 
 # Overview
