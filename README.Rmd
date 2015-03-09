@@ -10,6 +10,8 @@ The `nihexporter` package provides a minimal set of data from NIH EXPORTER
 <http://exporter.nih.gov/default.aspx>, which contains information on NIH
 biomedical research funding from 1985-2014 (and continues monthly in a given fiscal year).
 
+Information about specific columns in the tables is at <http://exporter.nih.gov/about.aspx>.
+
 The package contains the following tables:
 
 * `projects`: provides data on funded projects by NIH.
@@ -36,7 +38,7 @@ devtools::install_github("jayhesselberth/nihexporter")
 
 # Examples
 
-```{r, message=FALSE}
+```{r, load.libs, message=FALSE}
 library(dplyr)
 library(knitr)
 library(ggplot2)
@@ -70,7 +72,7 @@ grant.spending <- projects %>%
   filter(total.cost > 0)
 
 grant.spending %>%
-  ggplot(aes(factor(institute), total.cost)) +
+  ggplot(aes(reorder(institute, total.cost, median, order=TRUE), total.cost)) +
   geom_boxplot() +
   scale_y_log10() +
   coord_flip()
