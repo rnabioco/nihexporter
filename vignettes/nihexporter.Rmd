@@ -33,12 +33,10 @@ library(knitr)
 library(nihexporter)
 ```
 
-## Spending
+## Cost of awards
 
 The `total.cost` column from the `projects` table has many `NA` values.
-Some of these are from years where the NIH apprarently wasn't keeping such
-data, but there are many in other, more recent, years. You need to use
-`na.rm` in aggregation functions to ensure robust handling of these
+You need to use `na.rm` in aggregation functions to ensure robust handling of these
 values.
 
 Let's look at spending over time for NIGMS in years that have such data:
@@ -55,6 +53,48 @@ cost.over.time %>%
   ggplot(aes(x = fiscal.year, y = yearly.cost)) +
   geom_line()
 ```
+
+Let's look at WHERE the money is going to:
+
+```{r money.per.institution, message = FALSE}
+money.per.institution <- projects %>%
+  filter(org.duns != '' & activity == 'R01') %>%
+  select(org.duns, fiscal.year, total.cost) %>%
+  group_by(org.duns, fiscal.year) %>%
+  summarise(total.award.billions = sum(total.cost, na.rm = TRUE) / 1e9) %>%
+  ungroup() %>%
+  arrange(desc(total.award.billions))
+
+money.per.institution %>%
+  head(10) %>% kable()
+```
+
+Use govbudgets.com to look up the DUNS number <http://www.govbudgets.com/dunsNumber/042250712>.
+
+Mmmm ... cheese steak ...
+
+And WHO are the big winners?
+
+```{r money.per.pi, message = FALSE}
+
+money.per.pi <- projects %>%
+  filter(activity == 'R01') %>%
+  select(project.num, total.cost) %>%
+  group_by(project.num) %>%
+  summarise(total.award.millions = sum(total.cost, na.rm = TRUE) / 1e6) %>%
+  ungroup() %>%
+  arrange(desc(total.award.millions)) %>%
+  left_join(project.pis) %>%
+  filter(pi.id != '') %>%
+  group_by(pi.id) %>%
+  summarise(pi.millionaire = sum(total.award.millions)) %>%
+  arrange(desc(pi.millionaire))  
+
+money.per.pi %>%
+  head(10) %>% kable()
+```
+
+Go Blue ...
 
 ## Productivity
 
