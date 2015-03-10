@@ -1,6 +1,6 @@
 Package: nihexporter
 Title: NIH EXPORTER 2000-2014
-Version: 0.3
+Version: 0.4
 Author: Jay Hesselberth <jay.hesselberth@gmail.com> [aut,cre]
 Maintainer: Jay Hesselberth <jay.hesselberth@gmail.com>
 Description: `nihexporter` provides NIH EXPORTER data describing biomedical funding from
