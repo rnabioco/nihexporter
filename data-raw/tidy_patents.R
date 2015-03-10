@@ -16,13 +16,9 @@ names(patents.tbl) <- names(patents.tbl) %>%
   str_to_lower() %>%
   str_replace_all('_','.')
 
-patent.projects <- patents.tbl %>%
+patents <- patents.tbl %>%
   select(patent.id, project.id) %>%
   rename(project.num = project.id) %>%
   arrange(project.num)
 
-patent.info <- patents.tbl %>%
-  select(patent.id, patent.title)
-
-save(patent.projects, file = 'data/patent.projects.rdata', compress = 'xz')
-save(patent.info , file = 'data/patent.info.rdata', compress = 'xz')
+save(patents, file = 'data/patents.rdata', compress = 'xz')
