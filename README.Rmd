@@ -76,7 +76,7 @@ head(expensive.projects)
 
 Let's look at the amounts spent on R01 grants at each NIH institute. Note this filters for NIH institutes.
 
-```{r grant.costs, message = FALSE, warning=FALSE}
+```
 grant.costs <- projects %>% 
   filter(institute %in% nih.institutes) %>%
   filter(activity == 'R01' & total.cost > 0) %>%
