@@ -24,6 +24,8 @@ The package contains the following tables:
 
 * `publinks`: links Pubmed IDs (`pmid`) to project numbers (`project.num`)
 
+* `patents`: links project IDs (`project.num`) to `patent.id`
+
 There are also a few helper variables that make exploratory analysis a bit easier:
 
 * `nih.institutes`: 27 NIH institutes in two-letter format 

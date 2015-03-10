@@ -1,3 +1,4 @@
+#'
 #' projects
 #'
 #' @format A data frame with 11 variables: \code{application.id}, \code{institute},
@@ -39,4 +40,12 @@
 #'
 #' @source \url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=0&index=4}
 "publinks"
- 
+
+#' patents
+#'
+#' Links patent IDs to Project IDs. 
+#'
+#' @format A data frame with two variables: \code{patent.id}, \code{project.num}
+#'
+#' @source \url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=0&index=3}
+"patents"

@@ -17,6 +17,8 @@ The package contains the following tables:
 
 -   `publinks`: links Pubmed IDs (`pmid`) to project numbers (`project.num`)
 
+-   `patents`: links project IDs (`project.num`) to `patent.id`
+
 There are also a few helper variables that make exploratory analysis a bit easier:
 
 -   `nih.institutes`: 27 NIH institutes in two-letter format
@@ -75,24 +77,20 @@ head(expensive.projects)
 
 Let's look at the amounts spent on R01 grants at each NIH institute. Note this filters for NIH institutes.
 
-``` r
-grant.costs <- projects %>% 
-  filter(institute %in% nih.institutes) %>%
-  filter(activity == 'R01' & total.cost > 0) %>%
-  select(institute, total.cost)
+    grant.costs <- projects %>% 
+      filter(institute %in% nih.institutes) %>%
+      filter(activity == 'R01' & total.cost > 0) %>%
+      select(institute, total.cost)
 
-library(scales)
-grant.costs %>%
-  ggplot(aes(reorder(institute, total.cost, median, order=TRUE), total.cost)) +
-  geom_boxplot(outlier.shape = NA) +
-  coord_flip() +
-  scale_y_continuous(limits = c(0, 8e5), labels = comma) +
-  ylab('Total cost (dollars)') +
-  xlab('NIH institute') + 
-  ggtitle('Total cost of R01 grants from 2000-2014')
-```
-
-![](README_files/figure-markdown_github/grant.costs-1.png)
+    library(scales)
+    grant.costs %>%
+      ggplot(aes(reorder(institute, total.cost, median, order=TRUE), total.cost)) +
+      geom_boxplot(outlier.shape = NA) +
+      coord_flip() +
+      scale_y_continuous(limits = c(0, 8e5), labels = comma) +
+      ylab('Total cost (dollars)') +
+      xlab('NIH institute') + 
+      ggtitle('Total cost of R01 grants from 2000-2014')
 
 Vignettes
 ---------
