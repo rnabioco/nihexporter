@@ -1,12 +1,17 @@
-# version 0.4
+# nihexporter, version 0.4
+
+## Major 
 
 - added `patents` table
 - updated vignette with `patents` example
 
-# version 0.3
+# nihexporter, version 0.3
+
+## Major
 
 - recompressed rdata files to be much smaller
-- added nih.institutes variable for quick filtering with %in%
 - new grant_productivity vignette
-- various fixups
+- added nih.institutes variable for quick filtering with %in%
+
+## Minor
 
