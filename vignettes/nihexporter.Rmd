@@ -23,18 +23,17 @@ The `nihexporter` package provides the following tables of data:
 
 * `publinks`: links grants (`project.num`) to PUBMED IDs (`pmid`).
 
+* `patents`: links patent IDs (`patent.id`) to project IDs (`project.num`)
+
 There are also a few helper variables that make exploratory analysis a bit easier:
 
 * `nih.institutes`: 27 NIH institutes in two-letter format 
 
-The `nihexporter` package is avavilable at
-<https://github.com/jayhesselberth/nihexporter>.
+The `nihexporter` package is avavilable on [github](https://github.com/jayhesselberth/nihexporter).
 
 # Examples
 
-Many of the examples generate project numbers that you can use to look up
-project specifics in NIH REPORTER
-<http://projectreporter.nih.gov/reporter.cfm>. We use the amazing `dplyr`, `ggplot2` and `knitr` packages to manipulate and plot the data.
+Many of the examples generate project numbers that you can use to look up project specifics in [NIH REPORTER](http://projectreporter.nih.gov/reporter.cfm). We use the amazing `dplyr`, `ggplot2` and `knitr` packages to manipulate and plot the data.
 
 ```{r load.libs, message=FALSE, echo=FALSE}
 library(dplyr)

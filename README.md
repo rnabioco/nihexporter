@@ -17,6 +17,8 @@ The package contains the following tables:
 
 -   `publinks`: links Pubmed IDs (`pmid`) to project numbers (`project.num`)
 
+-   `patents`: links project IDs (`project.num`) to `patent.id`
+
 There are also a few helper variables that make exploratory analysis a bit easier:
 
 -   `nih.institutes`: 27 NIH institutes in two-letter format
@@ -61,17 +63,16 @@ expensive.projects <- projects %>%
   mutate(cost.in.billions = overall.cost / 1e9)
 
 head(expensive.projects)
+#> Source: local data frame [6 x 4]
+#> 
+#>   project.num institute overall.cost cost.in.billions
+#> 1 ZIHLM200888        LM   1544981304        1.5449813
+#> 2 ZIFBC000001        CA    652060692        0.6520607
+#> 3 U54HG003067        HG    527942706        0.5279427
+#> 4 ZIFAI000001        AI    389496063        0.3894961
+#> 5 ZIIMD000005        MD    373377914        0.3733779
+#> 6 U62PS223540        PS    298137847        0.2981378
 ```
-
-    ## Source: local data frame [6 x 4]
-    ## 
-    ##   project.num institute overall.cost cost.in.billions
-    ## 1 ZIHLM200888        LM   1544981304        1.5449813
-    ## 2 ZIFBC000001        CA    652060692        0.6520607
-    ## 3 U54HG003067        HG    527942706        0.5279427
-    ## 4 ZIFAI000001        AI    389496063        0.3894961
-    ## 5 ZIIMD000005        MD    373377914        0.3733779
-    ## 6 U62PS223540        PS    298137847        0.2981378
 
 Let's look at the amounts spent on R01 grants at each NIH institute. Note this filters for NIH institutes.
 
@@ -92,7 +93,7 @@ grant.costs %>%
   ggtitle('Total cost of R01 grants from 2000-2014')
 ```
 
-![](README_files/figure-markdown_github/grant.costs-1.png)
+![](README-plot.grant.costs-1.png)
 
 Vignettes
 ---------

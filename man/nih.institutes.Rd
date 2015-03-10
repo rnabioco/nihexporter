@@ -4,7 +4,7 @@
 \name{nih.institutes}
 \alias{nih.institutes}
 \title{nih.institutes}
-\format{\preformatted{ chr [1:27] "AA" "AG" "AI" "AR" "AT" "CA" "DA" "DC" "DE" "DK" "EB" "ES" "EY" "GM" "HD" "HG" ...
+\format{\preformatted{ chr [1:27] "AA" "AG" "AI" "AR" "AT" "CA" "DA" "DC" "DE" ...
 }}
 \source{
 \url{http://grants.nih.gov/grants/acronym_list.htm}

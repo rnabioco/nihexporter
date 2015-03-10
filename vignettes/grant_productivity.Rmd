@@ -38,19 +38,6 @@ grant_costs <- projects %>%
 grant_costs
 ```
 
-Here are some summary stats on that table, with PI counts, grant counts and median grant cost.
-
-```
-# not working quite yet
-grant_costs %>%
-  left_join(project.pis) %>%
-    group_by(pi.id) %>%
-      summarise(n.pis)
-  group_by(institute) %>%
-  summarize(median.cost = median(lifetime.cost),
-            n.grants = n())
-```
-
 Next, we need to identify grants in each of the bins that Berg previously alluded to. `dplyr` makes this easy with the `ntile` function. Berg previously divided grants into ~15 bins, we'll bin into ~5%.
 
 ```{r bin.grant.costs, message = FALSE, warning=FALSE}
@@ -82,9 +69,32 @@ grant_productivity <- bin_grant_costs %>%
 grant_productivity
 ```
 
-Now we can make plots reminiscent of Berg's original.
+We can also measure grant output by patents per dollar ...
+```{r patents.per.dollar, message = FALSE, warning = FALSE}
+patent.output <- grant_costs %>%
+  select(project.num, lifetime.cost) %>%
+  left_join(patents) %>%
+  group_by(project.num, lifetime.cost) %>%
+  summarize(n.patents = n()) %>%
+  mutate(patents.per.dollar = n.patents / lifetime.cost) %>%
+  ungroup() %>%
+  arrange(desc(patents.per.dollar))
 
-```{r plot.productivity, message = FALSE, warning=FALSE}
+patent.output
+```
+
+... or by total patents ...
+```{r total.patent.table}
+highest.patent.output <- patent.output %>%
+  select(project.num, n.patents) %>%
+  arrange(desc(n.patents))
+  
+highest.patent.output  
+```
+
+But I digress. Now we can make plots reminiscent of Berg's original.
+
+```{r plot.productivity, message = FALSE, warning=FALSE, fig.width=7, fig.height=7}
 grant_productivity %>%
   ggplot(aes(x = factor(n.tile), y = n.pubs)) +
   geom_boxplot() +
@@ -118,7 +128,7 @@ dollar_bin_grant_costs %>% group_by(dollar.tile) %>% summarize(count = n())
 
 That looks better. Now we can remake the summary plots ...
 
-```{r plot.dollar.bins, warning = FALSE, message = FALSE}
+```{r plot.dollar.bins, warning = FALSE, message = FALSE, fig.width=7, fig.height=7}
 dollar_grant_pubs <- dollar_bin_grant_costs %>%
   select(project.num) %>%
   left_join(publinks) %>%
@@ -150,3 +160,4 @@ productivity_with_counts %>%
 ```
 
 This looks more like the original plot, with an inflection point. We need more transformation to get back to the per-year space of the original plot, but this is pretty close. For the most part, the number of publications seems to just level out, not decline. Exceptions include CA, HD, (esp.) MH, where there is a pretty big drop off in publication number at the higher end of total costs. 
+

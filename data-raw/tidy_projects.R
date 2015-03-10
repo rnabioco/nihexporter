@@ -32,7 +32,7 @@ project.orgs <- projects.tbl %>%
   filter(org.duns != '') %>%
   distinct() %>%
   arrange(org.duns)
-save(project.orgs, file = 'data/project.orgs.rdata')
+save(project.orgs, file = 'data/project.orgs.rdata', compress = 'xz')
 
 # project.pis table
 project.pis <- projects.tbl %>%
@@ -44,7 +44,7 @@ project.pis <- projects.tbl %>%
   filter(pi.id != '') %>%
   select(project.num, pi.id) %>%
   arrange(project.num)
-save(project.pis, file = 'data/project.pis.rdata')
+save(project.pis, file = 'data/project.pis.rdata', compress = 'xz')
 
 # projects table - only provide data after fy 2000 as costs are only available 2000 and onward.
 projects <- projects.tbl %>%
@@ -57,4 +57,4 @@ projects <- projects.tbl %>%
          institute = administering.ic) %>%  
   mutate(project.end = mdy(project.end),
          project.start = mdy(project.start))
-save(projects, file = 'data/projects.rdata')         
+save(projects, file = 'data/projects.rdata', compress = 'xz')         
