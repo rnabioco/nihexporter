@@ -8,6 +8,14 @@ output:
 
 [![Travis-CI Build Status](https://travis-ci.org/jayhesselberth/nihexporter.png?branch=master)](https://travis-ci.org/jayhesselberth/nihexporter)
 
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "README-"
+)
+```
+
 # nihexporter
 
 The `nihexporter` package provides a minimal set of data from [NIH EXPORTER](http://exporter.nih.gov/default.aspx), which contains information on NIH biomedical research funding from 1985-2014 (and continues monthly in a given fiscal year).
@@ -76,7 +84,7 @@ head(expensive.projects)
 
 Let's look at the amounts spent on R01 grants at each NIH institute. Note this filters for NIH institutes.
 
-```
+```{r plot.grant.costs, message = FALSE, warning = FALSE}
 grant.costs <- projects %>% 
   filter(institute %in% nih.institutes) %>%
   filter(activity == 'R01' & total.cost > 0) %>%

@@ -63,34 +63,37 @@ expensive.projects <- projects %>%
   mutate(cost.in.billions = overall.cost / 1e9)
 
 head(expensive.projects)
+#> Source: local data frame [6 x 4]
+#> 
+#>   project.num institute overall.cost cost.in.billions
+#> 1 ZIHLM200888        LM   1544981304        1.5449813
+#> 2 ZIFBC000001        CA    652060692        0.6520607
+#> 3 U54HG003067        HG    527942706        0.5279427
+#> 4 ZIFAI000001        AI    389496063        0.3894961
+#> 5 ZIIMD000005        MD    373377914        0.3733779
+#> 6 U62PS223540        PS    298137847        0.2981378
 ```
-
-    ## Source: local data frame [6 x 4]
-    ## 
-    ##   project.num institute overall.cost cost.in.billions
-    ## 1 ZIHLM200888        LM   1544981304        1.5449813
-    ## 2 ZIFBC000001        CA    652060692        0.6520607
-    ## 3 U54HG003067        HG    527942706        0.5279427
-    ## 4 ZIFAI000001        AI    389496063        0.3894961
-    ## 5 ZIIMD000005        MD    373377914        0.3733779
-    ## 6 U62PS223540        PS    298137847        0.2981378
 
 Let's look at the amounts spent on R01 grants at each NIH institute. Note this filters for NIH institutes.
 
-    grant.costs <- projects %>% 
-      filter(institute %in% nih.institutes) %>%
-      filter(activity == 'R01' & total.cost > 0) %>%
-      select(institute, total.cost)
+``` r
+grant.costs <- projects %>% 
+  filter(institute %in% nih.institutes) %>%
+  filter(activity == 'R01' & total.cost > 0) %>%
+  select(institute, total.cost)
 
-    library(scales)
-    grant.costs %>%
-      ggplot(aes(reorder(institute, total.cost, median, order=TRUE), total.cost)) +
-      geom_boxplot(outlier.shape = NA) +
-      coord_flip() +
-      scale_y_continuous(limits = c(0, 8e5), labels = comma) +
-      ylab('Total cost (dollars)') +
-      xlab('NIH institute') + 
-      ggtitle('Total cost of R01 grants from 2000-2014')
+library(scales)
+grant.costs %>%
+  ggplot(aes(reorder(institute, total.cost, median, order=TRUE), total.cost)) +
+  geom_boxplot(outlier.shape = NA) +
+  coord_flip() +
+  scale_y_continuous(limits = c(0, 8e5), labels = comma) +
+  ylab('Total cost (dollars)') +
+  xlab('NIH institute') + 
+  ggtitle('Total cost of R01 grants from 2000-2014')
+```
+
+![](README-plot.grant.costs-1.png)
 
 Vignettes
 ---------
