@@ -22,4 +22,4 @@ publinks <- publinks.tbl %>%
   rename(project.num = project.number) %>%
   arrange(project.num)
 
-save(publinks, file = 'data/publinks.rdata')
+save(publinks, file = 'data/publinks.rdata', compress = 'xz')
