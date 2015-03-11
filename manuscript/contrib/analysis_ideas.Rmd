@@ -1,0 +1,45 @@
+---
+title: "nihexporter analysis ideas"
+author: "Jay Hesselberth"
+date: "March 11, 2015"
+output: html_document
+# runtime: shiny
+---
+
+# Supplemental costs
+Run some numbers on supplemental costs versus base costs for each grant. Not the inflect point in fiscal.year 2009, this is likely ARRA funding
+
+```{r supplement.cost.ratio}
+base_costs <- projects %>%
+  filter(institute %in% nih.institutes) %>%
+  select(project.num, institute, fiscal.year, activity, suffix, total.cost) %>%
+  filter(suffix == '') %>% 
+  group_by(project.num, institute, fiscal.year, activity) %>%
+  summarize(base.cost = sum(total.cost))
+
+supp_costs <- projects %>%
+  filter(institute %in% nih.institutes) %>%
+  select(project.num, institute, fiscal.year, activity, suffix, total.cost) %>%
+  filter(grepl('^S', suffix)) %>% 
+  group_by(project.num, institute, fiscal.year, activity) %>%
+  summarize(supp.cost = sum(total.cost))
+
+activity.spec <- c('R01','R21','P01','P30','M01','P41','P50','U54')
+
+cost_ratio <- base_costs %>%
+  inner_join(supp_costs) %>%
+  filter(activity %in% activity.spec) %>%
+  group_by(project.num, institute, activity, fiscal.year) %>%
+  summarize(cost.ratio = supp.cost / base.cost)
+
+ggplot(cost_ratio, aes(x = factor(fiscal.year),
+                       y = cost.ratio,
+                       fill = activity)) +
+  geom_boxplot(outlier.shape = NA) +
+  facet_wrap(~ institute) +
+  scale_y_continuous(limits = c(0, 2)) +
+  scale_fill_brewer(palette='Set1') +
+  xlab('') + ylab('Supp / base ratio') +
+  theme(axis.text.x = element_text(angle = 45, vjust = 0.5)) +
+  ggtitle('Comparison of base and supplemental costs per fiscal year')
+```

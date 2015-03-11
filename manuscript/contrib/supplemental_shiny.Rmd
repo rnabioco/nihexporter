@@ -1,0 +1,56 @@
+---
+title: "nihexporter analysis ideas"
+author: "Jay Hesselberth"
+date: "March 11, 2015"
+runtime: shiny
+---
+
+# Comparison of base and supplemental costs per fiscal year
+
+```{r init.tables, echo = FALSE, warning = FALSE, message = FALSE}
+require(dplyr)
+require(ggplot2)
+require(nihexporter)
+
+base_costs <- projects %>%
+  filter(institute %in% nih.institutes) %>%
+  select(project.num, institute, fiscal.year, activity, suffix, total.cost) %>%
+  filter(suffix == '') %>% 
+  group_by(project.num, institute, fiscal.year, activity) %>%
+  summarize(base.cost = sum(total.cost))
+
+supp_costs <- projects %>%
+  filter(institute %in% nih.institutes) %>%
+  select(project.num, institute, fiscal.year, activity, suffix, total.cost) %>%
+  filter(grepl('^S', suffix)) %>% 
+  group_by(project.num, institute, fiscal.year, activity) %>%
+  summarize(supp.cost = sum(total.cost))
+
+cost_ratio <- base_costs %>%
+  inner_join(supp_costs) %>%
+  group_by(project.num, institute, activity, fiscal.year) %>%
+  summarize(cost.ratio = supp.cost / base.cost) %>%
+  select(institute, activity, fiscal.year, cost.ratio)
+```
+
+```{r select.input, echo = FALSE}
+institutes <- as.character(unique(cost_ratio$institute))
+selectInput("institute", "", choices = institutes)
+```
+
+```{r make.plot, echo = FALSE, message = FALSE, warning = FALSE}
+renderPlot({
+  
+  select_inst <- input$institute
+  cost_ratio_by_inst <- cost_ratio %>% filter(institute == select_inst)
+  
+  ggplot(cost_ratio_by_inst, aes(x = factor(fiscal.year),
+                                 y = cost.ratio)) +
+    geom_boxplot(outlier.shape = NA) +
+    scale_y_continuous(limits = c(0, 2)) +
+    scale_fill_brewer(palette='Set1') +
+    xlab('') + ylab('Supp / base ratio') +
+    theme(axis.text.x = element_text(angle = 45, vjust = 0.5))
+
+})  
+```
