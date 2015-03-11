@@ -1,3 +1,10 @@
+# nihexporter, version 0.5 (unreleased)
+
+### Major
+
+- identified *major* issue with organization DUNS numbers in the PROJECTS
+  table. Emailed NIH EXPORTER via the website and asked them to fix.
+
 # nihexporter, version 0.4
 
 ## Major 
