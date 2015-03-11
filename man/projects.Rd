@@ -4,10 +4,18 @@
 \name{projects}
 \alias{projects}
 \title{projects}
-\format{A data frame with 11 variables: \code{application.id}, \code{institute},
-  \code{activity}, \code{project.num}, \code{fiscal.year},
-  \code{org.duns}, \code{suffix}, \code{project.start},
-  \code{project.end}, \code{study.section}, \code{total.cost}}
+\format{A data frame with 11 variables:
+\describe{
+\item{\code{project.num}}{core project number, e.g. R01GM1234556}
+\item{\code{activity}}{activity code, e.g. R01}
+\item{\code{suffix}}{'A'mended and 'S'upplmental + serial number}
+\item{\code{institute}}{administering institute}
+\item{\code{fiscal.year}}{year of funding}
+\item{\code{org.duns}}{DUNS number}
+\item{\code{project.start}}{in ymd format}
+\item{\code{project.end}}{in ymd format}
+\item{\code{study.section}}{3 letter code}
+}}
 \source{
 \url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=4&index=0}
 }
