@@ -10,7 +10,8 @@ Suggests: dplyr,
           ggplot2,
           knitr,
           stringr,
-          data.table
+          data.table,
+    testthat
 License: CC0
 LazyData: true
 URL: http://github.com/jayhesselberth/nihexporter
