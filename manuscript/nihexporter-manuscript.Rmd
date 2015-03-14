@@ -3,16 +3,16 @@ title: '`nihexporter`: an R package for analyzing NIH funding data'
 author: "Jay R. Hesselberth"
 date: "March 14, 2015"
 output:
-  pdf_document:
-    fig_caption: yes
-    keep_tex: yes
-    number_sections: yes
   html_document:
     fig_caption: yes
     force_captions: yes
     highlight: pygments
     number_sections: yes
-    theme: cerulean
+    toc: yes
+  pdf_document:
+    fig_caption: yes
+    keep_tex: yes
+    number_sections: yes
 ---
 
 ```{r, echo=FALSE}
@@ -25,31 +25,19 @@ output:
 
 ## Motivation
 
-The analysis of NIH funding trends is important to illustrate how
-biomedical research funding in the United States. However, these analyses
-are conducted ad hoc by the institutes themselves. The NIH provides free
-access to NIH funding data via NIH EXPORTER. 
+The analysis of funding at the National Institutes of Health (NIH) is important to illustrate funding trends of biomedical research funding in the United States. However, these analyses are conducted *ad hoc* by the institutes themselves, and only provide a small glimpse of current funding trends. The NIH provides free access to funding data via NIH EXPORTER, but no tools have been developed to enable easy analysis of this data.
 
 ## Results
 
-We developed the `nihexporter` R package, which provides access to NIH
-EXPORTER data. We developed several analysis vignettes that show funding
-trends across NIH institues over 15 years, and highlight important
-differences in how institutes change their funding profiles. The package illustrates exploratory data analysis with the `dplyr` and `ggplot2` R packages Individuals and institutions with their own NIH funding can perform self-study and
-analysis with respect to other grants.
+We developed the `nihexporter` R package, which provides access to [NIH EXPORTER](http://exporter.nih.gov/) data. We developed several analysis vignettes that show funding trends across NIH institutes over 15 years, and highlight important differences in how institutes change their funding profiles. The package illustrates exploratory data analysis with the `dplyr` and `ggplot2` R packages Individuals and institutions with their own NIH funding can perform self-study and analysis with respect to other grants.
 
 ## Availability
 
-The `nihexporter` R package can be installed via
-[github](https://github.com/jayhesselberth/nihexporter). The source for
-vignettes on institute trends, grant productivity and XXX are available on
-rpubs.com. We also provide interactive data analysis of NIH funding data
-via an R Shiny app [].
+The `nihexporter` R package can be installed via [github](https://github.com/jayhesselberth/nihexporter). The source for vignettes on institute trends, grant productivity and XXX are available on rpubs.com. We also provide interactive data analysis of NIH funding data via an R Shiny app [].
 
 ## Implementation
 
-The `nihexporter` package is implemented in the R Statistical Computing
-Environment.
+The `nihexporter` package is implemented in the R Statistical Computing Environment.
 
 ## Contact
 
@@ -67,12 +55,39 @@ Jay Hesselberth <jay.hesselberth@gmail.com>
 
 # Results and Discussion
 
+## Package data
+
+  * Total costs: NIH EXPORTER provides access to the total costs of each grant in each fiscal year; it does not report direct and indirect costs. Indirect costs can be retrieved from other sources [], but are provided by the package only for reference purposes. Calculations that attempt to normalize by indirect costs should be interpreted with appropriate care.
+
+## Examples
+
+Using the `nihexporter` package, one can easily generate summary plots of the total costs of grants at each institute over time.
+
+```{r example-1, fig.cap='Grant funding per institute over time'}
+```
+
 ## Funding trends
 
 ## Grant producitivity
 
+When Jeremy Berg was head of the Institute of General Medical Sciences (NIGMS), he routinely provided analysis of funding trends at NIGMS in his "Feedback Loop" blog. One of these measured the productivity per grant dollar by measuring its "scholarly output" (*i.e.*, publications) as a function of direct costs. In this [plot](http://loop.nigms.nih.gov/2010/09/measuring-the-scientific-output-and-impact-of-nigms-grants/) there is an increase in productivity per dollar, until an inflection point at $700K, after which the number of publications *drops*, suggesting a negative influence of grant money on scholarly output. This was interesting and covered [here](http://www.nature.com/news/2010/101116/full/468356a.html).
+
+Here we flesh out this analysis and look at under- and over-performing institutes by this measure. In addition, Berg was focused on GM, and here we can easily look at similar measures across the NIH institutes. One caveat is that we only have access to `total.cost` in NIH EXPORTER, so the numbers include indirect costs. But, this is real cost to the tax-payer.
+
+Here are several addition comparisons, suggested by readers of Berg's original [blog poast](http://loop.nigms.nih.gov/2010/09/measuring-the-scientific-output-and-impact-of-nigms-grants/).
+
+### invesigator-intitiated versus RFA-initiated R01
+
+### Comparison of R01, program proects (PXX) and contract projects (UXX)
+
+### Productivity versus grant priority score
+
+### Intramural versus extramural grants
+
+The [Center for Scientific Review](http://public.csr.nih.gov/Pages/default.aspx) would need to publicly released (anonymized) scores to enable such an analysis.
+
 # References
 
-```{r, warning=FALSE, message=FALSE, echo=FALSE} 
+```{r references, warning=FALSE, message=FALSE, echo=FALSE} 
   # write.bibtex(file="references.bib")
 ```
