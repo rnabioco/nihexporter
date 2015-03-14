@@ -1,0 +1,78 @@
+---
+title: '`nihexporter`: an R package for analyzing NIH funding data'
+author: "Jay R. Hesselberth"
+date: "March 14, 2015"
+output:
+  pdf_document:
+    fig_caption: yes
+    keep_tex: yes
+    number_sections: yes
+  html_document:
+    fig_caption: yes
+    force_captions: yes
+    highlight: pygments
+    number_sections: yes
+    theme: cerulean
+---
+
+```{r, echo=FALSE}
+  library(knitcitations); cleanbib()
+  cite_options(citation_format = "pandoc", check.entries=FALSE)
+  library(bibtex)
+```
+
+# Abstract
+
+## Motivation
+
+The analysis of NIH funding trends is important to illustrate how
+biomedical research funding in the United States. However, these analyses
+are conducted ad hoc by the institutes themselves. The NIH provides free
+access to NIH funding data via NIH EXPORTER. 
+
+## Results
+
+We developed the `nihexporter` R package, which provides access to NIH
+EXPORTER data. We developed several analysis vignettes that show funding
+trends across NIH institues over 15 years, and highlight important
+differences in how institutes change their funding profiles. The package illustrates exploratory data analysis with the `dplyr` and `ggplot2` R packages Individuals and institutions with their own NIH funding can perform self-study and
+analysis with respect to other grants.
+
+## Availability
+
+The `nihexporter` R package can be installed via
+[github](https://github.com/jayhesselberth/nihexporter). The source for
+vignettes on institute trends, grant productivity and XXX are available on
+rpubs.com. We also provide interactive data analysis of NIH funding data
+via an R Shiny app [].
+
+## Implementation
+
+The `nihexporter` package is implemented in the R Statistical Computing
+Environment.
+
+## Contact
+
+Jay Hesselberth <jay.hesselberth@gmail.com>
+
+## Supplementary Information
+
+  * Vignettes - 
+  
+  * Interactive analysis - 
+
+# Introduction
+
+# Methods
+
+# Results and Discussion
+
+## Funding trends
+
+## Grant producitivity
+
+# References
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE} 
+  # write.bibtex(file="references.bib")
+```
