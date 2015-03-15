@@ -13,12 +13,20 @@ output:
     fig_caption: yes
     keep_tex: yes
     number_sections: yes
+  word_document: default
 ---
 
-```{r, echo=FALSE}
-  library(knitcitations); cleanbib()
-  cite_options(citation_format = "pandoc", check.entries=FALSE)
-  library(bibtex)
+```{r init.libs, echo = FALSE, warning = FALSE, message = FALSE}
+library(knitcitations); cleanbib()
+cite_options(citation_format = "pandoc", check.entries=FALSE)
+library(bibtex)
+
+library(scales)
+library(stringr)
+
+library(dplyr)
+library(ggplot2)
+library(nihexporter)
 ```
 
 # Abstract
@@ -29,7 +37,7 @@ The analysis of funding at the National Institutes of Health (NIH) is important 
 
 ## Results
 
-We developed the `nihexporter` R package, which provides access to [NIH EXPORTER](http://exporter.nih.gov/) data. We developed several analysis vignettes that show funding trends across NIH institutes over 15 years, and highlight important differences in how institutes change their funding profiles. The package illustrates exploratory data analysis with the `dplyr` and `ggplot2` R packages Individuals and institutions with their own NIH funding can perform self-study and analysis with respect to other grants.
+We developed the `nihexporter` R package, which provides access to [NIH EXPORTER](http://exporter.nih.gov/) data. We used the package to develop several analysis vignettes that show funding trends across NIH institutes over 15 years and highlight differences in how institutes change their funding profiles. The package illustrates exploratory data analysis with the `dplyr` and `ggplot2` R packages. Individuals and institutions with their own NIH funding can use the package to perform self-study and analysis with respect to other grants.
 
 ## Availability
 
@@ -63,14 +71,39 @@ Jay Hesselberth <jay.hesselberth@gmail.com>
 
 Using the `nihexporter` package, one can easily generate summary plots of the total costs of grants at each institute over time.
 
-```{r example-1, fig.cap='Grant funding per institute over time'}
+For example, we can examine the total costs spent on specific grants and specific institutes over time.
+
+```{r ex1.institute.funds, message = FALSE, warning = FALSE, echo = FALSE}
+select_activities <- c('R01','P01','R21','P30')
+select_inst <- c('GM','CA','AI')
+
+inst_costs <- projects %>%
+  filter(institute %in% select_inst & activity %in% select_activities) %>%
+  select(project.num, institute, activity, fiscal.year, total.cost) %>%
+  group_by(project.num, activity, institute, fiscal.year) %>%
+  summarize(grant.cost = sum(total.cost, na.rm = TRUE))
+
+ggplot(inst_costs, aes(x = factor(fiscal.year),
+                       y = grant.cost, 
+                       fill = activity)) +
+  geom_boxplot(outlier.size = 0.2) + 
+  facet_wrap(~institute) + 
+  scale_y_log10(limits = c(9e4, 1e7),
+                labels = trans_format("log10", math_format(10^.x))) + 
+  annotation_logticks(sides = "l",
+                      scaled = TRUE) +
+  scale_fill_brewer(palette="Dark2") +
+  xlab('') +
+  ylab('Total grant dollars, log-scaled') +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 90))
 ```
 
 ## Funding trends
 
 ## Grant producitivity
 
-When Jeremy Berg was head of the Institute of General Medical Sciences (NIGMS), he routinely provided analysis of funding trends at NIGMS in his "Feedback Loop" blog. One of these measured the productivity per grant dollar by measuring its "scholarly output" (*i.e.*, publications) as a function of direct costs. In this [plot](http://loop.nigms.nih.gov/2010/09/measuring-the-scientific-output-and-impact-of-nigms-grants/) there is an increase in productivity per dollar, until an inflection point at $700K, after which the number of publications *drops*, suggesting a negative influence of grant money on scholarly output. This was interesting and covered [here](http://www.nature.com/news/2010/101116/full/468356a.html).
+When [Jeremy Berg](http://www.nigms.nih.gov/about/director/pages/berg.aspx) was head of the Institute of General Medical Sciences (NIGMS) from 2003-2011, he routinely provided analysis of funding trends at NIGMS in his "Feedback Loop" blog. One of these measured the productivity per grant dollar by measuring its "scholarly output" (*i.e.*, publications) as a function of direct costs. In this [plot](http://loop.nigms.nih.gov/2010/09/measuring-the-scientific-output-and-impact-of-nigms-grants/) there is an increase in productivity per dollar, until an inflection point at $700K, after which the number of publications *drops*, suggesting a negative influence of grant money on scholarly output. This was interesting and covered [here](http://www.nature.com/news/2010/101116/full/468356a.html).
 
 Here we flesh out this analysis and look at under- and over-performing institutes by this measure. In addition, Berg was focused on GM, and here we can easily look at similar measures across the NIH institutes. One caveat is that we only have access to `total.cost` in NIH EXPORTER, so the numbers include indirect costs. But, this is real cost to the tax-payer.
 
@@ -78,13 +111,66 @@ Here are several addition comparisons, suggested by readers of Berg's original [
 
 ### invesigator-intitiated versus RFA-initiated R01
 
-### Comparison of R01, program proects (PXX) and contract projects (UXX)
+### Comparison of grant programs
 
-### Productivity versus grant priority score
+The NIH provides funds through differet [grant programs](http://grants.nih.gov/grants/funding/funding_program.htm):
+
+  * `research`: investigator-intitiated, actvities begin with `R` (e.g., R01)
+  
+  * `program`: activities begin with `P` (e.g. P01)
+  
+  * `contract`: actvities begin with `U` (e.g. U54)
+
+#### Funding distribution 
+
+```{r activity.comparisons, echo = FALSE, warning = FALSE, message = FALSE, fig.cap = 'Comparison of research, program and contract costs over time'}
+
+research_projects <- projects %>% filter(grepl('^R', activity)) %>% select(project.num)
+program_projects <- projects %>% filter(grepl('^P', activity)) %>% select(project.num)
+contract_projects <- projects %>% filter(grepl('^U', activity)) %>% select(project.num)
+
+grant_costs <- projects %>%
+  filter(institute %in% nih.institutes) %>%
+  select(project.num, institute, fiscal.year, total.cost)
+
+research_costs <- grant_costs %>%
+  semi_join(research_projects) %>%
+  group_by(project.num, institute, fiscal.year) %>%
+  summarize(grant.cost = sum(total.cost, na.rm = TRUE)) %>%
+  mutate(type = 'research')
+
+program_costs <- grant_costs %>%
+  semi_join(program_projects) %>%
+  group_by(project.num, institute, fiscal.year) %>%
+  summarize(grant.cost = sum(total.cost, na.rm = TRUE)) %>%
+  mutate(type = 'program')
+
+contract_costs <- grant_costs %>%
+  semi_join(contract_projects) %>%
+  group_by(project.num, institute, fiscal.year) %>%
+  summarize(grant.cost = sum(total.cost, na.rm = TRUE)) %>%
+  mutate(type = 'contract')
+
+combined_tbl = bind_rows(research_costs, program_costs, contract_costs)
+
+ggplot(combined_tbl, aes(x = factor(fiscal.year),
+                         y = grant.cost,
+                         fill = type)) +
+  geom_boxplot(outlier.shape = NA) + 
+  scale_y_log10(limits = c(1e4,1e7)) +
+  facet_wrap(~institute) +
+  scale_fill_brewer(palette = "Dark2") + 
+  xlab('') +
+  ylab('Total grant costs, log-scaled') +
+  theme(axis.text.x = element_text(angle = 90))
+
+```
+
+#### Productivity
 
 ### Intramural versus extramural grants
 
-The [Center for Scientific Review](http://public.csr.nih.gov/Pages/default.aspx) would need to publicly released (anonymized) scores to enable such an analysis.
+The [Center for Scientific Review](http://public.csr.nih.gov/Pages/default.aspx) would need to publicly release (anonymized) scores to enable such an analysis.
 
 # References
 
