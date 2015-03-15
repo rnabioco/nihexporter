@@ -1,8 +1,8 @@
 .Rproj.user
 .tex
-.pdf
-.tex
-.html
+**/.pdf
+**/.tex
+**/.html
 .Rhistory
 .RData
 .zip
