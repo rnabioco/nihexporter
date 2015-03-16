@@ -1,11 +1,13 @@
 .Rproj.user
 .tex
-**/.pdf
-**/.tex
-**/.html
 .Rhistory
 .RData
 .zip
 .csv
 data-raw/
 inst/doc
+
+manuscript/*.pdf
+manuscript/*.docx
+manuscript/*.tex
+manuscript/*.html
