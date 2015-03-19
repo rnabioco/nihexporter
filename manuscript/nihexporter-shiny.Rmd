@@ -1,5 +1,5 @@
 ---
-title: "nihexporter analysis"
+title: "`nihexporter` interactive analysis"
 author: "Jay Hesselberth"
 date: "March 14, 2015"
 output: html_document
@@ -8,47 +8,68 @@ runtime: shiny
 
 ```{r load.libs, echo = FALSE, message = FALSE, warning = FALSE}
 library(dplyr)
+library(scales)
 library(ggplot2)
+library(lubridate)
 library(nihexporter)
 ```
+
 # Funding trends
 
-```{r, echo=FALSE}
+This interactive plot shows total grant costs for selected activities (i.e., grant types) in specific [NIH institutes](http://grants.nih.gov/grants/acronym_list.htm)
+
+```{r funding_trends, echo=FALSE}
+grant_types <- projects %>%
+  select(activity) %>%
+  distinct() %>%
+  sapply(as.character) %>% as.vector
+
+min_fiscal_year <- as.integer(min(projects$fiscal.year))
+max_fiscal_year <- as.integer(max(projects$fiscal.year))
+
 inputPanel(
-  selectInput("n_breaks", label = "Number of bins:",
-              choices = c(10, 20, 35, 50), selected = 20),
-  
-  sliderInput("bw_adjust", label = "Bandwidth adjustment:",
-              min = 0.2, max = 2, value = 1, step = 0.2)
+  selectInput("nih_institutes", label = "Institute:",
+              choices = nih.institutes, selected = c('GM','CA','AI'), 
+              multiple = TRUE),
+  selectInput("activities", label = "Activity:",
+              choices = grant_types, selected = c('R01','P01'),
+              multiple = TRUE),
+  sliderInput("fiscal_years", label = "Fiscal years:",
+              min = min_fiscal_year,
+              max = max_fiscal_year,
+              value = c(2010, 2014),
+              sep = "",
+              step = 1),
+  submitButton("Submit")
 )
 
 renderPlot({
-  hist(faithful$eruptions, probability = TRUE, breaks = as.numeric(input$n_breaks),
-       xlab = "Duration (minutes)", main = "Geyser eruption duration")
   
-  dens <- density(faithful$eruptions, adjust = input$bw_adjust)
-  lines(dens, col = "blue")
+  inst_costs <- projects %>%
+    filter(institute %in% input$nih_institutes &
+           activity %in% input$activities &
+           fiscal.year >= input$fiscal_years[1] &
+             fiscal.year <= input$fiscal_years[2]) %>%
+    select(project.num, institute, activity, fiscal.year, total.cost) %>%
+    group_by(project.num, activity, institute, fiscal.year) %>%
+    summarize(grant.cost = sum(total.cost, na.rm = TRUE))
+  
+  ggplot(inst_costs, aes(x = factor(fiscal.year),
+                         y = grant.cost, 
+                         fill = activity)) +
+    geom_boxplot(outlier.size = 0.2) + 
+    facet_wrap(~ institute) + 
+    scale_y_log10(limits = c(9e4, 1e7),
+                  labels = trans_format("log10", math_format(10^.x))) + 
+    annotation_logticks(sides = "l",
+                        scaled = TRUE) +
+    scale_fill_brewer(palette="Dark2") +
+    xlab('') +
+    ylab('Total grant dollars, log-scaled') +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 90))  
 })
 ```
-
-## Embedded Application
-
-It's also possible to embed an entire Shiny application within an R Markdown document using the `shinyAppDir` function. This example embeds a Shiny application located in another directory:
-
-```{r, echo=FALSE}
-shinyAppDir(
-  system.file("examples/06_tabsets", package="shiny"),
-  options=list(
-    width="100%", height=550
-  )
-)
-```
-
-Note the use of the `height` parameter to determine how much vertical space the embedded application should occupy.
-
-You can also use the `shinyApp` function to define an application inline rather then in an external directory.
-
-In all of R code chunks above the `echo = FALSE` attribute is used. This is to prevent the R code within the chunk from rendering in the document alongside the Shiny components.
 
 
 
