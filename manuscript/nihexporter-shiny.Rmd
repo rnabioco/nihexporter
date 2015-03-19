@@ -1,7 +1,7 @@
 ---
 title: "`nihexporter` interactive analysis"
 author: "Jay Hesselberth"
-date: "March 14, 2015"
+date: "Last update: `r format(Sys.time(), '%d %B, %Y')`"
 output: html_document
 runtime: shiny
 ---
@@ -39,8 +39,7 @@ inputPanel(
               max = max_fiscal_year,
               value = c(2010, 2014),
               sep = "",
-              step = 1),
-  submitButton("Submit")
+              step = 1)
 )
 
 renderPlot({
@@ -67,7 +66,8 @@ renderPlot({
     xlab('') +
     ylab('Total grant dollars, log-scaled') +
     theme_bw() +
-    theme(axis.text.x = element_text(angle = 90))  
+    theme(axis.text.x = element_text(angle = 90),
+          legend.position = 'bottom')
 })
 ```
 
