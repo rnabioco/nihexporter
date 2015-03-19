@@ -1,7 +1,7 @@
 ---
 title: '`nihexporter`: an R package for analyzing NIH funding data'
 author: "Jay R. Hesselberth"
-date: "March 14, 2015"
+date: "Last update: `r format(Sys.time(), '%d %B, %Y')`"
 output:
   html_document:
     fig_caption: yes
@@ -59,7 +59,25 @@ Jay Hesselberth <jay.hesselberth@gmail.com>
 
 # Introduction
 
+The National Institutes of Health (NIH) is the major source federal funds for biomedical research in the United States. Their budget is approved by Congress each year. In fiscal year 2014, the total NIH budget was 30.3 billion dollars (REF). The NIH is divided into 25 institutes, each with its own focus and mission. The National Cancer Institue (NCI) focuses on malignant diseases, the National Institute for Allergy and Immune Disease focuses on the immune system and transmissible disease and the National Institute for General Medical Sciences focuses on basic research without a specific disease focus. Each institute negotiates with the NIH director (currently Francis Collins) for its yearly budget, with some institutes having budgets in the billions (NCI, at XXX) and some institutes in the millions (XXX).
+
+The NIH provides funds in the form of grants, and the funds associated with these grants can be divided into 'direct' and 'indirect' costs. Direct costs are funds that are given to an investigator (or group of investigators) to conduct their proposed research. These funds buy supplies for the experiments and pay the salaries of people to carry out their work.
+
+By contrast, indirect costs are funds that are paid to the institutions associated with investigators, and these funds are used to "keep the lights on". However, the "indirect cost recovery" (ICR) rate of each institution is negotiated on a case-by-case basis with the NIH, and there is a wide range in ICR rates. Some of the highest ICR rates are close to 100%, meaning that for every dollar an investigator receives, the institutions receive an equal amount. Moreover, 
+
+NIH funding is an investment strategy: they give money to ... . Analysis of NIH funding data has been performed internally by the NIH, or by contracted third-parties. Several of these analyses have highlighted funding trends and suggested measures by which the 'return' on the NIH 'investment' might be measured. One of these suggests measuring "productivity" by examining the number of publications produced by grants as a function of the "direct costs" of these grants.
+
 # Methods
+
+We downloaded NIH funding data from the NIH EXPORTER website in comma-separated value (CSV) format and parsed these data into R data files that each contain specific information:
+
+  * `projects`:  XXX
+  * `project.orgs`: XXX
+  * `project.pis`: XXX
+  * `publinks`: XXX
+  * `patents`: XXX
+
+We developed several analyses using the `dplyr`, `ggplot2` and `knitr` packages in the RStudio environment. We also developed interactive analyses using the `shiny` package.
 
 # Results and Discussion
 
