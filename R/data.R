@@ -58,3 +58,13 @@
 #'
 #' @source \url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=0&index=3}
 "patents"
+
+#' project.output 
+#'
+#' Pre-computed numbers of patents and publications associated with each
+#' project 
+#'
+#' @format A data frame with three variables: \code{project.num},
+#'   \code{n.pubs} and \code{n.patents}
+#'
+"project.output"
