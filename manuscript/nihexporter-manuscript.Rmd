@@ -2,6 +2,7 @@
 title: '`nihexporter`: an R package for analyzing NIH funding data'
 author: "Jay R. Hesselberth"
 date: "Last update: `r format(Sys.time(), '%d %B, %Y')`"
+bibliography: bibliography.bib
 output:
   pdf_document:
     fig_caption: yes
@@ -17,13 +18,8 @@ output:
 ---
 
 ```{r init_libs, echo = FALSE, warning = FALSE, message = FALSE}
-library(knitcitations); cleanbib()
-cite_options(citation_format = "pandoc", check.entries=FALSE)
-library(bibtex)
-
 library(scales)
 library(stringr)
-
 library(dplyr)
 library(ggplot2)
 library(nihexporter)
@@ -37,7 +33,7 @@ The National Institutes of Health (NIH) is the major source of federal funding f
 
 ## Results
 
-We developed the `nihexporter` R package, which provides access to [NIH EXPORTER](http://exporter.nih.gov/) data. We used the package to develop several analysis vignettes that show funding trends across NIH institutes over 15 years and highlight differences in how institutes change their funding profiles. The package illustrates exploratory data analysis with the `dplyr` and `ggplot2` R packages. Investigators and institutions can use the package design to perform self-studies of their own NIH funding.
+We developed the `nihexporter` R package, which provides access to [NIH EXPORTER](http://exporter.nih.gov/) data. We used the package to develop several analysis vignettes that show funding trends across NIH institutes over 15 years and highlight differences in how institutes change their funding profiles. Investigators and institutions can use the package design to perform self-studies of their own NIH funding.
 
 ## Availability
 
@@ -78,6 +74,11 @@ We downloaded NIH funding data from the NIH EXPORTER website in comma-separated 
   * `publinks`: XXX
   * `patents`: XXX
 
+We also provide several precomputed variables and tables that enable quick and easy exploratory analysis:
+
+  * `nih.institutes`: Two-letter format for 27 NIH institutes
+  * `project.output`: The numbers of publications and patents associated with each project in an SQLite database, indexed by     `project.num`
+  
 We developed several analyses using the `dplyr`, `ggplot2` and `knitr` packages in the RStudio environment. We also developed interactive analyses using the `shiny` package.
 
 # Results and Discussion
@@ -252,7 +253,3 @@ productivity_with_counts %>%
 The [Center for Scientific Review](http://public.csr.nih.gov/Pages/default.aspx) would need to publicly release (anonymized) scores to enable such an analysis.
 
 # References
-
-```{r references, warning=FALSE, message=FALSE, echo=FALSE} 
-  # write.bibtex(file="references.bib")
-```

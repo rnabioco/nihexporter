@@ -53,12 +53,11 @@ renderPlot({
            activity %in% input$activities &
            fiscal.year >= input$fiscal_years[1] &
            fiscal.year <= input$fiscal_years[2]) %>%
-    select(project.num, institute, activity, fiscal.year, total.cost) %>%
-    group_by(project.num, activity, institute, fiscal.year) %>%
-    summarize(grant.cost = sum(total.cost, na.rm = TRUE))
+    select(project.num, institute, activity, fiscal.year) %>%
+    left_join(project_info)
   
   ggplot(inst_costs, aes(x = factor(fiscal.year),
-                         y = grant.cost, 
+                         y = project.cost, 
                          fill = activity)) +
     geom_boxplot(outlier.size = 0.2) + 
     facet_wrap(~ institute) + 
@@ -82,52 +81,37 @@ This interactive plot compares the number of publications to the total (indirect
 
 ```{r productivity, echo = FALSE, warning = FALSE, message = FALSE}
 
-grant_pubs <- projects %>%
-  select(project.num) %>%
-  distinct() %>%
-  left_join(publinks) %>%
-  group_by(project.num) %>%
-  summarise(n.pubs = n())
- 
 inputPanel(
   selectInput("nih_institutes", label = "Institute:",
-              choices = nih.institutes, selected = c('GM','CA','AI'), 
+              choices = nih.institutes, selected = c('GM'), 
               multiple = TRUE),
   selectInput("activity", label = "Activity:",
               choices = grant_types, selected = c('R01'))
 )
 
 renderPlot({
-  
-  # calculate costs of all grants, over the entire lifetime of the grant
-  select_grant_costs <- projects %>%
+
+  select_projects <- projects %>%
     filter(institute %in% input$nih_institutes &
            activity == input$activity) %>%
-    select(project.num, activity, institute, total.cost) %>%
-    group_by(project.num, activity, institute) %>%
-    summarise(grant.cost = sum(total.cost, na.rm = TRUE))
+    select(project.num, activity, institute) %>%
+    left_join(project.output)
  
-  min.grant.cost <- round(min(select_grant_costs$grant.cost), -4) # round to 10,000s
-  max.grant.cost <- round(max(select_grant_costs$grant.cost), -5) 
+  min.grant.cost <- round(min(select_projects$project.cost), -4) # round to 10,000s
+  max.grant.cost <- round(max(select_projects$project.cost), -5) 
   # step is average size of an award
-  if (max.grant.cost < 1e6) {
-    step <- 1e5
-  } else {
-    step <- 1e6
-  }
+  step <- 1e6
 
   breaks <- seq(min.grant.cost, max.grant.cost, step)
+  breaks
 
-  bin_grant_costs <- select_grant_costs %>%
+  bin_costs <- select_projects %>%
     group_by(institute) %>%
-    mutate(dollar.tile = findInterval(grant.cost, vec = breaks, 
+    mutate(dollar.tile = findInterval(project.cost, vec = breaks, 
                                       all.inside = TRUE, rightmost.closed = TRUE))
 
-  productivity <- bin_grant_costs %>%
-    left_join(grant_pubs)
-
-  ggplot(productivity, aes(x = factor(dollar.tile),
-                           y = n.pubs)) +
+  ggplot(bin_costs, aes(x = factor(dollar.tile),
+                         y = n.pubs)) +
     geom_boxplot(outlier.shape = NA) +
     scale_x_discrete(labels = round(breaks / 1e6, 0)) + 
     scale_y_log10() +
