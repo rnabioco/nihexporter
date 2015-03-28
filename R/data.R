@@ -12,13 +12,13 @@
 #' \item{\code{project.start}}{in ymd format}
 #' \item{\code{project.end}}{in ymd format}
 #' \item{\code{study.section}}{3 letter code}
-#" \item{\code{total.cost}}{total (direct + indirect) for fiscal year}
+#' \item{\code{total.cost}}{total (direct + indirect) for fiscal year}
 #' } 
 #'
 #' @source \url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=4&index=0}
 "projects"
 
-#' project.pis
+#' project_pis
 #'
 #' @format A data frame with 2 variables: \code{project.num} and \code{pi.id}
 #'
@@ -27,7 +27,7 @@
 #' 
 #' @source \url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=4&index=0}
 #'
-"project.pis"
+"project_pis"
 
 #' project.orgs
 #'
@@ -39,7 +39,7 @@
 #' 
 #' @source \url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=4&index=0}
 #'
-"project.orgs"
+"project_orgs"
 
 #' publinks
 #'
@@ -59,12 +59,12 @@
 #' @source \url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=0&index=3}
 "patents"
 
-#' project.output 
+#' project_output 
 #'
-#' Pre-computed numbers of patents and publications associated with each
+#' Pre-computed project.cost, number of patents and publications associated with each
 #' project 
 #'
 #' @format A data frame with three variables: \code{project.num},
-#'   \code{n.pubs} and \code{n.patents}
+#'   \code{n.pubs}, \code{n.patents} and \code{project.cost}
 #'
-"project.output"
+"project_output"

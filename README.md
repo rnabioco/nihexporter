@@ -11,13 +11,15 @@ The package contains the following tables:
 
 -   `projects`: provides data on funded projects by NIH.
 
--   `project.pis`: links project numbers (`project.num`) to PI ID (`pi.id`), which can used in NIH REPORTER searches
+-   `project_pis`: links project numbers (`project.num`) to PI ID (`pi.id`), which can used in NIH REPORTER searches
 
--   `project.orgs`: links DUNS numbers (`org.duns`) from `projects` table to information on specific organizations
+-   `project_orgs`: links DUNS numbers (`org.duns`) from `projects` table to information on specific organizations
 
 -   `publinks`: links Pubmed IDs (`pmid`) to project numbers (`project.num`)
 
 -   `patents`: links project IDs (`project.num`) to `patent.id`
+
+-   `project_output`: pre-computed `n.pubs`, `n.patents` and `project.cost`
 
 There are also a few helper variables that make exploratory analysis a bit easier:
 
@@ -44,6 +46,7 @@ Examples
 library(dplyr)
 library(knitr)
 library(ggplot2)
+#> Warning: package 'ggplot2' was built under R version 3.1.3
 library(nihexporter)
 ```
 
@@ -93,7 +96,7 @@ grant.costs %>%
   ggtitle('Total cost of R01 grants from 2000-2014')
 ```
 
-![](README-plot.grant.costs-1.png)
+![](README-plot_grant_costs-1.png)
 
 Vignettes
 ---------

@@ -27,15 +27,15 @@ names(projects.tbl) <- names(projects.tbl) %>%
   str_replace_all('_','.')
 
 # org table - link on org.duns
-project.orgs <- projects.tbl %>%
+project_orgs <- projects.tbl %>%
   select(org.city, org.state, org.duns, org.name) %>%
   filter(org.duns != '') %>%
   distinct() %>%
   arrange(org.duns)
-save(project.orgs, file = 'data/project.orgs.rdata', compress = 'xz')
+save(project_orgs, file = 'data/project_orgs.rdata', compress = 'xz')
 
-# project.pis table
-project.pis <- projects.tbl %>%
+# project_pis table
+project_pis <- projects.tbl %>%
   select(core.project.num, pi.ids) %>%
   rename(project.num = core.project.num) %>%
   separate(pi.ids, into = c(1:20), sep = ';', extra = 'drop') %>%
@@ -44,7 +44,7 @@ project.pis <- projects.tbl %>%
   filter(pi.id != '') %>%
   select(project.num, pi.id) %>%
   arrange(project.num)
-save(project.pis, file = 'data/project.pis.rdata', compress = 'xz')
+save(project_pis, file = 'data/project_pis.rdata', compress = 'xz')
 
 # projects table - only provide data after fy 2000 as costs are only available 2000 and onward.
 projects <- projects.tbl %>%

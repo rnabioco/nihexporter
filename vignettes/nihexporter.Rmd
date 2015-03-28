@@ -17,9 +17,9 @@ The `nihexporter` package provides the following tables of data:
 
 * `projects`: information about funded projects
 
-* `project.pis`: PI information (look these up in NIH REPORTER) for each `project.num`
+* `project_pis`: PI information (look these up in NIH REPORTER) for each `project.num`
 
-* `project.orgs`: links DUNS numbers (`org.duns`) from `projects` table to information on specific organizations 
+* `project_orgs`: links DUNS numbers (`org.duns`) from `projects` table to information on specific organizations 
 
 * `publinks`: links grants (`project.num`) to PUBMED IDs (`pmid`).
 
@@ -29,13 +29,15 @@ There are also a few helper variables that make exploratory analysis a bit easie
 
 * `nih.institutes`: 27 NIH institutes in two-letter format 
 
+* `project_output`: pre-computed values for `n.pubs`, `n.patents` and `project.cost`
+
 The `nihexporter` package is avavilable on [github](https://github.com/jayhesselberth/nihexporter).
 
 # Examples
 
 Many of the examples generate project numbers that you can use to look up project specifics in [NIH REPORTER](http://projectreporter.nih.gov/reporter.cfm). We use the amazing `dplyr`, `ggplot2` and `knitr` packages to manipulate and plot the data.
 
-```{r load.libs, message=FALSE, echo=FALSE}
+```{r load_libs, message=FALSE, echo=FALSE}
 library(dplyr)
 library(ggplot2)
 library(knitr)
@@ -50,7 +52,7 @@ values.
 
 Let's look at spending over time for NIGMS in years that have such data:
 
-```{r inst.cost.over.time, message=FALSE, fig.cap = 'Spending at NIGMS'}
+```{r inst_cost_over_time, message=FALSE, fig.cap = 'Spending at NIGMS'}
 cost.over.time <- projects %>%
   select(institute, total.cost, fiscal.year) %>%
   filter(institute == 'GM') %>%
@@ -65,7 +67,7 @@ cost.over.time %>%
 
 Let's look at WHERE the money is going. This example illustrates linking of the `project` and `project.orgs` tables via the `org.duns` column.
 
-```{r money.per.institution, message = FALSE, warning = FALSE}
+```{r money_per_institution, message = FALSE, warning = FALSE}
 money.per.institution <- projects %>%
   filter(org.duns != '' & activity == 'R01') %>%
   select(org.duns, fiscal.year, total.cost) %>%
@@ -73,7 +75,7 @@ money.per.institution <- projects %>%
   summarise(total.award.billions = sum(total.cost, na.rm = TRUE) / 1e9) %>%
   ungroup() %>%
   arrange(desc(total.award.billions)) %>%
-  left_join(project.orgs) %>%
+  left_join(project_orgs) %>%
   select(fiscal.year, org.name, total.award.billions)
 
 money.per.institution %>%
@@ -82,7 +84,7 @@ money.per.institution %>%
 
 And WHO are the big winners? Look these PIs up in NIH REPORTER ...
 
-```{r money.per.pi, message = FALSE}
+```{r money_per_pi, message = FALSE}
 
 money.per.pi <- projects %>%
   filter(activity == 'R01') %>%
@@ -91,7 +93,7 @@ money.per.pi <- projects %>%
   summarise(total.award.millions = sum(total.cost, na.rm = TRUE) / 1e6) %>%
   ungroup() %>%
   arrange(desc(total.award.millions)) %>%
-  left_join(project.pis) %>%
+  left_join(project_pis) %>%
   filter(pi.id != '') %>%
   group_by(pi.id) %>%
   summarise(pi.millionaire = sum(total.award.millions)) %>%
@@ -111,7 +113,7 @@ Much has been made of the wasteful spending outside of
 investigator-initiated research. Here we can see that this is not always
 the case.
 
-```{r high.perf.no.r01, message=FALSE, warning = FALSE}
+```{r highperf_no_r01, message=FALSE, warning = FALSE}
 high.perf.not.r01 <- projects %>%
   filter(activity != 'R01') %>%
   group_by(project.num) %>%
@@ -132,7 +134,7 @@ high.perf.not.r01 %>%
 
 The highest performer has `r high.perf.not.r01 %>% head(1) %>% select(n.pubs)` publications at a cost of `r high.perf.not.r01 %>% head(1) %>% select(cost.per.pub)` dollars per publication. Here are the Pubmed IDS of some of those publications:
 
-```{r cheap.pubs, echo=FALSE, message=FALSE, wanrning = FALSE}
+```{r cheap_pubs, echo=FALSE, message=FALSE, wanrning = FALSE}
 high.perf.not.r01 %>%
   head(1) %>%
   select(project.num) %>%
@@ -143,7 +145,7 @@ high.perf.not.r01 %>%
 
 Here we quantitate the return on R01 investment and identify the most expensive publications, in grant dollars. One might argue that grants with higher `cost.per.pub` are less good investments.
 
-```{r costly.pubs.r01, message=FALSE}
+```{r costly_pubs_r01, message=FALSE}
 costly.pubs.r01 <- projects %>%
   filter(activity == 'R01') %>%
   group_by(project.num) %>%
@@ -166,7 +168,7 @@ costly.pubs.r01 %>%
 I am always impressed at how long people keep their grants. Let's identify
 the longest running R01 projects. This leverages date manipulation with `lubridate`.
 
-```{r grant.stamina, message=FALSE}
+```{r grant_stamina, message=FALSE}
 long.grants <- projects %>%
   filter(activity == 'R01') %>%
   select(project.num, project.start, project.end) %>%

@@ -15,6 +15,7 @@
 \item{\code{project.start}}{in ymd format}
 \item{\code{project.end}}{in ymd format}
 \item{\code{study.section}}{3 letter code}
+\item{\code{total.cost}}{total (direct + indirect) for fiscal year}
 }}
 \source{
 \url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=4&index=0}

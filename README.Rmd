@@ -26,13 +26,15 @@ The package contains the following tables:
 
 * `projects`: provides data on funded projects by NIH.
 
-* `project.pis`: links project numbers (`project.num`) to PI ID (`pi.id`), which can used in NIH REPORTER searches
+* `project_pis`: links project numbers (`project.num`) to PI ID (`pi.id`), which can used in NIH REPORTER searches
 
-* `project.orgs`: links DUNS numbers (`org.duns`) from `projects` table to information on specific organizations 
+* `project_orgs`: links DUNS numbers (`org.duns`) from `projects` table to information on specific organizations 
 
 * `publinks`: links Pubmed IDs (`pmid`) to project numbers (`project.num`)
 
 * `patents`: links project IDs (`project.num`) to `patent.id`
+
+* `project_output`: pre-computed `n.pubs`, `n.patents` and `project.cost`
 
 There are also a few helper variables that make exploratory analysis a bit easier:
 
@@ -57,7 +59,7 @@ devtools::install_github("jayhesselberth/nihexporter")
 
 ## Examples
 
-```{r, load.libs, message=FALSE}
+```{r, load_libs, message=FALSE}
 library(dplyr)
 library(knitr)
 library(ggplot2)
@@ -66,7 +68,7 @@ library(nihexporter)
 
 List the all-time most expensive grants from each institute:
 
-```{r expensive.projects}
+```{r expensive_projects}
 expensive.projects <- projects %>%
   select(project.num, institute, total.cost, project.start, project.end) %>%
   group_by(project.num, institute) %>%
@@ -84,7 +86,7 @@ head(expensive.projects)
 
 Let's look at the amounts spent on R01 grants at each NIH institute. Note this filters for NIH institutes.
 
-```{r plot.grant.costs, message = FALSE, warning = FALSE}
+```{r plot_grant_costs, message = FALSE, warning = FALSE}
 grant.costs <- projects %>% 
   filter(institute %in% nih.institutes) %>%
   filter(activity == 'R01' & total.cost > 0) %>%

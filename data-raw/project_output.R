@@ -1,8 +1,9 @@
-# make the `project.output` table
+# make the `project_output` table
 
 library(dplyr)
 
 project_costs <- projects %>%
+  filter(institute %in% nih.institutes) %>%
   select(project.num, total.cost) %>%
   group_by(project.num) %>%
   summarize(project.cost = sum(total.cost, na.rm = TRUE))
@@ -17,9 +18,9 @@ patent_output <- project_costs %>%
   group_by(project.num) %>%
   summarize(n.patents = n())
 
-project.output <- pub_prod %>%
-  inner_join(patent_prod) %>%
+project_output <- pub_output %>%
+  inner_join(patent_output) %>%
   filter(project.num != '') %>%
   arrange(project.num)
 
-save(project.output, file = "data/project_output.rdata", compress = "xz")
+save(project_output, file = "data/project_output.rdata", compress = "xz")
