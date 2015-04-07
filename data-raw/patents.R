@@ -1,15 +1,14 @@
 library(dplyr)
 library(stringr)
 library(tidyr)
-library(lubridate)
-library(data.table)
+library(readr)
 
 # PUBLINKS tables
 path = 'data-raw//PATENTS'
 csvfiles <- dir(path, pattern = '\\.csv', full.names = TRUE)
-tables <- lapply(csvfiles, read.csv, header = TRUE)
+tables <- lapply(csvfiles, read_csv, header = TRUE)
 
-patents <- rbindlist(tables)
+patents <- rbind_all(tables)
 patents.tbl <- tbl_df(patents)
 
 names(patents.tbl) <- names(patents.tbl) %>%

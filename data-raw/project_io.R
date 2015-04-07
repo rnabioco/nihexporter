@@ -1,4 +1,4 @@
-# make the `project_output` table
+# make the `project_io` table
 
 library(dplyr)
 
@@ -18,9 +18,9 @@ patent_output <- project_costs %>%
   group_by(project.num) %>%
   summarize(n.patents = n())
 
-project_output <- pub_output %>%
+project_io <- pub_output %>%
   inner_join(patent_output) %>%
   filter(project.num != '') %>%
   arrange(project.num)
 
-save(project_output, file = "data/project_output.rdata", compress = "xz")
+save(project_io, file = "data/project_io.rdata", compress = "xz")

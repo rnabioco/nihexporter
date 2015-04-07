@@ -1,16 +1,14 @@
 
 library(dplyr)
 library(stringr)
-library(tidyr)
-library(lubridate)
-library(data.table)
+library(readr)
 
 # PUBLINKS tables
 path = 'data-raw//PUBLINKS'
 csvfiles <- dir(path, pattern = '\\.csv', full.names = TRUE)
-tables <- lapply(csvfiles, read.csv, header = TRUE)
+tables <- lapply(csvfiles, read_csv, header = TRUE)
 
-publinks <- rbindlist(tables)
+publinks <- rbind_all(tables)
 publinks.tbl <- tbl_df(publinks)
 
 names(publinks.tbl) <- names(publinks.tbl) %>%

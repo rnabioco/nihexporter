@@ -1,4 +1,4 @@
-# tidy_projects
+# projects table
 # 
 # loads CSV files from NIH EXPORTER into tbl_df format
 #
@@ -6,19 +6,18 @@ library(dplyr)
 library(stringr)
 library(tidyr)
 library(lubridate)
-library(data.table)
-library(pbapply)
+library(readr)
 
 ## PROJECTS tables
 
 # load projects data
 path = 'data-raw//PROJECTS'
 csvfiles <- dir(path, pattern = '\\.csv', full.names = TRUE)
-# csvfiles <- tail(dir(path, pattern = '\\.csv', full.names = TRUE), 1)
 
-tables <- pblapply(csvfiles, read.csv, header = TRUE)
+# Need to specify chr for ORG_ZIPCODE
+tables <- lapply(csvfiles, read_csv)
 
-projects.tbl <- rbindlist(tables, fill = TRUE)
+projects.tbl <- rbind_all(tables)
 projects.tbl <- tbl_df(projects.tbl)
 
 # coerce colnames
