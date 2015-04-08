@@ -1,20 +1,20 @@
 ---
 title: '`nihexporter`: an R package for analyzing NIH funding data'
 author: "Jay R. Hesselberth"
-date: "Last update: `r format(Sys.time(), '%d %B, %Y')`"
-bibliography: bibliography.bib
+date: 'Last update: `r format(Sys.time(), "%d %B, %Y")`'
 output:
-  pdf_document:
-    fig_caption: yes
-    keep_tex: yes
-    number_sections: yes
   html_document:
     fig_caption: yes
     force_captions: yes
     highlight: pygments
     number_sections: yes
     toc: yes
+  pdf_document:
+    fig_caption: yes
+    keep_tex: yes
+    number_sections: yes
   word_document: default
+bibliography: bibliography.bib
 ---
 
 ```{r init_libs, echo = FALSE, warning = FALSE, message = FALSE}
@@ -69,15 +69,15 @@ NIH funding is an investment strategy: the institutes invest money in specific r
 We downloaded NIH funding data from the NIH EXPORTER website in comma-separated value (CSV) format and parsed these data into R data files that each contain specific information:
 
   * `projects`:  XXX
-  * `project.orgs`: XXX
-  * `project.pis`: XXX
+  * `project_orgs`: XXX
+  * `project_pis`: XXX
   * `publinks`: XXX
   * `patents`: XXX
 
 We also provide several precomputed variables and tables that enable quick and easy exploratory analysis:
 
   * `nih.institutes`: Two-letter format for 27 NIH institutes
-  * `project.output`: The numbers of publications and patents associated with each project in an SQLite database, indexed by     `project.num`
+  * `project_output`: This table contains pre-computed values for overall proeject cost (`project.cost`), as well as the number of publications (`n.pubs`) and patents (`n.patents`).
   
 We developed several analyses using the `dplyr`, `ggplot2` and `knitr` packages in the RStudio environment. We also developed interactive analyses using the `shiny` package.
 
@@ -192,7 +192,7 @@ ggplot(combined_tbl, aes(x = factor(fiscal.year),
 
 First we calculate the total cost of each R01 grant.
 
-```{r grant.costs, message = FALSE}
+```{r grant_costs, message = FALSE}
 # calculate costs of all grants, over the entire lifetime of the grant
 grant_costs <- projects %>%
   filter(institute %in% nih.institutes & activity == 'R01') %>%
@@ -206,7 +206,7 @@ grant_costs
 
 Now we need to measure grant productivity. We'll get the total number of publications in the PUBLINKS table associated with each `project.num` ...
 
-```{r grant.pubs, message = FALSE, warning=FALSE}
+```{r grant_pubs, message = FALSE, warning=FALSE}
 grant_pubs <- grant_costs %>%
   select(project.num) %>%
   left_join(publinks) %>%
@@ -217,7 +217,7 @@ grant_pubs
 ```
 
 ```
-{r plot.dollar.bins, warning = FALSE, message = FALSE, fig.width=7, fig.height=7}
+{r plot_dollar_bins, warning = FALSE, message = FALSE, fig.width=7, fig.height=7}
 dollar_grant_pubs <- dollar_bin_grant_costs %>%
   select(project.num) %>%
   left_join(publinks) %>%
@@ -234,7 +234,6 @@ tile.counts <- dollar_grant_productivity %>%
 productivity_with_counts <- dollar_grant_productivity %>%
   left_join(tile.counts)
 
-library(scales)
 productivity_with_counts %>%
   # need to remove higher tiles because there are too few grants
   filter(dollar.tile <= 13) %>%
