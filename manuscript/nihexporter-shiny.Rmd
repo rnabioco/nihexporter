@@ -6,10 +6,10 @@ output: html_document
 runtime: shiny
 ---
 
-```{r load.libs, echo = FALSE, message = FALSE, warning = FALSE}
+```{r load_libs, echo = FALSE, message = FALSE, warning = FALSE}
 library(dplyr)
 library(scales)
-library(ggplot2)
+library(ggvis)
 library(lubridate)
 library(nihexporter)
 ```
@@ -33,8 +33,7 @@ max_fiscal_year <- as.integer(max(projects$fiscal.year))
 
 inputPanel(
   selectInput("nih_institutes", label = "Institute:",
-              choices = nih.institutes, selected = c('GM','CA','AI'), 
-              multiple = TRUE),
+              choices = nih.institutes, selected = c('GM')), 
   selectInput("activities", label = "Activity:",
               choices = grant_types, selected = c('R01','P01'),
               multiple = TRUE),
@@ -54,24 +53,12 @@ renderPlot({
            fiscal.year >= input$fiscal_years[1] &
            fiscal.year <= input$fiscal_years[2]) %>%
     select(project.num, institute, activity, fiscal.year) %>%
-    left_join(project_info)
+    left_join(project_output)
   
-  ggplot(inst_costs, aes(x = factor(fiscal.year),
-                         y = project.cost, 
-                         fill = activity)) +
-    geom_boxplot(outlier.size = 0.2) + 
-    facet_wrap(~ institute) + 
-    scale_y_log10(limits = c(9e4, 1e7),
-                  labels = trans_format("log10", math_format(10^.x))) + 
-    annotation_logticks(sides = "l",
-                        scaled = TRUE) +
-    scale_fill_brewer(palette="Dark2") +
-    xlab('') +
-    ylab('Total grant dollars, log-scaled') +
-    theme_bw() +
-    theme(axis.text.x = element_text(angle = 90),
-          legend.position = 'bottom')
+  inst_costs
   
+  ggvis(inst_costs, x = ~fiscal.year, y = ~project.cost) %>%
+    layer_boxplots()
 })
 ```
 
@@ -95,7 +82,6 @@ renderPlot({
     filter(institute %in% input$nih_institutes &
            activity == input$activity) %>%
     select(project.num, activity, institute) %>%
-    left_join(project.output)
  
   min.grant.cost <- round(min(select_projects$project.cost), -4) # round to 10,000s
   max.grant.cost <- round(max(select_projects$project.cost), -5) 
