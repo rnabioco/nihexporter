@@ -1,4 +1,12 @@
-# nihexporter, verseion 0.6 (unreleased)
+# nihexporter, verseion 0.7 (unreleased)
+
+# nihexporter, verseion 0.6
+
+## Major
+
+- renamed `project_output` to `project_io`
+
+- added `publications` table 
 
 # nihexporter, version 0.5
 

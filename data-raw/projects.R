@@ -14,8 +14,8 @@ library(readr)
 path = 'data-raw//PROJECTS'
 csvfiles <- dir(path, pattern = '\\.csv', full.names = TRUE)
 
-# Need to specify chr for ORG_ZIPCODE
-tables <- lapply(csvfiles, read_csv)
+col_types <- '_ccic____ccc_ic__c___c_c_c_i_ccc____c_c_ii'
+tables <- lapply(csvfiles, function(x) read_csv(x, col_types = col_types))
 
 projects.tbl <- rbind_all(tables)
 projects.tbl <- tbl_df(projects.tbl)
