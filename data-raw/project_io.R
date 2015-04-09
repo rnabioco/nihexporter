@@ -20,6 +20,7 @@ patent_output <- project_costs %>%
 
 project_io <- pub_output %>%
   inner_join(patent_output) %>%
+  left_join(project_costs) %>%
   filter(project.num != '') %>%
   arrange(project.num)
 

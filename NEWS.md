@@ -1,5 +1,11 @@
 # nihexporter, verseion 0.7 (unreleased)
 
+# nihexporter, verseion 0.6.1
+
+## Minor
+
+- added missing `project.cost` to `project.io` table 
+
 # nihexporter, verseion 0.6
 
 ## Major

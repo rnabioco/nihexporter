@@ -34,7 +34,7 @@ The package contains the following tables:
 
 * `patents`: links project IDs (`project.num`) to `patent.id`
 
-* `project_output`: pre-computed `n.pubs`, `n.patents` and `project.cost`
+* `project_io`: pre-computed `n.pubs`, `n.patents` and `project.cost`
 
 There are also a few helper variables that make exploratory analysis a bit easier:
 

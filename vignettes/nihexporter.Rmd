@@ -29,7 +29,7 @@ There are also a few helper variables that make exploratory analysis a bit easie
 
 * `nih.institutes`: 27 NIH institutes in two-letter format 
 
-* `project_output`: pre-computed values for `n.pubs`, `n.patents` and `project.cost`
+* `project_io`: pre-computed values for `n.pubs`, `n.patents` and `project.cost`
 
 The `nihexporter` package is avavilable on [github](https://github.com/jayhesselberth/nihexporter).
 
