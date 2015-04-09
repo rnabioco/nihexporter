@@ -50,6 +50,16 @@
 #' @source \url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=0&index=4}
 "publinks"
 
+#' publications
+#'
+#' Information about specific publications
+#'
+#' @format A data frame with two variables: \code{pmid}, \code{pmc.id},
+#'  \code{journal.title.abbr}, \code{pub.year}
+#'
+#' @source \url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=0&index=4}
+"publications"
+
 #' patents
 #'
 #' Links patent IDs to Project IDs. 
@@ -59,12 +69,13 @@
 #' @source \url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=0&index=3}
 "patents"
 
-#' project_output 
+#' project_io
 #'
 #' Pre-computed project.cost, number of patents and publications associated with each
 #' project 
 #'
-#' @format A data frame with three variables: \code{project.num},
+#' @format A data frame with four variables: \code{project.num},
 #'   \code{n.pubs}, \code{n.patents} and \code{project.cost}
 #'
-"project_output"
+#' @source pre-computed from \code{projects} table
+"project_io"
