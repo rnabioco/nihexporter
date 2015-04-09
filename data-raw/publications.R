@@ -1,4 +1,4 @@
-### `publications` and `authors` table - currently not implemented
+### `publications` and `authors` table
 
 library(dplyr)
 library(stringr)
