@@ -9,6 +9,7 @@ Suggests: dplyr,
           ggplot2,
           knitr,
           stringr,
+          scales,
           readr
 License: CC0
 LazyData: true
