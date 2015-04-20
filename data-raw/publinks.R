@@ -6,7 +6,7 @@ library(readr)
 # PUBLINKS tables
 path = 'data-raw//PUBLINKS'
 csvfiles <- dir(path, pattern = '\\.csv', full.names = TRUE)
-tables <- lapply(csvfiles, read_csv, header = TRUE)
+tables <- lapply(csvfiles, read_csv)
 
 publinks <- rbind_all(tables)
 publinks.tbl <- tbl_df(publinks)
