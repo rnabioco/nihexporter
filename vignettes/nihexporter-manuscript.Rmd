@@ -14,10 +14,15 @@ output:
     keep_tex: yes
     number_sections: yes
   word_document: default
-bibliography: bibliography.bib
+# bibliography: bibliography.bib
 ---
 
-```{r init_libs, echo = FALSE, warning = FALSE, message = FALSE}
+```{r echo = FALSE, warning = FALSE, message = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+)
+
 library(scales)
 library(stringr)
 library(dplyr)
@@ -77,7 +82,7 @@ We downloaded NIH funding data from the NIH EXPORTER website in comma-separated 
 We also provide several precomputed variables and tables that enable quick and easy exploratory analysis:
 
   * `nih.institutes`: Two-letter format for 27 NIH institutes
-  * `project_output`: This table contains pre-computed values for overall proeject cost (`project.cost`), as well as the number of publications (`n.pubs`) and patents (`n.patents`).
+  * `project_io`: This table contains pre-computed values for overall proeject cost (`project.cost`), as well as the number of publications (`n.pubs`) and patents (`n.patents`).
   
 We developed several analyses using the `dplyr`, `ggplot2` and `knitr` packages in the RStudio environment. We also developed interactive analyses using the `shiny` package.
 
@@ -85,7 +90,7 @@ We developed several analyses using the `dplyr`, `ggplot2` and `knitr` packages 
 
 ## Package data
 
-  * Total costs: NIH EXPORTER provides access to the total costs of each grant in each fiscal year; it does not report direct and indirect costs. Indirect costs can be retrieved from other sources [], but are provided by the package only for reference purposes. Calculations that attempt to normalize by indirect costs should be interpreted with appropriate care.
+* Total costs: NIH EXPORTER provides access to the total costs of each grant in each fiscal year; it does not report direct and indirect costs. Indirect costs can be retrieved from other sources [], but are provided by the package only for reference purposes. Calculations that attempt to normalize by indirect costs should be interpreted with appropriate care.
 
 ## Examples
 
@@ -101,10 +106,10 @@ inst_costs <- projects %>%
   filter(institute %in% select_inst & activity %in% select_activities) %>%
   select(project.num, institute, activity, fiscal.year, total.cost) %>%
   group_by(project.num, activity, institute, fiscal.year) %>%
-  summarize(grant.cost = sum(total.cost, na.rm = TRUE))
+  summarize(fy.cost = sum(total.cost, na.rm = TRUE))
 
 ggplot(inst_costs, aes(x = factor(fiscal.year),
-                       y = grant.cost, 
+                       y = fy.cost, 
                        fill = activity)) +
   geom_boxplot(outlier.size = 0.2) + 
   facet_wrap(~ institute) + 
@@ -172,7 +177,7 @@ contract_costs <- grant_costs %>%
   summarize(grant.cost = sum(total.cost, na.rm = TRUE)) %>%
   mutate(type = 'contract')
 
-combined_tbl = bind_rows(research_costs, program_costs, contract_costs)
+combined_tbl <- bind_rows(research_costs, program_costs, contract_costs)
 
 ggplot(combined_tbl, aes(x = factor(fiscal.year),
                          y = grant.cost,
@@ -192,41 +197,20 @@ ggplot(combined_tbl, aes(x = factor(fiscal.year),
 
 First we calculate the total cost of each R01 grant.
 
-```{r grant_costs, message = FALSE}
-# calculate costs of all grants, over the entire lifetime of the grant
-grant_costs <- projects %>%
+```{r project_productivity, message = FALSE}
+project_costs <- projects %>%
   filter(institute %in% nih.institutes & activity == 'R01') %>%
-  select(project.num, institute, total.cost) %>%
-  group_by(project.num, institute) %>%
-  summarise(grant.cost = sum(total.cost, na.rm = TRUE)) %>%
-  filter(grant.cost > 1e4)
+  select(project.num, institute) %>%
+  left_join(project_io) %>%
+  filter(project.cost > 1e4)
 
-grant_costs
+project_costs
 ```
 
-Now we need to measure grant productivity. We'll get the total number of publications in the PUBLINKS table associated with each `project.num` ...
-
-```{r grant_pubs, message = FALSE, warning=FALSE}
-grant_pubs <- grant_costs %>%
-  select(project.num) %>%
-  left_join(publinks) %>%
-  group_by(project.num) %>%
-  summarise(n.pubs = n())
-
-grant_pubs
-```
+Now we need to measure grant productivity. Cross-referencing these grants with the `project_io` returns the `project.cost`, `n.pubs` and `n.patents`.
 
 ```
 {r plot_dollar_bins, warning = FALSE, message = FALSE, fig.width=7, fig.height=7}
-dollar_grant_pubs <- dollar_bin_grant_costs %>%
-  select(project.num) %>%
-  left_join(publinks) %>%
-  group_by(project.num) %>%
-  summarise(n.pubs = n())
-
-dollar_grant_productivity <- dollar_bin_grant_costs %>%
-  left_join(dollar_grant_pubs)
-
 tile.counts <- dollar_grant_productivity %>%
   group_by(institute, dollar.tile) %>%
   summarize(tile.counts = n())
