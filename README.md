@@ -19,7 +19,7 @@ The package contains the following tables:
 
 -   `patents`: links project IDs (`project.num`) to `patent.id`
 
--   `project_io`: pre-computed `n.pubs`, `n.patents` and `project.cost`
+-   `project_io`: pre-computed `n.pubs`, `n.patents` and `project.cost` for each `project.num`
 
 There are also a few helper variables that make exploratory analysis a bit easier:
 
@@ -42,61 +42,54 @@ Install the `nihexporter` package from github with:
 Examples
 --------
 
-``` r
-library(dplyr)
-library(knitr)
-library(ggplot2)
-#> Warning: package 'ggplot2' was built under R version 3.1.3
-library(nihexporter)
-```
-
 List the all-time most expensive grants from each institute:
 
 ``` r
-expensive.projects <- projects %>%
-  select(project.num, institute, total.cost, project.start, project.end) %>%
+expensive_projects <- projects %>%
+  select(project.num, institute) %>%
   group_by(project.num, institute) %>%
-  summarise(overall.cost = sum(total.cost, na.rm = TRUE)) %>%
+  left_join(project_io) %>%
   ungroup() %>%
   group_by(institute) %>%
-  arrange(desc(overall.cost)) %>%
+  arrange(desc(project.cost)) %>%
   slice(1:1) %>%
   ungroup() %>%
-  arrange(desc(overall.cost)) %>%
-  mutate(cost.in.billions = overall.cost / 1e9)
+  arrange(desc(project.cost)) %>%
+  mutate(cost.in.billions = project.cost / 1e9)
+#> Joining by: "project.num"
+#> Warning in left_join_impl(x, y, by$x, by$y): joining character vector and
+#> factor, coercing into character vector
 
-head(expensive.projects)
-#> Source: local data frame [6 x 4]
+head(expensive_projects)
+#> Source: local data frame [6 x 6]
 #> 
-#>   project.num institute overall.cost cost.in.billions
-#> 1 ZIHLM200888        LM   1544981304        1.5449813
-#> 2 ZIFBC000001        CA    652060692        0.6520607
-#> 3 U54HG003067        HG    527942706        0.5279427
-#> 4 ZIFAI000001        AI    389496063        0.3894961
-#> 5 ZIIMD000005        MD    373377914        0.3733779
-#> 6 U62PS223540        PS    298137847        0.2981378
+#>   project.num institute n.pubs n.patents project.cost cost.in.billions
+#> 1 ZIHLM200888        LM    126         1   1544981304        1.5449813
+#> 2 ZIFBC000001        CA      1         1    652060692        0.6520607
+#> 3 U54HG003067        HG    139         1    527942706        0.5279427
+#> 4 ZIFAI000001        AI      1         1    389496063        0.3894961
+#> 5 ZIIMD000005        MD      1         1    373377914        0.3733779
+#> 6 U01AG009740        AG    432         1    219008592        0.2190086
 ```
 
 Let's look at the amounts spent on R01 grants at each NIH institute. Note this filters for NIH institutes.
 
 ``` r
-grant.costs <- projects %>% 
-  filter(institute %in% nih.institutes) %>%
-  filter(activity == 'R01' & total.cost > 0) %>%
-  select(institute, total.cost)
+project_costs <- projects %>% 
+  filter(institute %in% nih.institutes & activity == 'R01') %>%
+  left_join(project_io) %>%
+  select(institute, project.cost)
 
-library(scales)
-grant.costs %>%
-  ggplot(aes(reorder(institute, total.cost, median, order=TRUE), total.cost)) +
+ggplot(project_costs, aes(reorder(institute, project.cost, mean, order=TRUE), project.cost)) +
   geom_boxplot(outlier.shape = NA) +
   coord_flip() +
-  scale_y_continuous(limits = c(0, 8e5), labels = comma) +
-  ylab('Total cost (dollars)') +
+  scale_y_continuous(labels = comma) +
+  ylab('Total project cost (dollars)') +
   xlab('NIH institute') + 
   ggtitle('Total cost of R01 grants from 2000-2014')
 ```
 
-![](README-plot_grant_costs-1.png)
+![](README-plot_project_costs-1.png)
 
 Vignettes
 ---------
