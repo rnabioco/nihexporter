@@ -1,0 +1,9 @@
+citHeader("To cite nihexporter in publications use:")
+
+citEntry(entry = "Unpublished",
+         title        = "nihexporter: an R package for analyzing NIH funding data",
+         author       = personList(as.person("Jay Hesselberth")),
+         textVersion  =
+           paste("Jay Hesselberth (2015).",
+                 "nihexporter: an R package for analyzing NIH funding data")
+)
