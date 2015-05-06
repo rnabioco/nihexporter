@@ -80,9 +80,13 @@ project_costs <- projects %>%
   left_join(project_io) %>%
   select(institute, project.cost)
 
+# calculate whisker limits 
+# http://stackoverflow.com/questions/5677885/ignore-outliers-in-ggplot2-boxplot
+lims <- boxplot.stats(project_costs$project.cost)$stats[c(1, 5)]
+
 ggplot(project_costs, aes(reorder(institute, project.cost, mean, order=TRUE), project.cost)) +
   geom_boxplot(outlier.shape = NA) +
-  coord_flip() +
+  coord_cartesian(ylim = lims * 1.25) +
   scale_y_continuous(labels = comma) +
   ylab('Total project cost (dollars)') +
   xlab('NIH institute') + 
