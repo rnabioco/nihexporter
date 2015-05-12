@@ -57,8 +57,6 @@ expensive_projects <- projects %>%
   arrange(desc(project.cost)) %>%
   mutate(cost.in.billions = project.cost / 1e9)
 #> Joining by: "project.num"
-#> Warning in left_join_impl(x, y, by$x, by$y): joining character vector and
-#> factor, coercing into character vector
 
 head(expensive_projects)
 #> Source: local data frame [6 x 6]
@@ -76,7 +74,7 @@ Let's look at the amounts spent on R01 grants at each NIH institute. Note this f
 
 ``` r
 project_costs <- projects %>% 
-  filter(institute %in% nih.institutes & activity == 'R01') %>%
+  filter(activity == 'R01') %>%
   left_join(project_io) %>%
   select(institute, project.cost)
 

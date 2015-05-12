@@ -89,7 +89,7 @@ Let's look at the amounts spent on R01 grants at each NIH institute. Note this f
 
 ```{r plot_project_costs, message = FALSE, warning = FALSE}
 project_costs <- projects %>% 
-  filter(institute %in% nih.institutes & activity == 'R01') %>%
+  filter(activity == 'R01') %>%
   left_join(project_io) %>%
   select(institute, project.cost)
 
