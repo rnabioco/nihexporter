@@ -1,0 +1,171 @@
+---
+title: "nih_final"
+author: "Yuying Wang"
+date: "5/10/2015"
+output: html_document
+---
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+## Load common libraries
+```{r,warning = FALSE,message=FALSE}
+library(dplyr)
+library(ggplot2)
+library(nihexporter)
+library(knitr)
+
+## Load citation count vector, match to pmid
+```{r,warning = FALSE,message=FALSE}
+
+load('data/citations.rdata')
+pmid_citation <- cbind(nih_pmid_list,nih_citation)
+colnames(pmid_citation) <- c("pmid","times.cited")
+pmid_citation <- tbl_df(data.frame(pmid_citation))
+
+pmid_citation <- transform(pmid_citation,times.cited=as.numeric(as.character(times.cited)))
+```
+
+## Generate histogram for times.cited
+```{r histogram for times.cited, warning = FALSE,message=FALSE}
+
+ggplot(pmid_citation,aes(x=times.cited))+
+  geom_histogram() + ggtitle('Histogram: times.cited for NIH publications')
+```
+
+## Calculate total times.cited for each grant, sort
+```{r total times.cited,warning = FALSE,message=FALSE}
+grant_citation <- left_join(nih_grant_pmid,pmid_citation)
+grant_totalcitation <- grant_citation %>% group_by(project.num) %>% summarise (total.times.cited=sum(times.cited))
+
+# sort by total.times.cited: descending
+grant_totalcitation %>% arrange(desc(total.times.cited))
+
+# sort by total.times.cited:ascending
+grant_totalcitation %>% arrange(total.times.cited)
+```
+
+## Calculate grant costs
+```{r,warning = FALSE,message=FALSE}
+projects %>% filter(institute %in% nih.institutes & activity == 'R01' & suffix=='') %>% select(project.num, institute, total.cost) %>% group_by(project.num, institute) %>% summarize(lifetime.cost = sum(total.cost)) -> grant_costs
+
+# boxplot of lifetime.cost
+ggplot(grant_costs, aes(x=institute,y=lifetime.cost)) + geom_boxplot(outlier.shape=NA)+ ylim(0,6e06)+ylab('lifetime cost, dollars') + ggtitle('R01 lifetime cost across NIH institutes')
+```
+
+
+## Calculate grant productivity (as measured by dollar per citation), sort
+```{r grant productivity scaled by times.cited,warning = FALSE,message=FALSE}
+
+grant_costs %>% left_join(grant_totalcitation) %>% mutate(cost.per.citation=lifetime.cost/total.times.cited) -> grant_productivityByCitation
+
+grant_productivityByCitation <- grant_productivityByCitation %>% filter(lifetime.cost>10)
+
+grant_productivityByCitation %>% ungroup() %>% arrange(desc(cost.per.citation))
+
+grant_productivityByCitation %>% ungroup() %>% arrange(cost.per.citation)
+
+```
+
+## Plot histogram and boxplot for total times.cited for NIH grants
+```{r grant citation histogram, warning = FALSE,message=FALSE}
+
+ggplot(grant_totalcitation,aes(x=total.times.cited))+
+  geom_histogram(aes(fill=..count..)) + ggtitle('Histogram: NIH grant total times.cited')
+
+ggplot(grant_totalcitation,aes(x=log10(total.times.cited)))+
+  geom_histogram(aes(fill=..count..)) + ggtitle('Histogram: NIH grant total times.cited')
+
+ggplot(grant_productivityByCitation,aes(x=log10(total.times.cited)))+geom_histogram(aes(fill=..count..)) +  facet_wrap(~institute)+ ggtitle('Histogram: NIH grant total.times.cited across institutes')
+
+ggplot(grant_productivityByCitation,aes(x=institute,y=total.times.cited))+geom_boxplot() + scale_y_log10()+ ylab('log10(total.times.cited')+ ggtitle('Boxplot: NIH grant total.times.cited, across institutes')
+```
+
+## Generate boxplot and histogram for grant productivity
+```{r plot scaled productivity histogram, warning = FALSE,message=FALSE}
+
+ggplot(grant_productivityByCitation,aes(x=cost.per.citation))+
+  geom_histogram(aes(fill=..count..)) + xlab('cost per citation') + ggtitle('Histogram of NIH grant cost per citation')
+
+ggplot(grant_productivityByCitation,aes(x=log10(cost.per.citation)))+
+  geom_histogram(aes(fill=..count..)) + xlab('log10(cost per citation)') + ggtitle('Histogram of NIH grant cost per citation')
+
+ggplot(grant_productivityByCitation,aes(x=log10(cost.per.citation)))+
+  geom_histogram(aes(fill=..count..)) + xlab('log10(cost per citation)') + facet_wrap(~institute) + ggtitle('Histogram of NIH grant cost per citation across institutes')
+
+ggplot(grant_productivityByCitation,aes(x=institute,y=cost.per.citation))+geom_boxplot() + scale_y_log10()+ ylab('log10(cost per citation')+ ggtitle('Boxplot: NIH grant cost per citation, across institutes')
+
+```
+
+
+## Plot productivity against lifetime.cost
+```{r plot productivity against lifetime.cost,warning = FALSE,message=FALSE}
+ggplot(grant_productivityByCitation,aes(x=lifetime.cost,y=total.times.cited))+geom_jitter() + ggtitle('NIH grants: Impact vs. lifetime.cost')
+
+ggplot(grant_productivityByCitation,aes(x=lifetime.cost,y=cost.per.citation))+geom_jitter() + ggtitle('NIH grants: cost per citation vs. lifetime.cost')
+
+```
+
+## The top 10% most productive grants
+```{r}
+# the most productive grants
+most.productive.grants <- grant_productivityByCitation %>% ungroup() %>% arrange(cost.per.citation) %>% slice(1:8095)
+
+# plot cost per citation to lifetime.cost for the most productive grants
+ggplot(most.productive.grants,aes(x=lifetime.cost,y=cost.per.citation)) + geom_jitter() + ggtitle('cost.per.citation vs. lifetime.cost for 10% most productive grants')
+
+ggplot(most.productive.grants,aes(x=lifetime.cost,y=cost.per.citation)) + geom_jitter() + xlim(0,5e06) + ggtitle('cost.per.citation vs. lifetime.cost for 10% most productive grants, zoom in')
+
+# distribution of top 10% most productive grants across institutes
+n.mostproductive.grants <- most.productive.grants %>% group_by(institute) %>% summarize(n.productive.grants=n())
+
+# normalize to no. of grants per institute
+n.grants <- grant_productivityByCitation %>% group_by(institute) %>% summarize(n.grants=n())
+
+freq.productive.grants <- n.mostproductive.grants %>% left_join(n.grants) %>% mutate(freq.productive.grants = n.productive.grants/n.grants) %>% arrange(desc(freq.productive.grants))
+
+# plot the percentage of most productive grants across institutes
+ggplot(freq.productive.grants,aes(x=institute,y=freq.productive.grants)) + geom_bar(stat="identity",fill='green') + ggtitle('Percentage of most productive grants across NIH institutes')
+
+# plot the proportion of most productive grants across institutes
+ggplot(freq.productive.grants,aes(x=institute,y=n.grants)) + 
+  geom_bar(stat="identity",fill='grey',color='grey')+
+  geom_bar(data=freq.productive.grants,aes(x=institute,y=n.productive.grants),stat='identity',color='green',fill='green') + ggtitle('Proportion of most productive grants across NIH institutes')
+
+```
+
+## The bottom 10% least productive grants
+```{r}
+# the least productive grants
+least.productive.grants <- grant_productivityByCitation %>% ungroup() %>% arrange(cost.per.citation) %>% slice(72851:80945)
+
+# distribution of top 10% least productive grants across institutes
+n.leastproductive.grants <- least.productive.grants %>% group_by(institute) %>% summarize(n.unproductive.grants=n())
+
+
+freq.unproductive.grants <- n.leastproductive.grants %>% left_join(n.grants) %>% mutate(freq.unproductive.grants = n.unproductive.grants/n.grants) %>% arrange(desc(freq.unproductive.grants))
+
+# plot the percentage of least productive grants across institutes
+ggplot(freq.unproductive.grants,aes(x=institute,y=freq.unproductive.grants)) + geom_bar(stat="identity",fill='red') + ggtitle('Percentage of least productive grants across NIH institutes')
+
+# plot the proportion of least productive grants across institutes
+ggplot(freq.unproductive.grants,aes(x=institute,y=n.grants)) + 
+  geom_bar(stat="identity",fill='grey',color='grey')+
+  geom_bar(data=freq.unproductive.grants,aes(x=institute,y=n.unproductive.grants),stat='identity',color='red',fill='red') + ggtitle('Proportion of least productive grants across NIH institutes')
+
+```
+
+## calculate and plot productivity trend
+```{r productivity trend, warning = FALSE,message=FALSE}
+grant_end <- projects %>% filter(institute %in% nih.institutes & activity == 'R01'& suffix=='') %>% select(project.num, project.end)
+
+grant_endyear <- grant_end %>% mutate(endyear = as.numeric(format(grant_end$project.end, "%Y"))) %>% select(project.num, endyear) %>% distinct()
+
+grant_productivity_endyear <- grant_productivityByCitation %>% left_join(grant_endyear) %>% select(project.num,cost.per.citation,endyear)
+
+ggplot(grant_productivity_endyear,aes(x=endyear, y=cost.per.citation)) + geom_jitter() + xlab('grant end year') + ylab('cost per citation') + ggtitle('productivity trend')
+```
+
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
