@@ -20,7 +20,7 @@ output:
 ```{r echo = FALSE, warning = FALSE, message = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>",
+  comment = "#>"
 )
 
 library(scales)
@@ -30,6 +30,11 @@ library(ggplot2)
 library(nihexporter)
 ```
 
+```{r create_db, echo = FALSE, warning = FALSE, message = FALSE}
+nihexporter_sqlite()
+projects <- nihexporter_sqlite(nihexporter, "projects")
+
+```
 # Abstract
 
 ## Motivation
@@ -209,8 +214,7 @@ project_costs
 
 Now we need to measure grant productivity. Cross-referencing these grants with the `project_io` returns the `project.cost`, `n.pubs` and `n.patents`.
 
-```
-{r plot_dollar_bins, warning = FALSE, message = FALSE, fig.width=7, fig.height=7}
+```{r plot_dollar_bins, warning = FALSE, message = FALSE, fig.width=7, fig.height=7}
 tile.counts <- dollar_grant_productivity %>%
   group_by(institute, dollar.tile) %>%
   summarize(tile.counts = n())
