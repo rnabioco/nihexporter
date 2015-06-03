@@ -13,14 +13,13 @@ output:
     fig_caption: yes
     keep_tex: yes
     number_sections: yes
-  word_document: default
 # bibliography: bibliography.bib
 ---
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>",
+  comment = "#>"
 )
 
 library(scales)
@@ -73,11 +72,12 @@ NIH funding is an investment strategy: the institutes invest money in specific r
 
 We downloaded NIH funding data from the NIH EXPORTER website in comma-separated value (CSV) format and parsed these data into R data files that each contain specific information:
 
-  * `projects`:  XXX
-  * `project_orgs`: XXX
-  * `project_pis`: XXX
-  * `publinks`: XXX
-  * `patents`: XXX
+  * `projects` has information about projects in each fiscal year, keyed by `project.num`
+  * `project_orgs` has information about project organizations
+  * `project_pis`
+  * `publinks` table links PubMed IDs to `project.num`
+  * `publications`
+  * `patents`
 
 We also provide several precomputed variables and tables that enable quick and easy exploratory analysis:
 
@@ -197,9 +197,9 @@ ggplot(combined_tbl, aes(x = factor(fiscal.year),
 
 First we calculate the total cost of each R01 grant.
 
-```{r project_productivity, message = FALSE}
+```{r project_productivity, message = FALSE, warning = FALSE}
 project_costs <- projects %>%
-  filter(institute %in% nih.institutes & activity == 'R01') %>%
+  filter(activity == 'R01') %>%
   select(project.num, institute) %>%
   left_join(project_io) %>%
   filter(project.cost > 1e4)
@@ -209,8 +209,7 @@ project_costs
 
 Now we need to measure grant productivity. Cross-referencing these grants with the `project_io` returns the `project.cost`, `n.pubs` and `n.patents`.
 
-```
-{r plot_dollar_bins, warning = FALSE, message = FALSE, fig.width=7, fig.height=7}
+```{r plot_dollar_bins, warning = FALSE, message = FALSE, fig.width=7, fig.height=7}
 tile.counts <- dollar_grant_productivity %>%
   group_by(institute, dollar.tile) %>%
   summarize(tile.counts = n())
