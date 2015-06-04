@@ -1,19 +1,19 @@
 ---
 title: '`nihexporter`: an R package for analyzing NIH funding data'
-author: "Jay R. Hesselberth"
+author: "Jay R. Hesselberth, Ashley Pacheco, Mary Sweet, Yuying Wang"
 date: 'Last update: `r format(Sys.time(), "%d %B, %Y")`'
 output:
+  pdf_document:
+    fig_caption: yes
+    keep_tex: yes
+    number_sections: yes
   html_document:
     fig_caption: yes
     force_captions: yes
     highlight: pygments
     number_sections: yes
     toc: yes
-  pdf_document:
-    fig_caption: yes
-    keep_tex: yes
-    number_sections: yes
-# bibliography: bibliography.bib
+  word_document: default
 ---
 
 ```{r echo = FALSE, warning = FALSE, message = FALSE}
@@ -233,5 +233,7 @@ productivity_with_counts %>%
 ### Intramural versus extramural grants
 
 The [Center for Scientific Review](http://public.csr.nih.gov/Pages/default.aspx) would need to publicly release (anonymized) scores to enable such an analysis.
+
+### Geographical distribution
 
 # References
