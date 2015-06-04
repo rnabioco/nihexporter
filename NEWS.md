@@ -1,5 +1,16 @@
 # nihexporter, version 0.7 (unreleased)
 
+## Major
+
+- `org.duns` in `project_orgs` table is corrected (thanks EXPORTER folks)
+- only projects associted with `nih.institues` are in the `projects` table, so no need to filter by `nih.institutes`
+- added `application.type` and `arra.funded` to `projects` table
+- add CITATION file
+
+## Minor
+
+- refactor data loading 
+
 # nihexporter, version 0.6.1
 
 ## Minor
