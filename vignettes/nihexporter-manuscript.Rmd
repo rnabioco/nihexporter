@@ -1,6 +1,6 @@
 ---
 title: '`nihexporter`: an R package for analyzing NIH funding data'
-author: "Jay R. Hesselberth, Ashley Pacheco, Mary Sweet, Yuying Wang"
+author: "Jay R. Hesselberth, Erin Baschal, Nick Ellinwood, Ashley Pacheco, Mary Sweet, Yuying Wang"
 date: 'Last update: `r format(Sys.time(), "%d %B, %Y")`'
 output:
   pdf_document:
@@ -27,13 +27,9 @@ library(stringr)
 library(dplyr)
 library(ggplot2)
 library(nihexporter)
+library(stringr)
 ```
 
-```{r create_db, echo = FALSE, warning = FALSE, message = FALSE}
-nihexporter_sqlite()
-projects <- nihexporter_sqlite(nihexporter, "projects")
-
-```
 # Abstract
 
 ## Motivation
@@ -46,7 +42,7 @@ We developed the `nihexporter` R package, which provides access to [NIH EXPORTER
 
 ## Availability
 
-The `nihexporter` R package can be installed via [github](https://github.com/jayhesselberth/nihexporter). Exploratory analysis was carried out using RStudio with the `dplyr`, `ggplot2` and `knitr` packages. The source for vignettes on institute trends, grant productivity and XXX are available on rpubs.com. We also provide interactive data analysis of NIH funding data via an R Shiny app [].
+The `nihexporter` R package can be installed via [github](https://github.com/jayhesselberth/nihexporter). Exploratory analysis was done using RStudio with the `dplyr`, `ggplot2` and `knitr` packages. A static vignettes on institute trends, grant productivity and XXX are available on rpubs.com. We also provide interactive data analysis of NIH funding data via using R Shiny app [].
 
 ## Implementation
 
@@ -54,8 +50,7 @@ The `nihexporter` package is implemented in the R Statistical Computing Environm
 
 ## Contact
 
-Jay Hesselberth <jay.hesselberth@gmail.com>
-University of Colorado School of Medicine
+Jay Hesselberth <jay.hesselberth@gmail.com>, University of Colorado School of Medicine
 
 ## Supplementary Information
 
@@ -65,13 +60,13 @@ University of Colorado School of Medicine
 
 # Introduction
 
-The National Institutes of Health (NIH) is the major source federal funds for biomedical research in the United States. The NIH budget is approved by Congress each year, and in fiscal year 2014, the total NIH budget was 30.3 billion dollars (REF). The NIH is divided into 25 institutes, each with its own focus and mission. The National Cancer Institue (NCI) focuses on malignant diseases, the National Institute for Allergy and Immune Disease focuses on the immune system and transmissible disease and the National Institute for General Medical Sciences focuses on basic research without a specific disease focus. Each institute negotiates with the NIH director (currently Francis Collins) for its yearly budget, with some institutes having budgets in the billions (NCI, at XXX) and some institutes in the millions (XXX).
+The National Institutes of Health (NIH) is the major source federal funds for biomedical research in the United States. The NIH budget is approved by Congress each year, and in fiscal year 2014, the total NIH budget was 30.3 billion dollars (REF). The NIH is divided into 25 institutes, each with its own focus and mission. For example, National Cancer Institue (NCI) focuses on malignant diseases; the National Institute for Allergy and Immune Disease focuses on the immune system and transmissible diseasei; and the National Institute for General Medical Sciences focuses on basic research without a specific disease focus. Each institute negotiates with the NIH director (currently Francis Collins, MD, PhD) for its yearly budget, with budget institutes ranging from millions to several billion dollars.
 
-The NIH provides funds through competetive grants written by internal and external investigators, and the funds associated with these grants can be divided into 'direct' and 'indirect' costs. **Direct costs** are funds that are given to an investigator (or group of investigators) to conduct their proposed research. These funds buy supplies for the experiments and pay the salaries of people to carry out their work.
+The NIH provides funds through competetive grants written by internal and external investigators, and the funds associated with these grants can be divided into 'direct' and 'indirect' costs. **Direct costs** are funds that are given to an investigator (or group of investigators) to conduct their proposed research. These funds buy supplies for the experiments and pay the salaries of people to do the work.
 
-By contrast, **indirect costs** are funds that are paid to institutions associated with investigators, and are used to "keep the lights on". However, the "indirect cost recovery" (ICR) rate of each institution is negotiated on a case-by-case basis between institutions and the NIH, and there is a wide range in ICR rates. Some of the highest ICR rates are close to 100%, meaning that for every dollar an investigator receives, the institutions receive an equal amount. Moreover, the use of these funds is at the discretion of the institution; a practice that has previously lead to [abuse of these funds](http://news.stanford.edu/pr/94/941018Arc4090.html).
+By contrast, **indirect costs** are funds that are paid to institutions associated with investigators, and are used to "keep the lights on": they pay for infrastructure costs. However, the "indirect cost recovery" (ICR) rate of each institution, the fraction of each award the institute receives, is congressionally mandated, and there is a wide range in ICR rates. Some of the highest ICR rates are close to 100%, meaning that for every dollar an investigator receives, the institutions receive an equal amount. Moreover, the use of these funds is at the discretion of the institution; a practice that has previously lead to [abuse of these funds](http://news.stanford.edu/pr/94/941018Arc4090.html).
 
-NIH funding is an investment strategy: the institutes invest money in specific research areas, hoping for future returns in the form of publications, patents and skilled trainees. Analysis of NIH funding data has been performed internally by the NIH, or by contracted third-parties. Several of these analyses have highlighted funding trends and suggested metrics to gauge the 'return' on the NIH 'investment'. For example, "productivity" can be examined as a function of the number of publications produced by grants per dollar of "direct costs".
+NIH funding is an investment strategy: the institutes invest money in specific research areas, hoping for future returns in the form of publications, patents and skilled trainees. As with any investment strategy, a periodic review can help rebalance the portfolio in order to maximize returns. Analysis of NIH funding data has been performed internally by the NIH, or by contracted third-parties. Several of these analyses have highlighted funding trends and suggested metrics to gauge the 'return' on the NIH 'investment'. For example, "productivity" can be examined as a function of the number of publications produced by grants per dollar of "direct costs".
 
 # Methods
 
@@ -79,10 +74,10 @@ We downloaded NIH funding data from the NIH EXPORTER website in comma-separated 
 
   * `projects` has information about projects in each fiscal year, keyed by `project.num`
   * `project_orgs` has information about project organizations
-  * `project_pis`
+  * `project_pis` links PI information to a project
   * `publinks` table links PubMed IDs to `project.num`
-  * `publications`
-  * `patents`
+  * `publications` links project IDs to PubMed IDs
+  * `patents` link patent IDs to project IDs
 
 We also provide several precomputed variables and tables that enable quick and easy exploratory analysis:
 
@@ -135,7 +130,7 @@ ggplot(inst_costs, aes(x = factor(fiscal.year),
 
 When [Jeremy Berg](http://www.nigms.nih.gov/about/director/pages/berg.aspx) was head of the Institute of General Medical Sciences (NIGMS) from 2003-2011, he routinely provided analysis of funding trends at NIGMS in his "Feedback Loop" blog. One of these measured the productivity per grant dollar by measuring its "scholarly output" (*i.e.*, publications) as a function of direct costs. In this [plot](http://loop.nigms.nih.gov/2010/09/measuring-the-scientific-output-and-impact-of-nigms-grants/) there is an increase in productivity per dollar, until an inflection point at $700K, after which the number of publications *drops*, suggesting a negative influence of grant money on scholarly output. This was interesting and covered [here](http://www.nature.com/news/2010/101116/full/468356a.html).
 
-Here we flesh out this analysis and look at under- and over-performing institutes by this measure. In addition, Berg was focused on GM, and here we can easily look at similar measures across the NIH institutes. One caveat is that we only have access to `total.cost` in NIH EXPORTER, so the numbers include indirect costs. But, this is real cost to the tax-payer.
+Here we flesh out this analysis and look at how all institutes perform by this measure (Berg, and now Lorsch, only analyzed GM). One caveat is that we only have access to `total.cost` in NIH EXPORTER, so the numbers include indirect costs. But, this is real cost to the tax-payer.
 
 Here are several addition comparisons, suggested by readers of Berg's original [blog post](http://loop.nigms.nih.gov/2010/09/measuring-the-scientific-output-and-impact-of-nigms-grants/).
 
@@ -240,5 +235,24 @@ productivity_with_counts %>%
 The [Center for Scientific Review](http://public.csr.nih.gov/Pages/default.aspx) would need to publicly release (anonymized) scores to enable such an analysis.
 
 ### Geographical distribution
+
+Geographical distribution of grant dollar is easily visualized using the package.
+
+```{r geography, warning = FALSE, message = FALSE}
+library(maps)
+library(leaflet)
+
+state.data <- data.frame(org.state = state.abb,
+                         state.name = str_to_lower(state.name))
+
+state_funding <- projects %>%
+  select(project.num, org.duns) %>%
+  left_join(project_orgs) %>%
+  select(project.num, org.state) %>%
+  left_join(state.data) %>%
+  select(project.num, state.name) %>%
+  left_join(project_io)
+
+```
 
 # References
