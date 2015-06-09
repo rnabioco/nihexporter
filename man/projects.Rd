@@ -4,10 +4,12 @@
 \name{projects}
 \alias{projects}
 \title{projects}
-\format{A data frame with 11 variables:
+\format{A data frame with 13 variables:
 \describe{
 \item{\code{project.num}}{core project number, e.g. R01GM1234556}
 \item{\code{activity}}{activity code, e.g. R01}
+\item{\code{application.type}}{one-digit code to identify type of application funded}
+\item{\code{arra.funded}}{'Y' indicates ARRA funded}
 \item{\code{suffix}}{'A'mended and 'S'upplmental + serial number}
 \item{\code{institute}}{administering institute}
 \item{\code{fiscal.year}}{year of funding}
