@@ -52,7 +52,7 @@ projects <- projects.tbl %>%
   filter(institute %in% nih.institutes) %>% 
   mutate(project.end = mdy(project.end),
          project.start = mdy(project.start),
-         total.cost = as.integer(total.cost))
+         total.cost = as.double(total.cost))
 
 save(projects, file = 'data/projects.rdata', compress = 'xz')         
 
