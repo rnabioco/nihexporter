@@ -100,14 +100,21 @@ cache_nihexporter <- function(type, ...) {
   
   src <- nihexporter_src(type, ...)
   tables <- setdiff(nihexporter_tables(), src_tbls(src))
-  
+  index <- list(
+    projects = list("project.num", "org.duns"),
+    project_orgs = list("org.duns"),
+    project_pis =  list("project.num"),
+    publinks =   list("project.num"),
+    patents =  list("project.num"),
+    project_io = list("project.num"),
+    publications = list("pmid")
+  )
   # Create missing tables
   for(table in tables) {
     df <- getExportedValue("nihexporter", table)
     message("Creating table: ", table)
     
-    ids <- as.list(names(df)[grepl("ID$", names(df))])
-    copy_to(src, df, table, indexes = ids, temporary = FALSE)
+    copy_to(src, df, table, indexes = index[[table]], temporary = FALSE)
   }
   
   set_cache(cache_name, src)
