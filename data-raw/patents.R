@@ -18,6 +18,7 @@ names(patents.tbl) <- names(patents.tbl) %>%
 patents <- patents.tbl %>%
   select(patent.id, project.id) %>%
   rename(project.num = project.id) %>%
+  filter(!grepl('-', project.num)) %>%
   arrange(project.num)
 
 save(patents, file = 'data/patents.rdata', compress = 'xz')
