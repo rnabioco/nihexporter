@@ -62,15 +62,16 @@ head(expensive_projects)
 #> Source: local data frame [6 x 6]
 #> 
 #>   project.num institute n.pubs n.patents project.cost cost.in.billions
+#>         (chr)    (fctr)  (int)     (int)        (dbl)            (dbl)
 #> 1 ZIHLM200888        LM    126         1   1544981304        1.5449813
 #> 2 ZIFBC000001        CA      1         1    652060692        0.6520607
 #> 3 U54HG003067        HG    139         1    527942706        0.5279427
 #> 4 ZIFAI000001        AI      1         1    389496063        0.3894961
-#> 5 ZIIMD000005        MD      1         1    373377914        0.3733779
-#> 6 U01AG009740        AG    432         1    219008592        0.2190086
+#> 5 U01AG009740        AG    432         1    219008592        0.2190086
+#> 6 U01DK061230        DK     71         1    199581387        0.1995814
 ```
 
-Let's look at the amounts spent on R01 grants at each NIH institute. Note this filters for NIH institutes.
+Let's look at the amounts spent on R01 grants at each NIH institute.
 
 ``` r
 project_costs <- projects %>% 
@@ -91,9 +92,4 @@ ggplot(project_costs, aes(reorder(institute, project.cost, mean, order=TRUE), pr
   ggtitle('Total cost of R01 grants from 2000-2014')
 ```
 
-![](README-plot_project_costs-1.png)
-
-Vignettes
----------
-
-See the [vignette](http://rpubs.com/jayhesselberth/nihexporter-vignette) or the [vignette source](vignettes/nihexporter.Rmd) for more examples.
+![](inst/extdata/README-plot_project_costs-1.png)

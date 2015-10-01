@@ -8,11 +8,11 @@ output:
 
 [![Travis-CI Build Status](https://travis-ci.org/jayhesselberth/nihexporter.png?branch=master)](https://travis-ci.org/jayhesselberth/nihexporter)
 
-```{r, echo = FALSE}
+```{r knitr.opts, echo = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.path = "README-"
+  fig.path = "inst/extdata/README-"
 )
 ```
 
@@ -61,10 +61,9 @@ devtools::install_github("jayhesselberth/nihexporter")
 
 ```{r, load_libs, echo=FALSE, message=FALSE, warning=FALSE}
 library(dplyr)
-library(knitr)
 library(ggplot2)
-library(nihexporter)
 library(scales)
+library(nihexporter)
 ```
 
 List the all-time most expensive grants from each institute:
@@ -85,7 +84,7 @@ expensive_projects <- projects %>%
 head(expensive_projects)
 ```
 
-Let's look at the amounts spent on R01 grants at each NIH institute. Note this filters for NIH institutes.
+Let's look at the amounts spent on R01 grants at each NIH institute. 
 
 ```{r plot_project_costs, message = FALSE, warning = FALSE}
 project_costs <- projects %>% 
@@ -105,7 +104,3 @@ ggplot(project_costs, aes(reorder(institute, project.cost, mean, order=TRUE), pr
   xlab('NIH institute') + 
   ggtitle('Total cost of R01 grants from 2000-2014')
 ```
-
-## Vignettes
-
-See the [vignette](http://rpubs.com/jayhesselberth/nihexporter-vignette) or the [vignette source](vignettes/nihexporter.Rmd) for more examples.
