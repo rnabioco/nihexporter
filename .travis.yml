@@ -1,7 +1,7 @@
 # .travis.yml for `nihexporter` 
 # based on http://docs.travis-ci.com/user/languages/r/
 
-sudo: required
+sudo: false
 
 language: r
 
