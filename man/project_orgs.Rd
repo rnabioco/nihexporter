@@ -3,12 +3,8 @@
 \docType{data}
 \name{project_orgs}
 \alias{project_orgs}
-\title{project.orgs}
-\format{A data frame with 4 variables: \code{org.duns},
-  \code{org.city}, \code{org.state} and \code{org.name}
-
-The org.duns is a unique identifier that links the `project.orgs` and
-`projects` tables}
+\title{project_orgs}
+\format{A data frame with 2 variables: \code{org.duns} and \code{application.id} used to link specific applications to organizations}
 \source{
 \url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=4&index=0}
 }
@@ -16,7 +12,7 @@ The org.duns is a unique identifier that links the `project.orgs` and
 project_orgs
 }
 \description{
-project.orgs
+project_orgs
 }
 \keyword{datasets}
 
