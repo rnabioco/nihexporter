@@ -1,33 +1,22 @@
 ---
-title: '`nihexporter`: an R package for analyzing NIH funding data'
-author: "Jay R. Hesselberth, Ashley Pacheco, Mary Sweet, Yuying Wang"
+title: '`nihexporter`: an R package for NIH funding data'
+author: Jay Hesselberth, Erin Baschal, Nick Ellinwood, Ashley Pacheco, Sally Peach, Mary Sweet,
+  Yuying Wang
 date: 'Last update: `r format(Sys.time(), "%d %B, %Y")`'
 output:
-  pdf_document:
-    fig_caption: yes
-    keep_tex: yes
-    number_sections: yes
   html_document:
     fig_caption: yes
     force_captions: yes
     highlight: pygments
     number_sections: yes
     toc: yes
+  pdf_document:
+    fig_caption: yes
+    fig_width: 7
+    keep_tex: yes
+    number_sections: yes
   word_document: default
 ---
-
-```{r echo = FALSE, warning = FALSE, message = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-
-library(scales)
-library(stringr)
-library(dplyr)
-library(ggplot2)
-library(nihexporter)
-```
 
 # Abstract
 
@@ -37,105 +26,367 @@ The National Institutes of Health (NIH) is the major source of federal funding f
 
 ## Results
 
-We developed the `nihexporter` R package, which provides access to [NIH EXPORTER](http://exporter.nih.gov/) data. We used the package to develop several analysis vignettes that show funding trends across NIH institutes over 15 years and highlight differences in how institutes change their funding profiles. Investigators and institutions can use the package design to perform self-studies of their own NIH funding.
+We developed the `nihexporter` R package, which provides access to [NIH EXPORTER](http://exporter.nih.gov/) data. We used the package to develop several analysis vignettes that show funding trends across NIH institutes over 15 years and highlight differences in how institutes change their funding profiles. Investigators and institutions can use the package to perform self-studies of their own NIH funding.
 
 ## Availability
 
-The `nihexporter` R package can be installed via [github](https://github.com/jayhesselberth/nihexporter). Exploratory analysis was carried out using RStudio with the `dplyr`, `ggplot2` and `knitr` packages. The source for vignettes on institute trends, grant productivity and XXX are available on rpubs.com. We also provide interactive data analysis of NIH funding data via an R Shiny app [].
+The `nihexporter` R package can be installed via [github](https://github.com/jayhesselberth/nihexporter). Exploratory analysis was done using RStudio with the `dplyr`, `ggplot2` packages. 
 
 ## Implementation
 
-The `nihexporter` package is implemented in the R Statistical Computing Environment.
+The `nihexporter` package is implemented in the R Statistical Computing Environment. This document is created using `Rmarkdown`, and the source is available here[].
 
 ## Contact
 
-Jay Hesselberth <jay.hesselberth@gmail.com>
-University of Colorado School of Medicine
-
-## Supplementary Information
-
-  * [Vignettes](http://rpubs.com/jayhesselberth/nihexporter-vignettes)
-  
-  * [Interactive analysis with Shiny](http://shinyapps.io/jayhesselberth/nihexporter)
+Jay Hesselberth <jay.hesselberth@gmail.com>, University of Colorado School of Medicine
 
 # Introduction
 
-The National Institutes of Health (NIH) is the major source federal funds for biomedical research in the United States. The NIH budget is approved by Congress each year, and in fiscal year 2014, the total NIH budget was 30.3 billion dollars (REF). The NIH is divided into 25 institutes, each with its own focus and mission. The National Cancer Institue (NCI) focuses on malignant diseases, the National Institute for Allergy and Immune Disease focuses on the immune system and transmissible disease and the National Institute for General Medical Sciences focuses on basic research without a specific disease focus. Each institute negotiates with the NIH director (currently Francis Collins) for its yearly budget, with some institutes having budgets in the billions (NCI, at XXX) and some institutes in the millions (XXX).
+The National Institutes of Health (NIH) is the major source federal funds for biomedical research in the United States. The NIH budget is approved by Congress each year, and in fiscal year 2014, the total NIH budget was 30.3 billion dollars (REF). The NIH is divided into 25 institutes, each with its own focus and mission. For example, National Cancer Institue (NCI) focuses on malignant diseases; the National Institute for Allergy and Immune Disease focuses on the immune system and transmissible diseasei; and the National Institute for General Medical Sciences focuses on basic research without a specific disease focus. Each institute negotiates with the NIH director (currently Francis Collins, MD, PhD) for its yearly budget, with budget institutes ranging from millions to several billion dollars.
 
-The NIH provides funds through competetive grants written by internal and external investigators, and the funds associated with these grants can be divided into 'direct' and 'indirect' costs. **Direct costs** are funds that are given to an investigator (or group of investigators) to conduct their proposed research. These funds buy supplies for the experiments and pay the salaries of people to carry out their work.
+The NIH provides funds through competetive grants written by internal and external investigators, and the funds associated with these grants can be divided into 'direct' and 'indirect' costs. **Direct costs** are funds that are given to an investigator (or group of investigators) to conduct their proposed research. These funds buy supplies for the experiments and pay the salaries of people to do the work.
 
-By contrast, **indirect costs** are funds that are paid to institutions associated with investigators, and are used to "keep the lights on". However, the "indirect cost recovery" (ICR) rate of each institution is negotiated on a case-by-case basis between institutions and the NIH, and there is a wide range in ICR rates. Some of the highest ICR rates are close to 100%, meaning that for every dollar an investigator receives, the institutions receive an equal amount. Moreover, the use of these funds is at the discretion of the institution; a practice that has previously lead to [abuse of these funds](http://news.stanford.edu/pr/94/941018Arc4090.html).
+By contrast, **indirect costs** are funds that are paid to institutions associated with investigators, and are used to "keep the lights on": they pay for infrastructure costs. However, the "indirect cost recovery" (ICR) rate of each institution, the fraction of each award the institute receives, is congressionally mandated, and there is a wide range in ICR rates. Some of the highest ICR rates are close to 100%, meaning that for every dollar an investigator receives, the institutions receive an equal amount. 
 
-NIH funding is an investment strategy: the institutes invest money in specific research areas, hoping for future returns in the form of publications, patents and skilled trainees. Analysis of NIH funding data has been performed internally by the NIH, or by contracted third-parties. Several of these analyses have highlighted funding trends and suggested metrics to gauge the 'return' on the NIH 'investment'. For example, "productivity" can be examined as a function of the number of publications produced by grants per dollar of "direct costs".
+NIH funding is an investment strategy: the institutes invest money in specific research areas, hoping for future returns in the form of publications, patents and skilled trainees. As with any investment strategy, a periodic review can help rebalance the portfolio in order to maximize returns. Analysis of NIH funding data has been performed internally by the NIH, or by contracted third-parties. Several of these analyses have highlighted funding trends and suggested metrics to gauge the 'return' on the NIH 'investment'. For example, "productivity" can be examined as a function of the number of publications produced by grants per dollar of "direct costs".
 
 # Methods
 
 We downloaded NIH funding data from the NIH EXPORTER website in comma-separated value (CSV) format and parsed these data into R data files that each contain specific information:
 
-  * `projects`:  XXX
-  * `project_orgs`: XXX
-  * `project_pis`: XXX
-  * `publinks`: XXX
-  * `patents`: XXX
+  * `projects` has information about projects in each fiscal year, keyed by `project.num`
+  * `org_info` has information about project organizations
+  * `project_orgs` links applications to organizations 
+  * `project_pis` links PI information to a project
+  * `publinks` table links PubMed IDs to `project.num`
+  * `publications` links project IDs to PubMed IDs
+  * `patents` links patent IDs to project IDs
 
-We also provide several precomputed variables and tables that enable quick and easy exploratory analysis:
+See the documentation in the R package for more information about each table.
+
+The package also has several precomputed variables and tables that enable quick and easy exploratory analysis:
 
   * `nih.institutes`: Two-letter format for 27 NIH institutes
-  * `project_io`: This table contains pre-computed values for overall proeject cost (`project.cost`), as well as the number of publications (`n.pubs`) and patents (`n.patents`).
+  * `project_io`: This table contains pre-computed values for overall project cost (`project.cost`), as well as the number of publications (`n.pubs`) and patents (`n.patents`) associated with each project.
   
-We developed several analyses using the `dplyr`, `ggplot2` and `knitr` packages in the RStudio environment. We also developed interactive analyses using the `shiny` package.
+NIH EXPORTER provides access to the total costs of each grant in each fiscal year, comprising both direct and indirect costs.
+
+We developed several analyses using the `dplyr`, `ggplot2` and `knitr` packages in the RStudio environment. 
 
 # Results and Discussion
 
-## Package data
+## Project costs
 
-* Total costs: NIH EXPORTER provides access to the total costs of each grant in each fiscal year; it does not report direct and indirect costs. Indirect costs can be retrieved from other sources [], but are provided by the package only for reference purposes. Calculations that attempt to normalize by indirect costs should be interpreted with appropriate care.
+Let's look at the costs of grants over time for a few institutes:
 
-## Examples
-
-Using the `nihexporter` package, one can easily generate summary plots of the total costs of grants at each institute over time.
-
-For example, we can examine the total costs spent on specific grants and specific institutes over time.
-
-```{r example1_institute_funds, message = FALSE, warning = FALSE, echo = FALSE, fig.width = 7, fig.cap = 'Example 1: Funds for specific types of grants at the GM, CA and AI institutes'}
-select_activities <- c('R01', 'P01', 'R21', 'P30')
-select_inst <- c('GM', 'CA', 'AI')
-
-inst_costs <- projects %>%
-  filter(institute %in% select_inst & activity %in% select_activities) %>%
-  select(project.num, institute, activity, fiscal.year, total.cost) %>%
-  group_by(project.num, activity, institute, fiscal.year) %>%
-  summarize(fy.cost = sum(total.cost, na.rm = TRUE))
-
-ggplot(inst_costs, aes(x = factor(fiscal.year),
-                       y = fy.cost, 
-                       fill = activity)) +
-  geom_boxplot(outlier.size = 0.2) + 
-  facet_wrap(~ institute) + 
-  scale_y_log10(limits = c(9e4, 1e7),
-                labels = trans_format("log10", math_format(10^.x))) + 
-  annotation_logticks(sides = "l",
-                      scaled = TRUE) +
-  scale_fill_brewer(palette="Dark2") +
-  xlab('') +
-  ylab('Total grant dollars, log-scaled') +
-  theme_bw() +
-  theme(axis.text.x = element_text(angle = 90))
+```{r knitr.options, echo = FALSE, warning = FALSE, message = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 7,
+  fig.height = 7,
+#  fig.align = 'center',
+  warning = FALSE,
+  message = FALSE
+)
+knitr::opts_knit$set(
+  verbose = FALSE
+)
 ```
 
-## Funding trends
+```{r load.libraries}
+library(scales)
+library(stringr)
+library(dplyr)
+library(ggplot2)
+library(nihexporter)
+```
 
-## Grant producitivity
+```{r inst_cost_over_time, fig.cap = 'Project spending at NIGMS, NCI and NIAID'}
+select_inst <- c('GM', 'AI', 'CA')
+cost.over.time <- projects %>%
+  select(institute, fy.cost, fiscal.year) %>%
+  filter(institute %in% select_inst) %>%
+  group_by(fiscal.year, institute) %>%
+  summarize(yearly.cost = sum(fy.cost, na.rm = TRUE))
+
+cost.over.time %>%
+  ggplot(aes(x = factor(fiscal.year), 
+             y = yearly.cost / 1e9,
+             group = institute, color = institute)) +
+  geom_line() + geom_point() +
+  theme_bw() +
+  theme(legend.position = 'bottom') +
+  xlab('Fiscal year') +
+  ylab('Project costs (dollars in billions)')
+```
+
+## Funding distributions
+
+### By Institution
+
+Let's look WHERE the money is going. This example illustrates linking of the `project`, `org_info` and `project_orgs` tables.
+
+```{r money_per_institution}
+institution_funding <- projects %>%
+  filter(activity == 'R01') %>%
+  left_join(project_orgs, by = 'application.id') %>%
+  group_by(org.duns, fiscal.year) %>%
+  summarise(total.dollars = sum(fy.cost, na.rm = TRUE)) %>%
+  ungroup() %>%
+  left_join(org_info, by = 'org.duns') %>% 
+  arrange(desc(total.dollars))
+
+institution_funding %>%
+  select(fiscal.year, org.name, org.duns, total.dollars) %>%
+  mutate(total.award.millions = total.dollars / 1e6) %>%
+  select(-total.dollars) %>%
+  head(10) %>% 
+  knitr::kable(caption='R01 grant dollars awarded to specific institutions',
+               col.names=c('Fiscal year', 'Org.',
+                           'DUNS', 'Dollars (millions)'))
+```
+
+We can also identify movers-and-shakers by institution.
+
+### By PI
+
+One can also examine how dollars are accrued by specific PIs. It is not possible to assign dollars directly to a PI, because some grants have multiple investigators. Rather, these are total costs that a given PI has been associated with over all grants in NIH EXPORTER. Here we identify PIs with the largest dollar amounts accrued for R01 grants.
+
+```{r dollars_per_pi}
+dollars.per.pi <- projects %>%
+  filter(activity == 'R01') %>%
+  left_join(project_io, by = 'project.num') %>%
+  left_join(project_pis, by = 'project.num') %>%
+  filter(!is.na(pi.id)) %>%
+  select(project.num, pi.id, total.cost) %>% 
+  unique() %>%
+  group_by(pi.id) %>%
+  summarise(pi.dollars = sum(total.cost) / 1e6) %>%
+  arrange(desc(pi.dollars))  
+
+dollars.per.pi %>%
+  head(10) %>%
+  knitr::kable(digits = 3,
+               caption = 'R01 grant dollars associated with specific PIs',
+               col.names=c('PI ID', 'Dollars (millions)'))
+```
+
+## Productivity
+
+In order to measure the "return" on the money the NIH invests in the research enterprise, we can measure scholarly output (i.e., publications) per dollar invested.
+
+Here we identify th highest performing grants outside of the R01 category. Much has been made of the wasteful spending outside of investigator-initiated research. Here we identify the cost of publications for grants other than R01's that cost more than 1 million dollars.
+
+```{r highperf_no_r01}
+high.perf.not.r01 <- projects %>%
+  filter(activity != 'R01') %>%
+  left_join(project_io, by = 'project.num') %>%
+  select(project.num, total.cost, n.pubs) %>%
+  filter(total.cost > 1e6 & n.pubs > 0) %>%
+  mutate(cost.per.pub = total.cost / n.pubs) %>%
+  arrange(cost.per.pub)
+
+high.perf.not.r01 %>%
+  head(10) %>%
+  mutate(total.cost = round(total.cost / 1e6, 3),
+         cost.per.pub = comma(round(cost.per.pub, 0))) %>%
+  knitr::kable(caption='Productivity (publications / dollar) of non-R01 grants',
+               col.names=c('Project ID', 'Project cost (dollars, millions)',
+                           'Number of publications', 'Cost per publications (dollars)'))
+```
+
+We can also identify the specific publications associated with grants with the least expensive publications.
+
+```{r cheap_pubs, echo = FALSE}
+high.perf.not.r01 %>%
+  head(1) %>%
+  select(project.num) %>%
+  left_join(publinks, by = 'project.num') %>%
+  head(5) %>%
+  knitr::kable(caption='Publications from the most productive grants',
+               col.names=c('Project ID', 'Pubmed ID'))
+```
+
+We can also identify productive PIs with current R01s ...
+
+```{r productive_pis}
+productive.pis <- projects %>%
+  filter(activity == 'R01' & fiscal.year == 2014) %>%
+  select(project.num) %>%
+  left_join(project_io, by = 'project.num') %>%
+  left_join(project_pis, by = 'project.num') %>%
+  group_by(pi.id) %>%
+  summarize(total.pi.dollars = sum(total.cost, na.rm = TRUE),
+            total.pubs = sum(n.pubs)) %>%
+  mutate(pub.cost = total.pi.dollars / total.pubs) %>%
+  # prevent PI Ids from being commafied
+  mutate(pi.id = as.character(pi.id)) %>%
+  arrange(pub.cost)
+
+productive.pis %>%
+  head(10) %>%
+  knitr::kable(digits = 0,
+               format.args = list(big.mark = ','),
+               col.names = c('PI ID',
+                             'Cost per publication (dollars)',
+                             'Total publications',
+                             'Total project costs (dollars)'))
+```
+
+Or we can identify the all-time most produtive PIs, independent of grant type or time frame ...
+
+```{r all.time.most.productive.pis}
+productive.pis.all.time <- projects %>%
+  select(project.num, activity) %>%
+  left_join(project_io, by = 'project.num') %>%
+  left_join(project_pis, by = 'project.num') %>%
+  group_by(pi.id, activity) %>%
+  summarize(total.pi.dollars = sum(total.cost, na.rm = TRUE),
+            total.pubs = sum(n.pubs),
+            total.patents = sum(n.patents)) %>%
+  ungroup() %>%
+  filter(total.pi.dollars >= 1e6) %>%
+  mutate(pub.cost = total.pi.dollars / total.pubs,
+         patent.cost = total.pi.dollars / total.patents) %>%
+  select(pi.id, activity, pub.cost, patent.cost, 
+         total.pubs, total.patents, total.pi.dollars) %>%
+  mutate(pi.id = as.character(pi.id))
+
+productive.pis.all.time %>%
+  arrange(pub.cost) %>%
+  head(10) %>%
+  knitr::kable(digits = 0,
+               format.args = list(big.mark = ','),
+               caption = 'Most productive PIs all time for publications',
+               col.names = c('PI ID', 'Grant type',
+                             'Cost per publication (dollars)',
+                             'Cost per patent (dollars)',
+                             'Total publications',
+                             'Total patents',
+                             'Total dollars'))
+
+productive.pis.all.time %>%
+  arrange(patent.cost) %>%
+  head(10) %>%
+  knitr::kable(digits = 0,
+               format.args = list(big.mark = ','),
+               caption = 'Most productive PIs all time for patents',
+               col.names = c('PI ID', 'Grant type',
+                             'Cost per publication (dollars)',
+                             'Cost per patent (dollars)',
+                             'Total publications',
+                             'Total patents',
+                             'Total dollars'))
+```
 
 When [Jeremy Berg](http://www.nigms.nih.gov/about/director/pages/berg.aspx) was head of the Institute of General Medical Sciences (NIGMS) from 2003-2011, he routinely provided analysis of funding trends at NIGMS in his "Feedback Loop" blog. One of these measured the productivity per grant dollar by measuring its "scholarly output" (*i.e.*, publications) as a function of direct costs. In this [plot](http://loop.nigms.nih.gov/2010/09/measuring-the-scientific-output-and-impact-of-nigms-grants/) there is an increase in productivity per dollar, until an inflection point at $700K, after which the number of publications *drops*, suggesting a negative influence of grant money on scholarly output. This was interesting and covered [here](http://www.nature.com/news/2010/101116/full/468356a.html).
 
-Here we flesh out this analysis and look at under- and over-performing institutes by this measure. In addition, Berg was focused on GM, and here we can easily look at similar measures across the NIH institutes. One caveat is that we only have access to `total.cost` in NIH EXPORTER, so the numbers include indirect costs. But, this is real cost to the tax-payer.
+Here we flesh out this analysis and look at how all institutes perform by this measure (Berg, and now Lorsch, only analyzed GM). One caveat is that we only have access to `total.cost` in NIH EXPORTER, so the numbers include indirect costs. But, this is real cost to the tax-payer.
 
-Here are several addition comparisons, suggested by readers of Berg's original [blog post](http://loop.nigms.nih.gov/2010/09/measuring-the-scientific-output-and-impact-of-nigms-grants/).
+First, we need to calculate the lifetime costs of all R01 grants.
 
-### invesigator-intitiated versus RFA-initiated R01
+```{r grant.costs}
+# calculate costs of all grants, over the entire lifetime of the grant
+grant_costs <- projects %>%
+  filter(institute %in% nih.institutes & activity == 'R01') %>%
+  left_join(project_io, by = 'project.num') %>%
+  select(institute, project.num, total.cost, n.pubs) %>%
+  unique()
 
-### Comparison of grant programs
+grant_costs
+```
+
+Next, we need to identify grants in each of the bins that Berg previously alluded to. `dplyr` makes this easy with the `ntile()` function. Berg previously divided grants into ~15 bins, we'll bin into ~5%.
+
+```{r bin.grant.costs}
+bin_grant_costs <- grant_costs %>%
+  group_by(institute) %>%
+  group_by(n.tile = ntile(total.cost, 20)) 
+
+bin_grant_costs
+```
+
+Separate grants by FOA type ...
+
+```{r foa.type}
+foa_grants <- projects %>% 
+  filter(!is.na(foa.number)) %>%
+  tidyr::separate(foa.number, c('foa.type'), sep = '-', drop = TRUE) %>%
+  select(project.num, foa.type) %>%
+  unique() %>%
+  left_join(project_io, by = 'project.num') %>%
+  mutate(pub.cost = total.cost / n.pubs) 
+
+foa_grants %>% group_by(foa.type) %>% summarize(count = n())
+```
+
+```{r by.dollar.breaks}
+# Berg's original values ...
+# breaks <- c(175000, 200000, 225000, 250000, 300000, 375000, 400000,
+#           450000, 500000, 600000, 700000, 800000, 900000, 1000000)
+min.lifetime.cost <- round(min(grant_costs$total.cost), -4) # round to 10,000s
+max.lifetime.cost <- round(max(grant_costs$total.cost), -5) 
+# step is average size of an award
+step <- 1e6
+
+breaks <- seq(min.lifetime.cost, max.lifetime.cost, step)
+breaks
+
+dollar_bin_grant_costs <- grant_costs %>%
+  group_by(institute) %>%
+  mutate(dollar.tile = findInterval(total.cost, vec = breaks, 
+                                    all.inside = TRUE, rightmost.closed = TRUE))
+
+dollar_bin_grant_costs
+
+dollar_bin_grant_costs %>% group_by(dollar.tile) %>% summarize(count = n())
+```
+
+That looks better. Now we can make the summary plots ...
+
+```{r plot.dollar.bins}
+
+#tile.counts <- dollar_bin_grant_costs %>%
+#  group_by(institute, dollar.tile) %>%
+#  summarize(tile.counts = n())
+
+dollar_bin_grant_costs %>%
+  # need to remove higher tiles because there are too few grants
+  filter(dollar.tile <= 13) %>%
+  ggplot(aes(x = factor(dollar.tile), y = n.pubs)) +
+  geom_boxplot(outlier.shape = NA) +
+  scale_x_discrete(labels = breaks / 1e6) + 
+  theme(axis.text.x = element_text(angle=45, vjust=0.8)) + 
+  scale_y_log10() +
+  theme_bw() +
+  facet_wrap(~ institute, scales = "free_x") +
+  ylab('Number of publications') +
+  xlab('Total costs (minimum, in millions)')
+```
+
+We can also examine how productivity breaks down within new R01s (Type 1) and competing renewals (Type 2).
+
+```{r new_vs_competing_r01s}
+project.types <- projects %>%
+  filter(activity == 'R01') %>%
+  filter(application.type == 1 | application.type == 2) %>%
+  select(project.num, application.type, project.start, project.end) %>%
+  left_join(project_io, by = 'project.num') %>%
+  group_by(project.num) %>%
+  mutate(duration = max(project.end) - min(project.start),
+         in.years = as.numeric(duration) / 365,
+         pubs.per.year = n.pubs / in.years) %>%
+  ungroup() %>%
+  mutate(n.tile = ntile(total.cost, 10))
+
+ggplot(project.types, aes(x = pubs.per.year)) +
+  geom_density(aes(fill = application.type, alpha=0.2)) +
+  scale_x_log10() + 
+  facet_wrap(~n.tile)
+```
+
+## Comparison of grant programs
 
 The NIH provides funds through differet [grant programs](http://grants.nih.gov/grants/funding/funding_program.htm):
 
@@ -145,95 +396,147 @@ The NIH provides funds through differet [grant programs](http://grants.nih.gov/g
   
   * `contract`: actvities begin with `U` (e.g. U54)
 
-#### Funding distribution 
+We can examine the total costs spent on specific grants and specific institutes over time.
 
-```{r example2_activity_comparisons, echo = FALSE, warning = FALSE, message = FALSE, fig.cap = 'Example 2. Comparison of research, program and contract costs over time'}
+```{r institute_funds, echo = FALSE, fig.cap = 'Funds for specific types of grants at the GM, CA and AI institutes'}
+select_activities <- c('R01', 'P01', 'R21', 'P30')
+select_inst <- c('GM', 'CA', 'AI')
+
+inst_costs <- projects %>%
+  filter(institute %in% select_inst & activity %in% select_activities) %>%
+  select(institute, activity, fiscal.year, fy.cost)
+
+ggplot(inst_costs, aes(x = factor(fiscal.year),
+                       y = fy.cost, 
+                       fill = activity)) +
+  geom_boxplot(outlier.size = 0.2, outlier.shape = NA) +
+  facet_wrap(~institute, nrow = 3) + 
+  scale_y_log10(limits = c(1e4, 1e7),
+                labels = trans_format("log10", math_format(10^.x))) +
+  annotation_logticks(sides = "l",
+                      scaled = TRUE) +
+  scale_fill_brewer(palette="Dark2") +
+  xlab('') +
+  ylab('Project costs (dollars, log-scaled)') +
+  theme_bw() +
+  theme(legend.position = 'bottom') +
+  theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust = 0.5))
+```
+
+Or we can see how institutes allocate money generally to different types of grants.
+
+```{r activity_comparisons, echo = FALSE, fig.cap = 'Comparison of research, program and contract costs over time'}
 
 # from http://grants.nih.gov/grants/funding/funding_program.htm
 research_projects <- projects %>% filter(grepl('^R', activity)) %>% select(project.num)
 program_projects <- projects %>% filter(grepl('^P', activity)) %>% select(project.num)
 contract_projects <- projects %>% filter(grepl('^U', activity)) %>% select(project.num)
 
+select_inst <- c('AI','CA','GM','HG','AA','MH')
+                
 grant_costs <- projects %>%
   filter(institute %in% nih.institutes) %>%
-  select(project.num, institute, fiscal.year, total.cost)
+  select(project.num, institute, fiscal.year, fy.cost)
 
 research_costs <- grant_costs %>%
-  semi_join(research_projects) %>%
+  semi_join(research_projects, by = 'project.num') %>%
   group_by(project.num, institute, fiscal.year) %>%
-  summarize(grant.cost = sum(total.cost, na.rm = TRUE)) %>%
+  summarize(project.cost = sum(fy.cost, na.rm = TRUE)) %>%
   mutate(type = 'research')
 
 program_costs <- grant_costs %>%
-  semi_join(program_projects) %>%
+  semi_join(program_projects, by = 'project.num') %>%
   group_by(project.num, institute, fiscal.year) %>%
-  summarize(grant.cost = sum(total.cost, na.rm = TRUE)) %>%
+  summarize(project.cost = sum(fy.cost, na.rm = TRUE)) %>%
   mutate(type = 'program')
 
 contract_costs <- grant_costs %>%
-  semi_join(contract_projects) %>%
+  semi_join(contract_projects, by = 'project.num') %>%
   group_by(project.num, institute, fiscal.year) %>%
-  summarize(grant.cost = sum(total.cost, na.rm = TRUE)) %>%
+  summarize(project.cost = sum(fy.cost, na.rm = TRUE)) %>%
   mutate(type = 'contract')
 
 combined_tbl <- bind_rows(research_costs, program_costs, contract_costs)
 
 ggplot(combined_tbl, aes(x = factor(fiscal.year),
-                         y = grant.cost,
+                         y = project.cost,
                          fill = type)) +
   geom_boxplot(outlier.shape = NA) + 
   scale_y_log10(limits = c(1e4,1e7),
                 labels = trans_format("log10", math_format(10^.x))) +
   facet_wrap(~institute) +
+  theme_bw() +
   scale_fill_brewer(palette = "Dark2") + 
+  theme(legend.position = 'bottom') +
   xlab('') +
   ylab('Total grant costs, log-scaled') +
   theme(axis.text.x = element_text(angle = 90))
-
 ```
 
-#### Productivity
+## Duration
 
-First we calculate the total cost of each R01 grant.
+The `nihexporter` exposes `project.start` and `project.end`, which we can use to examine the duration of projects. For example, we can identify the longest running R01 grants.
 
-```{r project_productivity, message = FALSE}
-project_costs <- projects %>%
-  filter(institute %in% nih.institutes & activity == 'R01') %>%
-  select(project.num, institute) %>%
-  left_join(project_io) %>%
-  filter(project.cost > 1e4)
+```{r grant_stamina}
+long.grants <- projects %>%
+  filter(activity == 'R01') %>%
+  select(project.num, project.start, project.end) %>%
+  group_by(project.num) %>%
+  summarize(longest.run = max(project.end) - min(project.start)) %>%
+  arrange(desc(longest.run)) %>%
+  mutate(in.years = as.numeric(longest.run) / 365) %>%
+  select(project.num, in.years)
 
-project_costs
+long.grants %>%
+  head(10) %>%
+  knitr::kable(digits = 2,
+               caption = 'Longest running R01 grants (all-time)',
+               col.names=c('Project ID', 'Duration (years)'))
 ```
-
-Now we need to measure grant productivity. Cross-referencing these grants with the `project_io` returns the `project.cost`, `n.pubs` and `n.patents`.
-
-```
-{r plot_dollar_bins, warning = FALSE, message = FALSE, fig.width=7, fig.height=7}
-tile.counts <- dollar_grant_productivity %>%
-  group_by(institute, dollar.tile) %>%
-  summarize(tile.counts = n())
-
-productivity_with_counts <- dollar_grant_productivity %>%
-  left_join(tile.counts)
-
-productivity_with_counts %>%
-  # need to remove higher tiles because there are too few grants
-  filter(dollar.tile <= 13) %>%
-  ggplot(aes(x = factor(dollar.tile), y = n.pubs, fill = tile.counts)) +
-  geom_boxplot() +
-  scale_x_discrete(labels = breaks / 1e6) + 
-  theme(axis.text.x = element_text(angle=45, vjust=0.8)) + 
-  scale_y_log10() +
-  facet_wrap(~ institute) +
-  ylab('Number of publications') +
-  xlab('Total costs (minimum, in millions)')
-```
-
-### Intramural versus extramural grants
-
-The [Center for Scientific Review](http://public.csr.nih.gov/Pages/default.aspx) would need to publicly release (anonymized) scores to enable such an analysis.
 
 ### Geographical distribution
 
-# References
+Geographical distribution of grant dollar is easily visualized using the package.
+
+```{r geography, warning = FALSE, message = FALSE}
+state.data <- data.frame(org.state = state.abb,
+                         state.name = tolower(state.name))
+
+state_funding <- projects %>%
+  select(application.id) %>%
+  left_join(project_orgs) %>%
+  left_join(org_info) %>%
+  left_join(projects, by = 'application.id') %>%
+  select(application.id, org.state, fy.cost) %>%
+  group_by(org.state) %>%
+  summarize(total.fy.cost = sum(fy.cost)/1000000000)
+
+cost.by.state <- state_funding %>%
+  left_join(state.data) %>%
+  select(state.name, total.fy.cost) %>%
+  filter(state.name != "NA") %>%
+  mutate(region=state.name, cost = total.fy.cost) %>%
+  select(region, cost) %>%
+  data.frame()
+
+state.map.data <- map_data("state")
+
+plot_data <- left_join(state.map.data, cost.by.state)
+
+ggplot() + 
+  geom_polygon(data=plot_data, 
+                      aes(x=long, y=lat, group = group, fill=plot_data$cost),
+                      colour="black") +
+  scale_fill_continuous(low = "lightgrey", high = "red", guide="colorbar") +
+  theme_bw() +
+  labs(fill = "Total Cost per year \n (Billions of dollars)",x="", y="") +
+       #title = "Total cost per fiscal year by state" 
+  scale_y_continuous(breaks=c()) +
+  scale_x_continuous(breaks=c()) +
+  theme(panel.border =  element_blank()) +
+  coord_fixed(ratio = 1.4)
+```
+
+# Acknowledgments
+
+The `nihexporter` package was developed over several weeks during a course on data analysis. Thanks to XXX for discussions and comments on the manuscript.

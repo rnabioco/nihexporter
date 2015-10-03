@@ -5,7 +5,7 @@
 \alias{project_io}
 \title{project_io}
 \format{A data frame with four variables: \code{project.num},
-  \code{n.pubs}, \code{n.patents} and \code{project.cost}}
+  \code{n.pubs}, \code{n.patents} and \code{total.cost}}
 \source{
 pre-computed from \code{projects} table
 }

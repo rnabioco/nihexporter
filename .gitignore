@@ -7,7 +7,3 @@
 data-raw/
 OLD/*
 inst/doc
-manuscript/*.pdf
-manuscript/*.docx
-manuscript/*.tex
-manuscript/*.html

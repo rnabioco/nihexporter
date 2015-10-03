@@ -4,9 +4,9 @@ library(dplyr)
 
 project_costs <- projects %>%
   filter(institute %in% nih.institutes) %>%
-  select(project.num, total.cost) %>%
+  select(project.num, fy.cost) %>%
   group_by(project.num) %>%
-  summarize(project.cost = sum(total.cost, na.rm = TRUE))
+  summarize(total.cost = sum(fy.cost, na.rm = TRUE))
 
 pub_output <- project_costs %>%
   left_join(publinks) %>%
@@ -22,6 +22,7 @@ project_io <- pub_output %>%
   inner_join(patent_output) %>%
   left_join(project_costs) %>%
   filter(project.num != '') %>%
+  filter(!grepl('-', project.num)) %>%
   arrange(project.num)
 
 save(project_io, file = "data/project_io.rdata", compress = "xz")
