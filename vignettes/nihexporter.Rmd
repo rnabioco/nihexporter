@@ -15,22 +15,21 @@ vignette: >
 
 The `nihexporter` package provides the following tables of data:
 
-* `projects`: information about funded projects
+  * `projects` has information about projects in each fiscal year, keyed by `project.num`
+  * `org_info` has information about project organizations
+  * `project_orgs` links applications to organizations 
+  * `project_pis` links PI information to a project
+  * `publinks` table links PubMed IDs to `project.num`
+  * `publications` links project IDs to PubMed IDs
+  * `patents` links patent IDs to project IDs
 
-* `project_pis`: PI information (look these up in NIH REPORTER) for each `project.num`
+See the documentation in the R package for more information about each table.
 
-* `project_orgs`: links DUNS numbers (`org.duns`) from `projects` table to information on specific organizations 
+The package also has several precomputed variables and tables that enable quick and easy exploratory analysis:
 
-* `publinks`: links grants (`project.num`) to PUBMED IDs (`pmid`).
-
-* `patents`: links patent IDs (`patent.id`) to project IDs (`project.num`)
-
-There are also a few helper variables that make exploratory analysis a bit easier:
-
-* `nih.institutes`: 27 NIH institutes in two-letter format 
-
-* `project_io`: pre-computed values for `n.pubs`, `n.patents` and `project.cost`
-
+  * `nih.institutes`: Two-letter format for 27 NIH institutes
+  * `project_io`: This table contains pre-computed values for overall project cost (`project.cost`), as well as the number of publications (`n.pubs`) and patents (`n.patents`) associated with each project.
+  
 The `nihexporter` package is avavilable on [github](https://github.com/jayhesselberth/nihexporter).
 
 # Examples
@@ -46,7 +45,7 @@ library(nihexporter)
 
 ## Award amounts
 
-The `total.cost` column from the `projects` table has many `NA` values.
+The `fy.cost` column from the `projects` table has many `NA` values.
 You need to use `na.rm` in aggregation functions to ensure robust handling of these
 values.
 
@@ -54,10 +53,10 @@ Let's look at spending over time for NIGMS in years that have such data:
 
 ```{r inst_cost_over_time, message=FALSE, fig.cap = 'Spending at NIGMS'}
 cost.over.time <- projects %>%
-  select(institute, total.cost, fiscal.year) %>%
+  select(institute, fy.cost, fiscal.year) %>%
   filter(institute == 'GM') %>%
   group_by(fiscal.year, institute) %>%
-  summarize(yearly.cost = sum(total.cost, na.rm = TRUE)) %>%
+  summarize(yearly.cost = sum(fy.cost, na.rm = TRUE)) %>%
   filter(yearly.cost > 0)
 
 cost.over.time %>%
@@ -69,28 +68,29 @@ Let's look at WHERE the money is going. This example illustrates linking of the 
 
 ```{r money_per_institution, message = FALSE, warning = FALSE}
 money.per.institution <- projects %>%
-  filter(org.duns != '' & activity == 'R01') %>%
-  select(org.duns, fiscal.year, total.cost) %>%
+  filter(activity == 'R01') %>%
+  left_join(project_orgs) %>%
+  select(org.duns, fiscal.year, fy.cost) %>%
   group_by(org.duns, fiscal.year) %>%
-  summarise(total.award.billions = sum(total.cost, na.rm = TRUE) / 1e9) %>%
+  summarise(total.award.billions = sum(fy.cost, na.rm = TRUE) / 1e9) %>%
   ungroup() %>%
   arrange(desc(total.award.billions)) %>%
-  left_join(project_orgs) %>%
+  left_join(org_info) %>%
   select(fiscal.year, org.name, total.award.billions)
 
 money.per.institution %>%
-  head(10) %>% kable()
+  head(10) %>% knitr::kable()
 ```
 
-And WHO are the big winners? Look these PIs up in NIH REPORTER ...
+One can also identiy PIs that have accrued large project dollars. 
 
 ```{r money_per_pi, message = FALSE}
 
 money.per.pi <- projects %>%
   filter(activity == 'R01') %>%
-  select(project.num, total.cost) %>%
+  select(project.num, fy.cost) %>%
   group_by(project.num) %>%
-  summarise(total.award.millions = sum(total.cost, na.rm = TRUE) / 1e6) %>%
+  summarise(total.award.millions = sum(fy.cost, na.rm = TRUE) / 1e6) %>%
   ungroup() %>%
   arrange(desc(total.award.millions)) %>%
   left_join(project_pis) %>%
@@ -100,7 +100,7 @@ money.per.pi <- projects %>%
   arrange(desc(pi.millionaire))  
 
 money.per.pi %>%
-  head(10) %>% kable()
+  head(10) %>% knitr::kable()
 ```
 
 ## Productivity
@@ -117,7 +117,7 @@ the case.
 high.perf.not.r01 <- projects %>%
   filter(activity != 'R01') %>%
   group_by(project.num) %>%
-  summarise(overall.cost = sum(total.cost, na.rm = TRUE)) %>%
+  summarise(overall.cost = sum(fy.cost, na.rm = TRUE)) %>%
   filter(overall.cost > 1e6) %>%
   left_join(publinks) %>%
   filter(!is.na(pmid)) %>%
@@ -140,7 +140,7 @@ high.perf.not.r01 %>%
   select(project.num) %>%
   left_join(publinks) %>%
   head(10) %>%
-  kable()
+  knitr::kable()
 ```
 
 Here we quantitate the return on R01 investment and identify the most expensive publications, in grant dollars. One might argue that grants with higher `cost.per.pub` are less good investments.
@@ -149,7 +149,7 @@ Here we quantitate the return on R01 investment and identify the most expensive 
 costly.pubs.r01 <- projects %>%
   filter(activity == 'R01') %>%
   group_by(project.num) %>%
-  summarise(overall.cost = sum(total.cost, na.rm = TRUE)) %>%
+  summarise(overall.cost = sum(fy.cost, na.rm = TRUE)) %>%
   left_join(publinks) %>%
   filter(!is.na(pmid)) %>%
   group_by(project.num, overall.cost) %>%
@@ -160,7 +160,7 @@ costly.pubs.r01 <- projects %>%
 
 costly.pubs.r01 %>%
   head(10) %>%
-  kable()
+  knitr::kable()
 ```
 
 ## Duration
@@ -179,9 +179,6 @@ long.grants <- projects %>%
 
 long.grants %>%
   head(10) %>%
-  kable()
+  knitr::kable()
 ```
 
-### Interpretation
-
-**A `r long.grants %>% head(1) %>% select(in.years) %>% round()` year R01?** Wow.
