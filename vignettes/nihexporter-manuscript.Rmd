@@ -1,20 +1,20 @@
 ---
 title: '`nihexporter`: an R package for NIH funding data'
-author: Jay Hesselberth, Erin Baschal, Nick Ellinwood, Ashley Pacheco, Mary Sweet,
+author: Jay Hesselberth, Erin Baschal, Nick Ellinwood, Ashley Pacheco, Sally Peach, Mary Sweet,
   Yuying Wang
 date: 'Last update: `r format(Sys.time(), "%d %B, %Y")`'
 output:
-  pdf_document:
-    fig_caption: yes
-    fig_width: 7
-    keep_tex: yes
-    number_sections: yes
   html_document:
     fig_caption: yes
     force_captions: yes
     highlight: pygments
     number_sections: yes
     toc: yes
+  pdf_document:
+    fig_caption: yes
+    fig_width: 7
+    keep_tex: yes
+    number_sections: yes
   word_document: default
 ---
 
@@ -499,20 +499,42 @@ long.grants %>%
 Geographical distribution of grant dollar is easily visualized using the package.
 
 ```{r geography, warning = FALSE, message = FALSE}
-library(maps)
-library(leaflet)
-
 state.data <- data.frame(org.state = state.abb,
-                         state.name = str_to_lower(state.name))
+                         state.name = tolower(state.name))
 
 state_funding <- projects %>%
-  select(project.num, org.duns) %>%
+  select(application.id) %>%
   left_join(project_orgs) %>%
-  select(project.num, org.state) %>%
-  left_join(state.data) %>%
-  select(project.num, state.name) %>%
-  left_join(project_io)
+  left_join(org_info) %>%
+  left_join(projects, by = 'application.id') %>%
+  select(application.id, org.state, fy.cost) %>%
+  group_by(org.state) %>%
+  summarize(total.fy.cost = sum(fy.cost)/1000000000)
 
+cost.by.state <- state_funding %>%
+  left_join(state.data) %>%
+  select(state.name, total.fy.cost) %>%
+  filter(state.name != "NA") %>%
+  mutate(region=state.name, cost = total.fy.cost) %>%
+  select(region, cost) %>%
+  data.frame()
+
+state.map.data <- map_data("state")
+
+plot_data <- left_join(state.map.data, cost.by.state)
+
+ggplot() + 
+  geom_polygon(data=plot_data, 
+                      aes(x=long, y=lat, group = group, fill=plot_data$cost),
+                      colour="black") +
+  scale_fill_continuous(low = "lightgrey", high = "red", guide="colorbar") +
+  theme_bw() +
+  labs(fill = "Total Cost per year \n (Billions of dollars)",x="", y="") +
+       #title = "Total cost per fiscal year by state" 
+  scale_y_continuous(breaks=c()) +
+  scale_x_continuous(breaks=c()) +
+  theme(panel.border =  element_blank()) +
+  coord_fixed(ratio = 1.4)
 ```
 
 # Acknowledgments
