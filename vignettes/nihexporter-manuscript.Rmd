@@ -1,20 +1,21 @@
 ---
 title: '`nihexporter`: an R package for NIH funding data'
-author: Jay Hesselberth, Erin Baschal, Nick Ellinwood, Ashley Pacheco, Sally Peach, Mary Sweet,
-  Yuying Wang
+author: Jay Hesselberth, Erin Baschal, Nick Ellinwood, Ashley Pacheco, Sally Peach,
+  Mary Sweet, Yuying Wang
 date: 'Last update: `r format(Sys.time(), "%d %B, %Y")`'
 output:
-  html_document:
-    fig_caption: yes
-    force_captions: yes
-    highlight: pygments
-    number_sections: yes
-    toc: yes
   pdf_document:
     fig_caption: yes
     fig_width: 7
     keep_tex: yes
     number_sections: yes
+  html_document:
+    fig_caption: yes
+    force_captions: yes
+    highlight: pygments
+    keep_md: yes
+    number_sections: yes
+    toc: yes
   word_document: default
 ---
 
@@ -30,11 +31,11 @@ We developed the `nihexporter` R package, which provides access to [NIH EXPORTER
 
 ## Availability
 
-The `nihexporter` R package can be installed via [github](https://github.com/jayhesselberth/nihexporter). Exploratory analysis was done using RStudio with the `dplyr`, `ggplot2` packages. 
+The `nihexporter` R package can be installed via [github](https://github.com/jayhesselberth/nihexporter).
 
 ## Implementation
 
-The `nihexporter` package is implemented in the R Statistical Computing Environment. This document is created using `Rmarkdown`, and the source is available here[].
+The `nihexporter` package is implemented in the R Statistical Computing Environment.
 
 ## Contact
 
@@ -125,7 +126,7 @@ cost.over.time %>%
 
 ### By Institution
 
-Let's look WHERE the money is going. This example illustrates linking of the `project`, `org_info` and `project_orgs` tables.
+Let's look *where* the money is going. This example illustrates linking of the `project`, `org_info` and `project_orgs` tables.
 
 ```{r money_per_institution}
 institution_funding <- projects %>%
@@ -198,7 +199,7 @@ high.perf.not.r01 %>%
 
 We can also identify the specific publications associated with grants with the least expensive publications.
 
-```{r cheap_pubs, echo = FALSE}
+```{r cheap_pubs}
 high.perf.not.r01 %>%
   head(1) %>%
   select(project.num) %>%
@@ -254,6 +255,7 @@ productive.pis.all.time <- projects %>%
   mutate(pi.id = as.character(pi.id))
 
 productive.pis.all.time %>%
+  select(-patent.cost, -total.patents) %>%
   arrange(pub.cost) %>%
   head(10) %>%
   knitr::kable(digits = 0,
@@ -261,21 +263,18 @@ productive.pis.all.time %>%
                caption = 'Most productive PIs all time for publications',
                col.names = c('PI ID', 'Grant type',
                              'Cost per publication (dollars)',
-                             'Cost per patent (dollars)',
                              'Total publications',
-                             'Total patents',
                              'Total dollars'))
 
 productive.pis.all.time %>%
+  select(-pub.cost, -total.pubs) %>%
   arrange(patent.cost) %>%
   head(10) %>%
   knitr::kable(digits = 0,
                format.args = list(big.mark = ','),
                caption = 'Most productive PIs all time for patents',
                col.names = c('PI ID', 'Grant type',
-                             'Cost per publication (dollars)',
                              'Cost per patent (dollars)',
-                             'Total publications',
                              'Total patents',
                              'Total dollars'))
 ```
@@ -307,20 +306,6 @@ bin_grant_costs <- grant_costs %>%
 bin_grant_costs
 ```
 
-Separate grants by FOA type ...
-
-```{r foa.type}
-foa_grants <- projects %>% 
-  filter(!is.na(foa.number)) %>%
-  tidyr::separate(foa.number, c('foa.type'), sep = '-', drop = TRUE) %>%
-  select(project.num, foa.type) %>%
-  unique() %>%
-  left_join(project_io, by = 'project.num') %>%
-  mutate(pub.cost = total.cost / n.pubs) 
-
-foa_grants %>% group_by(foa.type) %>% summarize(count = n())
-```
-
 ```{r by.dollar.breaks}
 # Berg's original values ...
 # breaks <- c(175000, 200000, 225000, 250000, 300000, 375000, 400000,
@@ -345,11 +330,7 @@ dollar_bin_grant_costs %>% group_by(dollar.tile) %>% summarize(count = n())
 
 That looks better. Now we can make the summary plots ...
 
-```{r plot.dollar.bins}
-
-#tile.counts <- dollar_bin_grant_costs %>%
-#  group_by(institute, dollar.tile) %>%
-#  summarize(tile.counts = n())
+```{r plot.dollar.bins, fig.cap='Productivity versus grant costs for each institute.'}
 
 dollar_bin_grant_costs %>%
   # need to remove higher tiles because there are too few grants
@@ -363,27 +344,6 @@ dollar_bin_grant_costs %>%
   facet_wrap(~ institute, scales = "free_x") +
   ylab('Number of publications') +
   xlab('Total costs (minimum, in millions)')
-```
-
-We can also examine how productivity breaks down within new R01s (Type 1) and competing renewals (Type 2).
-
-```{r new_vs_competing_r01s}
-project.types <- projects %>%
-  filter(activity == 'R01') %>%
-  filter(application.type == 1 | application.type == 2) %>%
-  select(project.num, application.type, project.start, project.end) %>%
-  left_join(project_io, by = 'project.num') %>%
-  group_by(project.num) %>%
-  mutate(duration = max(project.end) - min(project.start),
-         in.years = as.numeric(duration) / 365,
-         pubs.per.year = n.pubs / in.years) %>%
-  ungroup() %>%
-  mutate(n.tile = ntile(total.cost, 10))
-
-ggplot(project.types, aes(x = pubs.per.year)) +
-  geom_density(aes(fill = application.type, alpha=0.2)) +
-  scale_x_log10() + 
-  facet_wrap(~n.tile)
 ```
 
 ## Comparison of grant programs
@@ -425,7 +385,7 @@ ggplot(inst_costs, aes(x = factor(fiscal.year),
 
 Or we can see how institutes allocate money generally to different types of grants.
 
-```{r activity_comparisons, echo = FALSE, fig.cap = 'Comparison of research, program and contract costs over time'}
+```{r activity_comparisons, fig.cap = 'Comparison of research, program and contract costs over time'}
 
 # from http://grants.nih.gov/grants/funding/funding_program.htm
 research_projects <- projects %>% filter(grepl('^R', activity)) %>% select(project.num)
@@ -498,7 +458,7 @@ long.grants %>%
 
 Geographical distribution of grant dollar is easily visualized using the package.
 
-```{r geography, warning = FALSE, message = FALSE}
+```{r geography, fig.cap = 'Geographic distribution of NIH dollars', warning = FALSE, message = FALSE}
 state.data <- data.frame(org.state = state.abb,
                          state.name = tolower(state.name))
 
@@ -509,7 +469,7 @@ state_funding <- projects %>%
   left_join(projects, by = 'application.id') %>%
   select(application.id, org.state, fy.cost) %>%
   group_by(org.state) %>%
-  summarize(total.fy.cost = sum(fy.cost)/1000000000)
+  summarize(total.fy.cost = sum(fy.cost) / 1e9)
 
 cost.by.state <- state_funding %>%
   left_join(state.data) %>%
@@ -539,4 +499,4 @@ ggplot() +
 
 # Acknowledgments
 
-The `nihexporter` package was developed over several weeks during a course on data analysis. Thanks to XXX for discussions and comments on the manuscript.
+The `nihexporter` package was developed over several weeks during a course on data analysis (http://molb7621.github.io). Thanks to the NIH EXPORTER team for fixing issues with the EXPORTER tables.
