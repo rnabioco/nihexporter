@@ -4,11 +4,6 @@ author: Jay Hesselberth, Erin Baschal, Nick Ellinwood, Ashley Pacheco, Sally Pea
   Mary Sweet, Yuying Wang
 date: 'Last update: `r format(Sys.time(), "%d %B, %Y")`'
 output:
-  pdf_document:
-    fig_caption: yes
-    fig_width: 7
-    keep_tex: yes
-    number_sections: yes
   html_document:
     fig_caption: yes
     force_captions: yes
@@ -16,6 +11,11 @@ output:
     keep_md: yes
     number_sections: yes
     toc: yes
+  pdf_document:
+    fig_caption: yes
+    fig_width: 7
+    keep_tex: yes
+    number_sections: yes
   word_document: default
 ---
 
@@ -354,7 +354,7 @@ The NIH provides funds through differet [grant programs](http://grants.nih.gov/g
   
   * `program`: activities begin with `P` (e.g. P01)
   
-  * `contract`: actvities begin with `U` (e.g. U54)
+  * `cooperative agreements`: actvities begin with `U` (e.g. U54)
 
 We can examine the total costs spent on specific grants and specific institutes over time.
 
@@ -385,12 +385,12 @@ ggplot(inst_costs, aes(x = factor(fiscal.year),
 
 Or we can see how institutes allocate money generally to different types of grants.
 
-```{r activity_comparisons, fig.cap = 'Comparison of research, program and contract costs over time'}
+```{r activity_comparisons, fig.cap = 'Comparison of research, program and coop costs over time'}
 
 # from http://grants.nih.gov/grants/funding/funding_program.htm
 research_projects <- projects %>% filter(grepl('^R', activity)) %>% select(project.num)
 program_projects <- projects %>% filter(grepl('^P', activity)) %>% select(project.num)
-contract_projects <- projects %>% filter(grepl('^U', activity)) %>% select(project.num)
+coop_projects <- projects %>% filter(grepl('^U', activity)) %>% select(project.num)
 
 select_inst <- c('AI','CA','GM','HG','AA','MH')
                 
@@ -410,13 +410,13 @@ program_costs <- grant_costs %>%
   summarize(project.cost = sum(fy.cost, na.rm = TRUE)) %>%
   mutate(type = 'program')
 
-contract_costs <- grant_costs %>%
-  semi_join(contract_projects, by = 'project.num') %>%
+coop_costs <- grant_costs %>%
+  semi_join(coop_projects, by = 'project.num') %>%
   group_by(project.num, institute, fiscal.year) %>%
   summarize(project.cost = sum(fy.cost, na.rm = TRUE)) %>%
-  mutate(type = 'contract')
+  mutate(type = 'cooperative agreements')
 
-combined_tbl <- bind_rows(research_costs, program_costs, contract_costs)
+combined_tbl <- bind_rows(research_costs, program_costs, coop_costs)
 
 ggplot(combined_tbl, aes(x = factor(fiscal.year),
                          y = project.cost,
