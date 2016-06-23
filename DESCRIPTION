@@ -10,7 +10,8 @@ Suggests: dplyr,
           knitr,
           stringr,
           scales,
-          readr
+          readr,
+          maps
 License: CC0
 LazyData: true
 URL: http://github.com/jayhesselberth/nihexporter
