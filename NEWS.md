@@ -1,4 +1,10 @@
-# nihexporter, version 0.7 (unreleased)
+# nihexporter, version 0.8
+
+- update to FY 2015
+- small fixes for tidyr::separate, need characters for `into` arg
+- add script for downloading DUNS patch files
+
+# nihexporter, version 0.7
 
 ## Major
 

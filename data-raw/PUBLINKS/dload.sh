@@ -4,7 +4,7 @@
 #BSUB -o dload.publinks.%J.out
 #BSUB -e dload.publinks.%J.err
 
-years=$(seq 1985 2014)
+years=$(seq 1985 2015)
 urlbase="http://exporter.nih.gov/CSVs/final/RePORTER_PUBLNK_C_" # YEAR.zip
 
 for year in ${years[@]}; do
