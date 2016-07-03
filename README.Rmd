@@ -75,11 +75,11 @@ expensive_projects <- projects %>%
   left_join(project_io) %>%
   ungroup() %>%
   group_by(institute) %>%
-  arrange(desc(project.cost)) %>%
+  arrange(desc(total.cost)) %>%
   slice(1:1) %>%
   ungroup() %>%
-  arrange(desc(project.cost)) %>%
-  mutate(cost.in.billions = project.cost / 1e9)
+  arrange(desc(total.cost)) %>%
+  mutate(cost.in.billions = total.cost / 1e9)
 
 head(expensive_projects)
 ```
@@ -90,17 +90,17 @@ Let's look at the amounts spent on R01 grants at each NIH institute.
 project_costs <- projects %>% 
   filter(activity == 'R01') %>%
   left_join(project_io) %>%
-  select(institute, project.cost)
+  select(institute, total.cost)
 
 # calculate whisker limits 
 # http://stackoverflow.com/questions/5677885/ignore-outliers-in-ggplot2-boxplot
-lims <- boxplot.stats(project_costs$project.cost)$stats[c(1, 5)]
+lims <- boxplot.stats(project_costs$total.cost)$stats[c(1, 5)]
 
-ggplot(project_costs, aes(reorder(institute, project.cost, mean, order=TRUE), project.cost)) +
+ggplot(project_costs, aes(reorder(institute, total.cost, mean, order=TRUE), total.cost)) +
   geom_boxplot(outlier.shape = NA) +
   coord_cartesian(ylim = lims * 1.25) +
   scale_y_continuous(labels = comma) +
   ylab('Total project cost (dollars)') +
   xlab('NIH institute') + 
-  ggtitle('Total cost of R01 grants from 2000-2014')
+  ggtitle('Total cost of R01 grants from 2000-2015')
 ```

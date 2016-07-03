@@ -121,7 +121,7 @@ new_duns <- projects.tbl %>%
 all_duns <- bind_rows(old_duns, new_duns)
 
 project_orgs <- all_duns %>%
-  separate(org.duns, into = c(1:20), sep = ';', extra = 'drop') %>%
+  separate(org.duns, into = as.character(c(1:20)), sep = ';', extra = 'drop') %>%
   gather(application.id) %>%
   setNames(c('application.id','count','org.duns')) %>%
   select(application.id, org.duns) %>%
@@ -142,7 +142,7 @@ project_pis <- projects.tbl %>%
   filter(institute %in% nih.institutes) %>%
   filter(!grepl('-', project.num)) %>%
   select(project.num, pi.ids) %>%
-  separate(pi.ids, into = c(1:20), sep = ';', extra = 'drop') %>%
+  separate(pi.ids, into = as.character(c(1:20)), sep = ';', extra = 'drop') %>%
   gather(project.num) %>%
   setNames(c('project.num', 'pi.num', 'pi.id')) %>%
   filter(pi.id != '' & project.num != '') %>%
