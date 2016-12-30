@@ -1,0 +1,7 @@
+templates:
+  params:
+    bootswatch: paper
+
+articles:
+  - title: "Overview"
+  - href: "articles/nihexporter.html"
