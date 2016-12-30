@@ -1,3 +1,5 @@
+^img$
+^docs$
 ^.*\.Rproj$
 ^\.Rproj\.user$
 cran-comments.md

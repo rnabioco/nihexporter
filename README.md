@@ -1,3 +1,4 @@
+
 [![Travis-CI Build Status](https://travis-ci.org/jayhesselberth/nihexporter.png?branch=master)](https://travis-ci.org/jayhesselberth/nihexporter)
 
 nihexporter
@@ -61,8 +62,7 @@ expensive_projects <- projects %>%
 #> character vector and factor, coercing into character vector
 
 head(expensive_projects)
-#> Source: local data frame [6 x 6]
-#> 
+#> # A tibble: 6 × 6
 #>   project.num institute n.pubs n.patents total.cost cost.in.billions
 #>         <chr>    <fctr>  <int>     <int>      <dbl>            <dbl>
 #> 1 ZIHLM200888        LM    126         1 1544981304        1.5449813
@@ -94,4 +94,4 @@ ggplot(project_costs, aes(reorder(institute, total.cost, mean, order=TRUE), tota
   ggtitle('Total cost of R01 grants from 2000-2015')
 ```
 
-![](inst/extdata/README-plot_project_costs-1.png)
+![](img/README-plot_project_costs-1.png)

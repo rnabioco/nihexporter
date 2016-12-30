@@ -1,9 +1,5 @@
 ---
-title: nihexporter README
-author: Jay Hesselberth <jay.hesselberth@gmail.com>
-output:
-  md_document:
-    variant: markdown_github
+output: github_document
 ---
 
 [![Travis-CI Build Status](https://travis-ci.org/jayhesselberth/nihexporter.png?branch=master)](https://travis-ci.org/jayhesselberth/nihexporter)
@@ -12,7 +8,7 @@ output:
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.path = "inst/extdata/README-"
+  fig.path = "img/README-"
 )
 ```
 

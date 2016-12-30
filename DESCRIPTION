@@ -1,18 +1,24 @@
 Package: nihexporter
-Title: NIH EXPORTER 2000-2015
-Version: 0.8
-Author: Jay Hesselberth <jay.hesselberth@gmail.com> [aut,cre]
+Title: NIH EXPORTER 2000-2016
+Version: 0.9.0
+Authors@R: person('Jay', 'Hesselberth', role = c("aut", "cre"),
+                    email = 'jay.hesselberth@gmail.com')
 Maintainer: Jay Hesselberth <jay.hesselberth@gmail.com>
-Description: Provides data describing NIH biomedical research funding from 2000-2014. 
-Depends: R (>= 3.1.0)
-Suggests: dplyr,
-          ggplot2,
-          knitr,
-          stringr,
-          scales,
-          readr,
-          maps
+Description: Provides data describing biomedical research funding
+    from the National Institutes of Health spanning 2000-2016.
+Depends:
+    R (>= 3.1.0),
+    dplyr,
+    ggplot2,
+Suggests:
+    knitr,
+    stringr,
+    scales,
+    readr,
+    maps
 License: CC0
 LazyData: true
 URL: http://github.com/jayhesselberth/nihexporter
+BugReports: http://github.com/jayhesselberth/nihexporter/issues
 VignetteBuilder: knitr
+RoxygenNote: 5.0.1
