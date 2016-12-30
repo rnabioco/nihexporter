@@ -36,7 +36,7 @@
   <body>
     <div class="container template-news">
       <header>
-      <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
@@ -82,6 +82,94 @@
     </div>
 
     <div class="contents">
+    <div id="nihexporter-0-8" class="section level1">
+<h1 class="hasAnchor">
+<a href="#nihexporter-0-8" class="anchor"> </a>nihexporter 0.8</h1>
+<ul><li>update to FY 2015</li>
+<li>small fixes for tidyr::separate, need characters for <code>into</code> arg</li>
+<li>add script for downloading DUNS patch files</li>
+</ul></div>
+    <div id="nihexporter-0-7" class="section level1">
+<h1 class="hasAnchor">
+<a href="#nihexporter-0-7" class="anchor"> </a>nihexporter 0.7</h1>
+<div id="major" class="section level2">
+<h2 class="hasAnchor">
+<a href="#major" class="anchor"> </a>Major</h2>
+<ul><li>
+<code>org.duns</code> in <code>project_orgs</code> table is corrected (thanks EXPORTER folks)</li>
+<li>only projects associted with <code>nih.institues</code> are in the <code>projects</code> table, so no need to filter by <code>nih.institutes</code>
+</li>
+<li>added <code>application.type</code> and <code>arra.funded</code> to <code>projects</code> table</li>
+<li>add CITATION file</li>
+</ul></div>
+<div id="minor" class="section level2">
+<h2 class="hasAnchor">
+<a href="#minor" class="anchor"> </a>Minor</h2>
+<ul><li>refactor data loading</li>
+</ul></div>
+</div>
+    <div id="nihexporter-0-6-1" class="section level1">
+<h1 class="hasAnchor">
+<a href="#nihexporter-0-6-1" class="anchor"> </a>nihexporter 0.6.1</h1>
+<div id="minor-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#minor-1" class="anchor"> </a>Minor</h2>
+<ul><li>added missing <code>project.cost</code> to <code>project.io</code> table</li>
+</ul></div>
+</div>
+    <div id="nihexporter-0-6" class="section level1">
+<h1 class="hasAnchor">
+<a href="#nihexporter-0-6" class="anchor"> </a>nihexporter 0.6</h1>
+<div id="major-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#major-1" class="anchor"> </a>Major</h2>
+<ul><li><p>renamed <code>project_output</code> to <code>project_io</code></p></li>
+<li><p>added <code>publications</code> table</p></li>
+</ul></div>
+</div>
+    <div id="nihexporter-0-5" class="section level1">
+<h1 class="hasAnchor">
+<a href="#nihexporter-0-5" class="anchor"> </a>nihexporter 0.5</h1>
+<div id="major-2" class="section level2">
+<h2 class="hasAnchor">
+<a href="#major-2" class="anchor"> </a>Major</h2>
+<ul><li><p>identified <em>major</em> issue with organization DUNS numbers in the PROJECTS table. Emailed NIH EXPORTER via the website and asked them to fix.</p></li>
+<li><p>added <code>project_output</code> table with pre-computed values for grants</p></li>
+</ul></div>
+<div id="minor-2" class="section level2">
+<h2 class="hasAnchor">
+<a href="#minor-2" class="anchor"> </a>Minor</h2>
+<ul><li><p>removed dots from table names</p></li>
+<li>rename <code>project.orgs</code> to <code>project_orgs</code>
+</li>
+<li><p>rename <code>project.pis</code> to <code>project_pis</code></p></li>
+</ul></div>
+</div>
+    <div id="nihexporter-0-4" class="section level1">
+<h1 class="hasAnchor">
+<a href="#nihexporter-0-4" class="anchor"> </a>nihexporter 0.4</h1>
+<div id="major-3" class="section level2">
+<h2 class="hasAnchor">
+<a href="#major-3" class="anchor"> </a>Major</h2>
+<ul><li>added <code>patents</code> table</li>
+<li>updated vignette with <code>patents</code> example</li>
+</ul></div>
+</div>
+    <div id="nihexporter-0-3" class="section level1">
+<h1 class="hasAnchor">
+<a href="#nihexporter-0-3" class="anchor"> </a>nihexporter 0.3</h1>
+<div id="major-4" class="section level2">
+<h2 class="hasAnchor">
+<a href="#major-4" class="anchor"> </a>Major</h2>
+<ul><li>recompressed rdata files to be much smaller</li>
+<li>new grant_productivity vignette</li>
+<li>added nih.institutes variable for quick filtering with %in%</li>
+</ul></div>
+<div id="minor-3" class="section level2">
+<h2 class="hasAnchor">
+<a href="#minor-3" class="anchor"> </a>Minor</h2>
+</div>
+</div>
     </div>
   </div>
 
@@ -89,6 +177,13 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#nihexporter-0-8">0.8</a></li>
+        <li><a href="#nihexporter-0-7">0.7</a></li>
+        <li><a href="#nihexporter-0-6-1">0.6.1</a></li>
+        <li><a href="#nihexporter-0-6">0.6</a></li>
+        <li><a href="#nihexporter-0-5">0.5</a></li>
+        <li><a href="#nihexporter-0-4">0.4</a></li>
+        <li><a href="#nihexporter-0-3">0.3</a></li>
       </ul>
     </div>
   </div>

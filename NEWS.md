@@ -1,10 +1,10 @@
-# nihexporter, version 0.8
+# nihexporter 0.8
 
 - update to FY 2015
 - small fixes for tidyr::separate, need characters for `into` arg
 - add script for downloading DUNS patch files
 
-# nihexporter, version 0.7
+# nihexporter 0.7
 
 ## Major
 
@@ -17,13 +17,13 @@
 
 - refactor data loading 
 
-# nihexporter, version 0.6.1
+# nihexporter 0.6.1
 
 ## Minor
 
 - added missing `project.cost` to `project.io` table 
 
-# nihexporter, version 0.6
+# nihexporter 0.6
 
 ## Major
 
@@ -31,7 +31,7 @@
 
 - added `publications` table 
 
-# nihexporter, version 0.5
+# nihexporter 0.5
 
 ## Major
 
@@ -47,14 +47,14 @@
   + rename `project.orgs` to `project_orgs`
   + rename `project.pis` to `project_pis`
 
-# nihexporter, version 0.4
+# nihexporter 0.4
 
 ## Major 
 
 - added `patents` table
 - updated vignette with `patents` example
 
-# nihexporter, version 0.3
+# nihexporter 0.3
 
 ## Major
 
@@ -63,4 +63,3 @@
 - added nih.institutes variable for quick filtering with %in%
 
 ## Minor
-

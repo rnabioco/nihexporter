@@ -16,7 +16,7 @@ Suggests:
     scales,
     readr,
     maps
-License: CC0
+License: MIT
 LazyData: true
 URL: http://github.com/jayhesselberth/nihexporter
 BugReports: http://github.com/jayhesselberth/nihexporter/issues
