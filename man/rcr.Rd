@@ -7,7 +7,7 @@
 rcr(pmids)
 }
 \arguments{
-\item{pmids}{vector of PubMed IDs to retrieve}
+\item{pmids}{vector of PubMed IDs to retrieve (max of 1000 at a time)}
 }
 \value{
 a data_frame the following variables:
