@@ -1,6 +1,6 @@
 
-nihexporter
-===========
+`nihexporter`
+=============
 
 [![Travis-CI Build Status](https://travis-ci.org/jayhesselberth/nihexporter.png?branch=master)](https://travis-ci.org/jayhesselberth/nihexporter) [![CRAN status](https://www.r-pkg.org/badges/version/nihexporter)](https://www.r-pkg.org/badges/version/nihexporter)
 
@@ -8,8 +8,7 @@ The `nihexporter` R package provides a minimal set of data from the [NIH EXPORTE
 
 To keep the package lightweight, many details are omitted but can be easily retrieved from [NIH RePORTER](https://projectreporter.nih.gov/).
 
-Installation
-------------
+### Installation
 
 Install the package from github with:
 
@@ -30,7 +29,7 @@ devtools::install_github("jayhesselberth/nihexporter")
 
 -   `publinks`: links Pubmed IDs (`pmid`) to project numbers (`project.num`).
 
--   `publications`: provides information for specific publications, including (**coming soon**) their [Relative Citation Ratio](https://icite.od.nih.gov) values (`rcr`).
+-   `publications`: provides information for individual publications, including their [Relative Citation Ratio](https://icite.od.nih.gov) values (`rcr`).
 
 -   `patents`: links project IDs (`project.num`) to `patent.id`.
 
@@ -46,12 +45,9 @@ devtools::install_github("jayhesselberth/nihexporter")
 
 -   `nih.institutes`: 27 NIH institutes in two-letter format
 
-Examples
---------
+### Example: Fiscal summaries
 
-### Fiscal summaries
-
-We can use the `nihexporter` package to find the top-ten all-time most expensive projects.
+One can use the `nihexporter` package to find the top-ten all-time most expensive projects.
 
 ``` r
 library(nihexporter)

@@ -6,11 +6,13 @@
 
 - New `clinical_studies` table.
 
-- RCR values added to the publications table.
+- `rcr` values added to the `publications` table, and added new `rcr()` function that enables retrieval of [RCR values](https://icite.od.nih.gov/stats) for specific PMIDs.
 
 ## Minor changes
 
 - Added pkgdown documentation
+
+- removed a few unused columns (`journal.title.abbr` from `publications`) from tables to minimize package size.
 
 # nihexporter 0.8
 

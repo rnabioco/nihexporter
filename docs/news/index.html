@@ -102,12 +102,13 @@
 <a href="#major-changes" class="anchor"> </a>Major changes</h2>
 <ul><li><p>Added 2016 data. Incorporate project costs back through 1985.</p></li>
 <li><p>New <code>clinical_studies</code> table.</p></li>
-<li><p>RCR values added to the publications table.</p></li>
+<li><p><code>rcr</code> values added to the <code>publications</code> table, and added new <code><a href="../reference/rcr.html">rcr()</a></code> function that enables retrieval of <a href="https://icite.od.nih.gov/stats">RCR values</a> for specific PMIDs.</p></li>
 </ul></div>
 <div id="minor-changes" class="section level2">
 <h2 class="hasAnchor">
 <a href="#minor-changes" class="anchor"> </a>Minor changes</h2>
-<ul><li>Added pkgdown documentation</li>
+<ul><li><p>Added pkgdown documentation</p></li>
+<li><p>removed a few unused columns (<code>journal.title.abbr</code> from <code>publications</code>) from tables to minimize package size.</p></li>
 </ul></div>
 </div>
     <div id="nihexporter-0-8" class="section level1">

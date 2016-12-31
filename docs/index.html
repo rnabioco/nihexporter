@@ -75,17 +75,19 @@
 <div class="contents">
 <div id="nihexporter" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#nihexporter" class="anchor"> </a>nihexporter</h1></div>
+<a href="#nihexporter" class="anchor"> </a><code>nihexporter</code>
+</h1></div>
 
 <p>The <code>nihexporter</code> R package provides a minimal set of data from the <a href="http://exporter.nih.gov/default.aspx">NIH EXPORTER</a> database, which contains information on NIH biomedical research funding from 1985-2016.</p>
 <p>To keep the package lightweight, many details are omitted but can be easily retrieved from <a href="https://projectreporter.nih.gov/">NIH RePORTER</a>.</p>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"> </a>Installation</h2>
+<div id="installation" class="section level3">
+<h3 class="hasAnchor">
+<a href="#installation" class="anchor"> </a>Installation</h3>
 <p>Install the package from github with:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># install.packages('devtools')</span>
 devtools::<span class="kw">install_github</span>(<span class="st">"jayhesselberth/nihexporter"</span>)</code></pre></div>
 <p><strong>Note</strong>: this is a large data package (&gt;40 Mb), so <a href="http://thecoatlessprofessor.com/programming/size-and-limitations-of-packages-on-cran/">it will likely never be available on CRAN</a>.</p>
+</div>
 <div id="tables" class="section level3">
 <h3 class="hasAnchor">
 <a href="#tables" class="anchor"> </a>Tables</h3>
@@ -94,7 +96,7 @@ devtools::<span class="kw">install_github</span>(<span class="st">"jayhesselbert
 <li><p><code>project_pis</code>: links project numbers (<code>project.num</code>) to principal investigator IDs (<code>pi.id</code>).</p></li>
 <li><p><code>project_orgs</code>: links DUNS numbers (<code>org.duns</code>) from <code>projects</code> table to information on specific organizations .</p></li>
 <li><p><code>publinks</code>: links Pubmed IDs (<code>pmid</code>) to project numbers (<code>project.num</code>).</p></li>
-<li><p><code>publications</code>: provides information for specific publications, including (<strong>coming soon</strong>) their <a href="https://icite.od.nih.gov">Relative Citation Ratio</a> values (<code>rcr</code>).</p></li>
+<li><p><code>publications</code>: provides information for individual publications, including their <a href="https://icite.od.nih.gov">Relative Citation Ratio</a> values (<code>rcr</code>).</p></li>
 <li><p><code>patents</code>: links project IDs (<code>project.num</code>) to <code>patent.id</code>.</p></li>
 <li><p><code>clinical_studies</code>: links project IDs to associated <a href="https://clinicaltrials.gov/">clinical trials</a>.</p></li>
 <li><p><code>project_io</code>: pre-computed <code>n.pubs</code>, <code>n.patents</code> and <code>project.cost</code> for each <code>project.num</code>.</p></li>
@@ -116,14 +118,10 @@ devtools::<span class="kw">install_github</span>(<span class="st">"jayhesselbert
 <code>nih.institutes</code>: 27 NIH institutes in two-letter format</li>
 </ul>
 </div>
-</div>
-<div id="examples" class="section level2">
-<h2 class="hasAnchor">
-<a href="#examples" class="anchor"> </a>Examples</h2>
-<div id="fiscal-summaries" class="section level3">
+<div id="example-fiscal-summaries" class="section level3">
 <h3 class="hasAnchor">
-<a href="#fiscal-summaries" class="anchor"> </a>Fiscal summaries</h3>
-<p>We can use the <code>nihexporter</code> package to find the top-ten all-time most expensive projects.</p>
+<a href="#example-fiscal-summaries" class="anchor"> </a>Example: Fiscal summaries</h3>
+<p>One can use the <code>nihexporter</code> package to find the top-ten all-time most expensive projects.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(nihexporter)
 <span class="kw">library</span>(dplyr)
 
@@ -150,7 +148,6 @@ expensive_projects
 <span class="co">#&gt; 9  U54HG002045        HG  242268294     0.2422683</span>
 <span class="co">#&gt; 10  N01CO12400        CA  225180953     0.2251810</span></code></pre></div>
 <p>The most expensive project (<code>ZIHLM200888</code>) funds the National Library of Medicine’s intramural program, including <a href="http://pubmed.com">PubMed</a> and the <a href="https://www.ncbi.nlm.nih.gov/">NCBI</a>, which provides BLAST, GenBank, RefSeq and dbGAP.</p>
-</div>
 </div>
 <div id="resources" class="section level2">
 <h2 class="hasAnchor">

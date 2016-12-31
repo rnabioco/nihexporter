@@ -15,7 +15,7 @@
 #' \item{\code{project.end}}{in ymd format}
 #' \item{\code{study.section}}{3 letter code}
 #' \item{\code{fy.cost}}{total (direct + indirect) for fiscal year}
-#' } 
+#' }
 #'
 #' @source \url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=3&index=0}
 "projects"
@@ -26,33 +26,33 @@
 #'
 #' The \code{pi.id} is a unique identifier that can be used to identify specific
 #' principal investigators in NIH REPORTER.
-#' 
+#'
 #' @source \url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=3&index=0}
 #'
 "project_pis"
 
 #' Organization information.
-#' 
-#' @format A data frame with 4 variables: \code{org.duns}, \code{org.city}, 
+#'
+#' @format A data frame with 4 variables: \code{org.duns}, \code{org.city},
 #'   \code{org.state} and \code{org.name}
-#'   
-#' @description \code{org.duns} is a unique identifier that links the \link{org_info} and 
+#'
+#' @description \code{org.duns} is a unique identifier that links the \link{org_info} and
 #'   \link{project_orgs} tables.
-#'   
+#'
 #' @note Be wary of this table as the DUNS reporting in the NIH EXPORTER was not
 #'   previously correct for years 2000-2008.
-#'   
+#'
 #' @source \url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=3&index=0}
-#'   
+#'
 "org_info"
 
 #' Table linking organizations to applications.
-#' 
+#'
 #' @format A data frame with 2 variables: \code{org.duns} and
 #'   \code{application.id} used to link specific applications to organizations
-#'   
+#'
 #' @source \url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=3&index=0}
-#'   
+#'
 "project_orgs"
 
 #' Table linking PubMed IDs to project IDs.
@@ -64,8 +64,12 @@
 
 #' Publication information.
 #'
-#' @format A data frame with two variables: \code{pmid}, \code{pmc.id},
-#'  \code{journal.title.abbr}, \code{pub.year}, \code{rcr}
+#' @format A data frame with 4 variables: \code{pmid}, \code{pmc.id},
+#'   \code{pub.year}, \code{rcr}
+#'
+#' @note \code{rcr} values change over time. Values in this table were
+#'   downloaded on 31 Dec 2016. Use \code{\link{rcr}} to obtain current
+#'   values for select \code{pmid} values.
 #'
 #' @source \url{https://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=4&index=2}
 #' @source \url{https://icite.od.nih.gov/}
@@ -79,9 +83,9 @@
 "patents"
 
 #' Clinical trial information.
-#' 
+#'
 #' @format A data frame with three variables: \code{project.num}, \code{trial.id} and \code{study.status}
-#' 
+#'
 #' @source \url{https://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=5&index=4}
 "clinical_studies"
 
