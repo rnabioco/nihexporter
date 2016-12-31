@@ -82,4 +82,6 @@ The most expensive project (`ZIHLM200888`) funds the National Library of Medicin
 Resources
 ---------
 
+-   [`nihexporter` pre-print on bioRxiv](http://biorxiv.org/content/early/2015/12/02/033456)
+
 -   [RePORTER / EXPORTER mailing list archives](https://list.nih.gov/cgi-bin/wa.exe?A0=NIH-REPORT-PUBLIC-L)
