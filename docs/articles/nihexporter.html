@@ -42,7 +42,7 @@
       <a href="../articles/nihexporter.html">Intro</a>
     </li>
     <li>
-      <a href="../articles/nihexporter-manusript.html">bioRxiv pre-print</a>
+      <a href="../articles/nihexporter-manuscript.html">bioRxiv pre-print</a>
     </li>
   </ul>
 </li>
@@ -208,8 +208,7 @@ money.per.institution %&gt;%
 </tbody>
 </table>
 <p>One can also identiy PIs that have accrued large project dollars.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
-money.per.pi &lt;-<span class="st"> </span>projects %&gt;%
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">money.per.pi &lt;-<span class="st"> </span>projects %&gt;%
 <span class="st">  </span><span class="kw">filter</span>(activity ==<span class="st"> 'R01'</span>) %&gt;%
 <span class="st">  </span><span class="kw">select</span>(project.num, fy.cost) %&gt;%
 <span class="st">  </span><span class="kw">group_by</span>(project.num) %&gt;%
@@ -220,9 +219,10 @@ money.per.pi &lt;-<span class="st"> </span>projects %&gt;%
 <span class="st">  </span><span class="kw">filter</span>(pi.id !=<span class="st"> ''</span>) %&gt;%
 <span class="st">  </span><span class="kw">group_by</span>(pi.id) %&gt;%
 <span class="st">  </span><span class="kw">summarise</span>(<span class="dt">pi.millionaire =</span> <span class="kw">sum</span>(total.award.millions)) %&gt;%
-<span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(pi.millionaire))  
-
-money.per.pi %&gt;%
+<span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(pi.millionaire))  </code></pre></div>
+<pre><code>## Warning in left_join_impl(x, y, by$x, by$y, suffix$x, suffix$y): joining
+## character vector and factor, coercing into character vector</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">money.per.pi %&gt;%
 <span class="st">  </span><span class="kw">head</span>(<span class="dv">10</span>) %&gt;%<span class="st"> </span>knitr::<span class="kw">kable</span>()</code></pre></div>
 <table class="table">
 <thead><tr class="header">
@@ -424,9 +424,10 @@ high.perf.not.r01 %&gt;%
 <span class="st">  </span><span class="kw">summarize</span>(<span class="dt">n.pubs =</span> <span class="kw">n</span>()) %&gt;%
 <span class="st">  </span><span class="kw">mutate</span>(<span class="dt">cost.per.pub =</span> overall.cost /<span class="st"> </span>n.pubs) %&gt;%
 <span class="st">  </span><span class="kw">ungroup</span>() %&gt;%
-<span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(cost.per.pub))
-
-costly.pubs.r01 %&gt;%
+<span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(cost.per.pub))</code></pre></div>
+<pre><code>## Warning in left_join_impl(x, y, by$x, by$y, suffix$x, suffix$y): joining
+## character vector and factor, coercing into character vector</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">costly.pubs.r01 %&gt;%
 <span class="st">  </span><span class="kw">head</span>(<span class="dv">10</span>) %&gt;%
 <span class="st">  </span>knitr::<span class="kw">kable</span>()</code></pre></div>
 <table class="table">
