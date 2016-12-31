@@ -1,7 +1,5 @@
-#'
-#' nih.institutes
-#'
-#' Charactor vector containing 27 NIH institutes in two-letter format
+#' Two-letter acronyms for NIH institutes
+#' 
 #' @source \url{http://grants.nih.gov/grants/acronym_list.htm}
 #' 
 #' @export

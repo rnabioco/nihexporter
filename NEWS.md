@@ -1,3 +1,17 @@
+# nihexporter 0.9.0
+
+## Major changes
+ 
+- Added 2016 data. Incorporate project costs back through 1985.
+
+- New `clinical_studies` table.
+
+- RCR values added to the publications table.
+
+## Minor changes
+
+- Added pkgdown documentation
+
 # nihexporter 0.8
 
 - update to FY 2015

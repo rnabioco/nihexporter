@@ -3,18 +3,17 @@
 \docType{data}
 \name{project_io}
 \alias{project_io}
-\title{project_io}
+\title{Pre-computed total costs, number of patents and publications per project.}
 \format{A data frame with four variables: \code{project.num},
   \code{n.pubs}, \code{n.patents} and \code{total.cost}}
 \source{
-pre-computed from \code{projects} table
+Computed from \link{projects} table.
 }
 \usage{
 project_io
 }
 \description{
-Pre-computed project.cost, number of patents and publications associated with each
-project
+Pre-computed total costs, number of patents and publications per project.
 }
 \keyword{datasets}
 

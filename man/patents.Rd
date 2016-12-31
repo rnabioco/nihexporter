@@ -3,16 +3,16 @@
 \docType{data}
 \name{patents}
 \alias{patents}
-\title{patents}
+\title{Table linking patent IDs to project IDs.}
 \format{A data frame with two variables: \code{patent.id}, \code{project.num}}
 \source{
-\url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=0&index=3}
+\url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=5&index=3}
 }
 \usage{
 patents
 }
 \description{
-Links patent IDs to Project IDs.
+Table linking patent IDs to project IDs.
 }
 \keyword{datasets}
 

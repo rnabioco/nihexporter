@@ -1,5 +1,4 @@
-#'
-#' projects
+#' Project information.
 #'
 #' @format A data frame with 13 variables:
 #' \describe{
@@ -18,77 +17,78 @@
 #' \item{\code{fy.cost}}{total (direct + indirect) for fiscal year}
 #' } 
 #'
-#' @source \url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=4&index=0}
+#' @source \url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=3&index=0}
 "projects"
 
-#' project_pis
+#' Principal investigators.
 #'
 #' @format A data frame with 2 variables: \code{project.num} and \code{pi.id}
 #'
-#' The pi.id is a unique identifier that can be used to identify specific
-#' PIs in NIH REPORTER.
+#' The \code{pi.id} is a unique identifier that can be used to identify specific
+#' principal investigators in NIH REPORTER.
 #' 
-#' @source \url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=4&index=0}
+#' @source \url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=3&index=0}
 #'
 "project_pis"
 
-#' org_info
-#'
-#' @format A data frame with 4 variables: \code{org.duns},
-#'   \code{org.city}, \code{org.state} and \code{org.name}
-#'
-#' The org.duns is a unique identifier that links the `org_info` and
-#' `project_orgs` tables.
+#' Organization information.
 #' 
-#' Note that there are potential issues with this table as the DUNS reporting in the NIH EXPORTER is not accurate for years 2000-2008.
-#' 
-#' @source \url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=4&index=0}
-#'
+#' @format A data frame with 4 variables: \code{org.duns}, \code{org.city}, 
+#'   \code{org.state} and \code{org.name}
+#'   
+#' @description \code{org.duns} is a unique identifier that links the \link{org_info} and 
+#'   \link{project_orgs} tables.
+#'   
+#' @note Be wary of this table as the DUNS reporting in the NIH EXPORTER was not
+#'   previously correct for years 2000-2008.
+#'   
+#' @source \url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=3&index=0}
+#'   
 "org_info"
 
-#' project_orgs
-#'
-#' @format A data frame with 2 variables: \code{org.duns} and \code{application.id} used to link specific applications to organizations
-#'
-#' @source \url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=4&index=0}
-#'
+#' Table linking organizations to applications.
+#' 
+#' @format A data frame with 2 variables: \code{org.duns} and
+#'   \code{application.id} used to link specific applications to organizations
+#'   
+#' @source \url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=3&index=0}
+#'   
 "project_orgs"
 
-#' publinks
-#'
-#' Links Pubmed IDs to Project IDs. 
+#' Table linking PubMed IDs to project IDs.
 #'
 #' @format A data frame with two variables: \code{pmid}, \code{project.num}
 #'
-#' @source \url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=0&index=4}
+#' @source \url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=2&index=5}
 "publinks"
 
-#' publications
-#'
-#' Information about specific publications
+#' Publication information.
 #'
 #' @format A data frame with two variables: \code{pmid}, \code{pmc.id},
-#'  \code{journal.title.abbr}, \code{pub.year}
+#'  \code{journal.title.abbr}, \code{pub.year}, \code{rcr}
 #'
-#' @source \url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=0&index=4}
+#' @source \url{https://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=4&index=2}
+#' @source \url{https://icite.od.nih.gov/}
 "publications"
 
-#' patents
-#'
-#' Links patent IDs to Project IDs. 
+#' Table linking patent IDs to project IDs.
 #'
 #' @format A data frame with two variables: \code{patent.id}, \code{project.num}
 #'
-#' @source \url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=0&index=3}
+#' @source \url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=5&index=3}
 "patents"
 
-#' project_io
-#'
-#' Pre-computed project.cost, number of patents and publications associated with each
-#' project 
+#' Clinical trial information.
+#' 
+#' @format A data frame with three variables: \code{project.num}, \code{trial.id} and \code{study.status}
+#' 
+#' @source \url{https://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=5&index=4}
+"clinical_studies"
+
+#' Pre-computed total costs, number of patents and publications per project.
 #'
 #' @format A data frame with four variables: \code{project.num},
 #'   \code{n.pubs}, \code{n.patents} and \code{total.cost}
 #'
-#' @source pre-computed from \code{projects} table
+#' @source Computed from \link{projects} table.
 "project_io"

@@ -3,16 +3,16 @@
 \docType{data}
 \name{publinks}
 \alias{publinks}
-\title{publinks}
+\title{Table linking PubMed IDs to project IDs.}
 \format{A data frame with two variables: \code{pmid}, \code{project.num}}
 \source{
-\url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=0&index=4}
+\url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=2&index=5}
 }
 \usage{
 publinks
 }
 \description{
-Links Pubmed IDs to Project IDs.
+Table linking PubMed IDs to project IDs.
 }
 \keyword{datasets}
 

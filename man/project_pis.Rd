@@ -3,19 +3,19 @@
 \docType{data}
 \name{project_pis}
 \alias{project_pis}
-\title{project_pis}
+\title{Principal investigators.}
 \format{A data frame with 2 variables: \code{project.num} and \code{pi.id}
 
-The pi.id is a unique identifier that can be used to identify specific
-PIs in NIH REPORTER.}
+The \code{pi.id} is a unique identifier that can be used to identify specific
+principal investigators in NIH REPORTER.}
 \source{
-\url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=4&index=0}
+\url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=3&index=0}
 }
 \usage{
 project_pis
 }
 \description{
-project_pis
+Principal investigators.
 }
 \keyword{datasets}
 

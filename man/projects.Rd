@@ -3,7 +3,7 @@
 \docType{data}
 \name{projects}
 \alias{projects}
-\title{projects}
+\title{Project information.}
 \format{A data frame with 13 variables:
 \describe{
 \item{\code{application.id}}{unique ID for the EXPORTER database}
@@ -21,13 +21,13 @@
 \item{\code{fy.cost}}{total (direct + indirect) for fiscal year}
 }}
 \source{
-\url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=4&index=0}
+\url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=3&index=0}
 }
 \usage{
 projects
 }
 \description{
-projects
+Project information.
 }
 \keyword{datasets}
 

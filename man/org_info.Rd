@@ -3,22 +3,22 @@
 \docType{data}
 \name{org_info}
 \alias{org_info}
-\title{org_info}
-\format{A data frame with 4 variables: \code{org.duns},
-  \code{org.city}, \code{org.state} and \code{org.name}
-
-The org.duns is a unique identifier that links the `org_info` and
-`project_orgs` tables.
-
-Note that there are potential issues with this table as the DUNS reporting in the NIH EXPORTER is not accurate for years 2000-2008.}
+\title{Organization information.}
+\format{A data frame with 4 variables: \code{org.duns}, \code{org.city}, 
+  \code{org.state} and \code{org.name}}
 \source{
-\url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=4&index=0}
+\url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=3&index=0}
 }
 \usage{
 org_info
 }
 \description{
-org_info
+\code{org.duns} is a unique identifier that links the \link{org_info} and 
+  \link{project_orgs} tables.
+}
+\note{
+Be wary of this table as the DUNS reporting in the NIH EXPORTER was not
+  previously correct for years 2000-2008.
 }
 \keyword{datasets}
 

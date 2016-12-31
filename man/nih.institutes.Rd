@@ -3,7 +3,7 @@
 \docType{data}
 \name{nih.institutes}
 \alias{nih.institutes}
-\title{nih.institutes}
+\title{Two-letter acronyms for NIH institutes}
 \format{An object of class \code{character} of length 27.}
 \source{
 \url{http://grants.nih.gov/grants/acronym_list.htm}
@@ -12,7 +12,7 @@
 nih.institutes
 }
 \description{
-Charactor vector containing 27 NIH institutes in two-letter format
+Two-letter acronyms for NIH institutes
 }
 \keyword{datasets}
 

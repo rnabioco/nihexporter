@@ -3,17 +3,19 @@
 \docType{data}
 \name{publications}
 \alias{publications}
-\title{publications}
+\title{Publication information.}
 \format{A data frame with two variables: \code{pmid}, \code{pmc.id},
- \code{journal.title.abbr}, \code{pub.year}}
+ \code{journal.title.abbr}, \code{pub.year}, \code{rcr}}
 \source{
-\url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=0&index=4}
+\url{https://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=4&index=2}
+
+\url{https://icite.od.nih.gov/}
 }
 \usage{
 publications
 }
 \description{
-Information about specific publications
+Publication information.
 }
 \keyword{datasets}
 

@@ -2,5 +2,38 @@ templates:
   params:
     bootswatch: paper
 
+home:
+  links:
+  - text: NIH EXPORTER
+    href: https://exporter.nih.gov/
+   
+reference:
+- title: Variables
+  contents:
+  - nih.institutes
+  
+- title: Functions
+  contents:
+  - rcr
+  
+- title: Tables
+  contents:
+  - projects
+  - project_pis
+  - org_info
+  - project_orgs
+  - publinks
+  - publications
+  - patents
+  - clinical_studies
+  - project_io
+  
 navbar:
   type: "inverse"
+  left:
+    - text: Intro
+      href: articles/nihexporter.html
+    - text: Reference
+      href: reference/index.html
+    - text: News
+      href: news/index.html
