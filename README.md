@@ -51,7 +51,7 @@ Examples
 
 ### Fiscal summaries
 
-We can use the `nihexporter` package to find the top-ten all-time most expensive grants.
+We can use the `nihexporter` package to find the top-ten all-time most expensive projects.
 
 ``` r
 library(nihexporter)
