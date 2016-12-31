@@ -1,14 +1,9 @@
 ---
-title: '`nihexporter`: an R package for NIH funding data'
+title: '`nihexporter`: an R data package for NIH funding data'
 author: Jay Hesselberth, Erin Baschal, Nick Ellinwood, Ashley Pacheco, Sally Peach,
   Mary Sweet, Yuying Wang
 date: 'Last update: `r format(Sys.time(), "%d %B, %Y")`'
 output:
-  pdf_document:
-    fig_caption: yes
-    fig_width: 7
-    keep_tex: yes
-    number_sections: yes
   html_document:
     fig_caption: yes
     force_captions: yes
@@ -16,7 +11,7 @@ output:
     keep_md: yes
     number_sections: yes
     toc: yes
-  word_document: default
+    code_folding: hide
 ---
 
 # Abstract
@@ -310,8 +305,8 @@ bin_grant_costs
 # Berg's original values ...
 # breaks <- c(175000, 200000, 225000, 250000, 300000, 375000, 400000,
 #           450000, 500000, 600000, 700000, 800000, 900000, 1000000)
-min.lifetime.cost <- round(min(grant_costs$total.cost), -4) # round to 10,000s
-max.lifetime.cost <- round(max(grant_costs$total.cost), -5) 
+min.lifetime.cost <- round(min(grant_costs$total.cost, na.rm = TRUE), -4) # round to 10,000s
+max.lifetime.cost <- round(max(grant_costs$total.cost, na.rm = TRUE), -5) 
 # step is average size of an award
 step <- 1e6
 

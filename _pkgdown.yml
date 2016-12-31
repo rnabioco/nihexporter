@@ -6,7 +6,7 @@ home:
   links:
   - text: NIH EXPORTER
     href: https://exporter.nih.gov/
-   
+
 reference:
 - title: Variables
   contents:
@@ -15,7 +15,7 @@ reference:
 - title: Functions
   contents:
   - rcr
-  
+
 - title: Tables
   contents:
   - projects
@@ -27,13 +27,17 @@ reference:
   - patents
   - clinical_studies
   - project_io
-  
+
 navbar:
   type: "inverse"
   left:
-    - text: Intro
-      href: articles/nihexporter.html
     - text: Reference
       href: reference/index.html
+    - text: Articles
+      menu:
+        - text: "Intro"
+          href: articles/nihexporter.html
+        - text: "bioRxiv pre-print"
+          href: articles/nihexporter-manuscript.html
     - text: News
       href: news/index.html

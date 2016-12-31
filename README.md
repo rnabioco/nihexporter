@@ -81,7 +81,7 @@ expensive_projects
 #> 10  N01CO12400        CA  225180953     0.2251810
 ```
 
-The most expensive project (`ZIHLM200888`) funds the National Library of Medicine's intramural program, including [PubMed](pubmed.com) and the [NCBI](https://www.ncbi.nlm.nih.gov/), which provides BLAST, GenBank, RefSeq and dbGAP.
+The most expensive project (`ZIHLM200888`) funds the National Library of Medicine's intramural program, including [PubMed](http://pubmed.com) and the [NCBI](https://www.ncbi.nlm.nih.gov/), which provides BLAST, GenBank, RefSeq and dbGAP.
 
 Resources
 ---------
