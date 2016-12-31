@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • nihexporter</title>
+<title>Retrieve Relative Citation Ratio (RCR) for PubMed IDs. — rcr • nihexporter</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -34,7 +34,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
@@ -75,88 +75,72 @@
       </header>
 
       <div class="row">
-  <div class="col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Function reference</h1>
-      <h4>version&nbsp;0.9.0</h4>
+    <h1>Retrieve Relative Citation Ratio (RCR) for PubMed IDs.</h1>
     </div>
 
-    <div class="contents">
-      <h2 id="section-variables" class="hasAnchor"><a href="#section-variables" class="anchor"></a>Variables</h2>
-      <p class="section-desc"></p>
-
-      
-      <p><a href="nih.institutes.html">Two-letter acronyms for NIH institutes</a></p>
-      <ul>
-        <li><code><a href="nih.institutes.html">nih.institutes</a></code></li>
-      </ul>
-          <h2 id="section-functions" class="hasAnchor"><a href="#section-functions" class="anchor"></a>Functions</h2>
-      <p class="section-desc"></p>
-
-      
-      <p><a href="rcr.html">Retrieve Relative Citation Ratio (RCR) for PubMed IDs.</a></p>
-      <ul>
-        <li><code><a href="rcr.html">rcr</a></code></li>
-      </ul>
-          <h2 id="section-tables" class="hasAnchor"><a href="#section-tables" class="anchor"></a>Tables</h2>
-      <p class="section-desc"></p>
-
-      
-      <p><a href="clinical_studies.html">Clinical trial information.</a></p>
-      <ul>
-        <li><code><a href="clinical_studies.html">clinical_studies</a></code></li>
-      </ul>
-      
-      <p><a href="org_info.html">Organization information.</a></p>
-      <ul>
-        <li><code><a href="org_info.html">org_info</a></code></li>
-      </ul>
-      
-      <p><a href="patents.html">Table linking patent IDs to project IDs.</a></p>
-      <ul>
-        <li><code><a href="patents.html">patents</a></code></li>
-      </ul>
-      
-      <p><a href="project_io.html">Pre-computed total costs, number of patents and publications per project.</a></p>
-      <ul>
-        <li><code><a href="project_io.html">project_io</a></code></li>
-      </ul>
-      
-      <p><a href="project_orgs.html">Table linking organizations to applications.</a></p>
-      <ul>
-        <li><code><a href="project_orgs.html">project_orgs</a></code></li>
-      </ul>
-      
-      <p><a href="project_pis.html">Principal investigators.</a></p>
-      <ul>
-        <li><code><a href="project_pis.html">project_pis</a></code></li>
-      </ul>
-      
-      <p><a href="projects.html">Project information.</a></p>
-      <ul>
-        <li><code><a href="projects.html">projects</a></code></li>
-      </ul>
-      
-      <p><a href="publications.html">Publication information.</a></p>
-      <ul>
-        <li><code><a href="publications.html">publications</a></code></li>
-      </ul>
-      
-      <p><a href="publinks.html">Table linking PubMed IDs to project IDs.</a></p>
-      <ul>
-        <li><code><a href="publinks.html">publinks</a></code></li>
-      </ul>
     
-    </div>
-  </div>
+    <p>Retrieve Relative Citation Ratio (RCR) for PubMed IDs.</p>
+    
 
+    <pre><span class='fu'>rcr</span>(<span class='no'>pmids</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <dl class="dl-horizontal">
+      <dt>pmids</dt>
+      <dd>vector of PubMed IDs to retrieve</dd>
+    </dl>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>a data_frame the following variables:
+<dl class='dl-horizontal'>
+<dt><code>pmid</code></dt><dd>PubMed ID</dd>
+<dt><code>authors</code></dt><dd>publication authors</dd>
+<dt><code>citation_count</code></dt><dd>total citations</dd>
+<dt><code>citations_per_year</code></dt><dd>mean citations per year</dd>
+<dt><code>expected_citations_per_year</code></dt><dd>estimated</dd>
+<dt><code>field_citation_rate</code></dt><dd>rate relative to field</dd>
+<dt><code>is_research_article</code></dt><dd>boolean</dd>
+<dt><code>journal</code></dt><dd>journal name abbr.</dd>
+<dt><code>nih_percentile</code></dt><dd>percentile</dd>
+<dt><code>relative_citation_ratio</code></dt><dd>RCR</dd>
+<dt><code>title</code></dt><dd>article title</dd>
+<dt><code>year</code></dt><dd>publication year</dd>
+</dl></p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <p><a href = 'https://icite.od.nih.gov/api'>https://icite.od.nih.gov/api</a></p>
+    
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>pmids</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='fl'>26001965</span>, <span class='fl'>25015380</span>)
+<span class='fu'>rcr</span>(<span class='no'>pmids</span>)</div><div class='output co'>#&gt; # A tibble: 2 × 12
+#&gt;       pmid
+#&gt; *    &lt;int&gt;
+#&gt; 1 25015380
+#&gt; 2 26001965
+#&gt; # ... with 11 more variables: authors &lt;chr&gt;, citation_count &lt;int&gt;,
+#&gt; #   citations_per_year &lt;dbl&gt;, expected_citations_per_year &lt;dbl&gt;,
+#&gt; #   field_citation_rate &lt;dbl&gt;, is_research_article &lt;lgl&gt;, journal &lt;chr&gt;,
+#&gt; #   nih_percentile &lt;dbl&gt;, relative_citation_ratio &lt;dbl&gt;, title &lt;chr&gt;,
+#&gt; #   year &lt;int&gt;</div><div class='input'>
+</div></pre>
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-variables">Variables</a></li>
-      <li><a href="#section-functions">Functions</a></li>
-      <li><a href="#section-tables">Tables</a></li>
+      <li><a href="#arguments">Arguments</a></li>
+      
+      <li><a href="#value">Value</a></li>
+
+      <li><a href="#see-also">See also</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
     </ul>
+
   </div>
 </div>
 

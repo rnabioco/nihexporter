@@ -47,6 +47,10 @@ devtools::install_github("jayhesselberth/nihexporter")
 
 * `project_io`: pre-computed `n.pubs`, `n.patents` and `project.cost` for each `project.num`.
 
+### Functions
+
+* `rcr()` retrieves [Relative Citation Ratios](https://icite.od.nih.gov/) and associated information for PubMed IDs.
+
 ### Variables
 
 * `nih.institutes`: 27 NIH institutes in two-letter format 

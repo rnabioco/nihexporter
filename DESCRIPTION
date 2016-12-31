@@ -9,14 +9,17 @@ Description: Provides data for biomedical research funding
 Depends:
     R (>= 3.1.0),
     dplyr,
+    jsonlite,
+    httr
 Remotes: dgrtwo/gganimate 
 Suggests:
     ggplot2,
     knitr,
     stringr,
     readr,
-    maps
-License: MIT
+    maps,
+    testthat
+License: MIT + file LICENSE
 LazyData: true
 URL: http://github.com/jayhesselberth/nihexporter
 BugReports: http://github.com/jayhesselberth/nihexporter/issues
