@@ -17,7 +17,7 @@ Install the package from github with:
 devtools::install_github("jayhesselberth/nihexporter")
 ```
 
-**Note**: this is a large data package (&gt;40 Mb), so [it will likely never be available on CRAN](http://thecoatlessprofessor.com/programming/size-and-limitations-of-packages-on-cran/).
+**Note**: this is a large data package (&gt;40 Mb), so [it will not be submitted to CRAN](http://thecoatlessprofessor.com/programming/size-and-limitations-of-packages-on-cran/).
 
 ### Tables
 
