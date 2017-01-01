@@ -2,7 +2,7 @@ Package: nihexporter
 Title: NIH EXPORTER 2000-2016
 Version: 0.9.0
 Authors@R: person('Jay', 'Hesselberth', role = c("aut", "cre"),
-                    email = 'jay.hesselberth@gmail.com')
+                  email = 'jay.hesselberth@gmail.com')
 Maintainer: Jay Hesselberth <jay.hesselberth@gmail.com>
 Description: Provides data for biomedical research funding
     from the National Institutes of Health spanning 2000-2016.
@@ -14,6 +14,7 @@ Depends:
 Remotes: dgrtwo/gganimate 
 Suggests:
     ggplot2,
+    animate,
     knitr,
     stringr,
     readr,
