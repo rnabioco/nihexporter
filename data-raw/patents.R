@@ -8,7 +8,7 @@ path = 'data-raw//PATENTS'
 csvfiles <- dir(path, pattern = '\\.csv', full.names = TRUE)
 tables <- lapply(csvfiles, read_csv)
 
-patents <- rbind_all(tables)
+patents <- bind_rows(tables)
 patents.tbl <- tbl_df(patents)
 
 names(patents.tbl) <- names(patents.tbl) %>%

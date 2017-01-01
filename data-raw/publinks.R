@@ -8,7 +8,7 @@ path = 'data-raw//PUBLINKS'
 csvfiles <- dir(path, pattern = '\\.csv', full.names = TRUE)
 tables <- lapply(csvfiles, read_csv)
 
-publinks <- rbind_all(tables)
+publinks <- bind_rows(tables)
 publinks.tbl <- tbl_df(publinks)
 
 names(publinks.tbl) <- names(publinks.tbl) %>%
