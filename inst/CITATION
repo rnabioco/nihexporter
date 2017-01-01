@@ -1,10 +1,20 @@
-citHeader("To cite `nihexporter` in publications use:")
+citHeader("To cite nihexporter in publications use:")
 
-citEntry(entry = "Unpublished",
+citEntry(entry        = "article",
          title        = "nihexporter: an R package for NIH funding data",
-         note         = "to be deposited in bioRxiv",
-         author       = personList(as.person("Jay Hesselberth")),
+         journal      = "bioRxiv",
+         year         = 2015,
+         author       = personList(as.person("Jay Hesselberth"),
+                                   as.person("Erin Baschal"),
+                                   as.person("Nick Ellinwood"),
+                                   as.person("Ashley Pacheco"),
+                                   as.person("Sally Peach"),
+                                   as.person("Mary Sweet"),
+                                   as.person("Yuying Wang")),
+         url          = 'http://biorxiv.org/content/early/2015/12/02/033456',
          textVersion  =
-           paste("Hesselberth et. al.(2015).",
-                 "nihexporter: an R package for NIH funding data")
+         paste("Hesselberth et. al. (2015).",
+               "nihexporter: an R package for NIH funding data",
+               "bioRxiv",
+               "URL http://biorxiv.org/content/early/2015/12/02/033456")
 )
