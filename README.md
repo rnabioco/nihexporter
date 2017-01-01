@@ -84,3 +84,5 @@ The most expensive project (`ZIHLM200888`) funds the National Library of Medicin
 -   [`nihexporter` pre-print on bioRxiv](http://biorxiv.org/content/early/2015/12/02/033456)
 
 -   [RePORTER / EXPORTER mailing list archives](https://list.nih.gov/cgi-bin/wa.exe?A0=NIH-REPORT-PUBLIC-L)
+
+-   [Relative Citation Ratio manuscript at PLoS](http://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.1002541)
