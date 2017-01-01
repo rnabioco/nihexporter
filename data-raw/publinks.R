@@ -19,6 +19,7 @@ publinks <- publinks.tbl %>%
   mutate(pmid = as.integer(pmid)) %>%
   rename(project.num = project.number) %>%
   filter(!grepl('-', project.num)) %>%
-  arrange(project.num)
+  arrange(project.num) %>%
+  unique()
 
 save(publinks, file = 'data/publinks.rdata', compress = 'xz')

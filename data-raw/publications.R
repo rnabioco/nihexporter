@@ -43,6 +43,7 @@ rcrs <- purrr::map(chunks, rcr) %>%
 
 publications <- publications %>% left_join(rcrs, by = 'pmid') %>%
   select(pmid, pmc.id, pub.year, relative_citation_ratio) %>%
-  rename(rcr = relative_citation_ratio)
+  rename(rcr = relative_citation_ratio) %>%
+  unique()
 
 save(publications, file = 'data/publications.rdata', compress = 'xz')
