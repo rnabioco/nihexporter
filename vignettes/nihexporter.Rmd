@@ -1,66 +1,130 @@
 ---
 title: "nihexporter"
-author: "Jay Hesselberth <jay.hesselberth@gmail.com>"
-date: "`r Sys.Date()`"
 output:
-  rmarkdown::html_vignette:
-    fig_caption: yes
+  rmarkdown::html_vignette: default
+  html_document:
+    code_folding: show
 vignette: >
   %\VignetteIndexEntry{Overview}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---
 
-# Overview
+```{r setup, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "img/README-fig-",
+  cache.path = "img/README-cache-"
+)
+```
 
-The `nihexporter` package provides the following tables of data:
+```{r gif_animation_hook, echo = FALSE, cache = FALSE}
+library(knitr)
+library(animation)
 
-  * `projects` has information about projects in each fiscal year, keyed by `project.num`
-  * `org_info` has information about project organizations
-  * `project_orgs` links applications to organizations 
-  * `project_pis` links PI information to a project
-  * `publinks` table links PubMed IDs to `project.num`
-  * `publications` links project IDs to PubMed IDs
-  * `patents` links patent IDs to project IDs
+# copied from gganimate README
+ 
+ani.options(autobrowse = FALSE, interval = 1)
 
-See the documentation in the R package for more information about each table.
+opts_knit$set(animation.fun = function(x, options, format = "gif") {
+  x = c(knitr:::sans_ext(x), knitr:::file_ext(x))
+  fig.num = options$fig.num
+  format = sub("^[.]", "", format)
+  fig.fname = paste0(sub(paste0(fig.num, "$"), "*", x[1]), 
+                     ".", x[2])
+  mov.fname = paste0(sub(paste0(fig.num, "$"), "", x[1]), ".", 
+                     format)
 
-The package also has several precomputed variables and tables that enable quick and easy exploratory analysis:
+  # order correctly
+  figs <- Sys.glob(fig.fname)
+  figs <- figs[order(as.numeric(stringr::str_match(figs, paste0("(\\d+)\\.", x[2]))[, 2]))]
 
-  * `nih.institutes`: Two-letter format for 27 NIH institutes
-  * `project_io`: This table contains pre-computed values for overall project cost (`project.cost`), as well as the number of publications (`n.pubs`) and patents (`n.patents`) associated with each project.
+  animation::im.convert(figs, output = mov.fname)
+  
+  sprintf("![%s](%s)", options$label, paste0(opts_knit$get("base.url"), mov.fname))
+})
+
+opts_chunk$set(cache = TRUE, message = FALSE, warning = FALSE, fig.show = "animate")
+```
+
+# Package overview
+
+## Tables
+
+The `nihexporter` package contains several relational tables that contain a variety of information about NIH funding.
+
+* `projects` has information about projects in each fiscal year
+* `org_info` has information about project organizations
+* `project_orgs` links applications to organizations 
+* `project_pis` links principal investigators to projects
+* `publinks` links PubMed IDs to projects
+* `publications` contains [Relative Citation Ratio](https://icite.od.nih.gov/) values and other information.
+* `clinical_studies` has information about [clinical trials](http://clinicaltrials.org)
+* `patents` links patents to projects
+* `project_io` contains pre-computed values for total project cost (`project.cost`), as well as the number of publications (`n.pubs`) and patents (`n.patents`).
+
+## Functions
+
+* `rcr()` uses PubMed IDs to retrieve [RCR](https://icite.od.nih.gov/) values from the iCite database.
+
+## Variables
+
+* `nih.institutes`: Two-letter format for 27 NIH institutes
   
 # Examples
 
-Many of the examples generate project numbers that you can use to look up project specifics in [NIH REPORTER](http://projectreporter.nih.gov/reporter.cfm). We use the amazing `dplyr`, `ggplot2` and `knitr` packages to manipulate and plot the data.
+We'll use animated charts to illustrate funding trends at the NIH.
 
-```{r load_libs, message=FALSE, echo=FALSE}
+## Project number and cost
+
+First we'll take a look at project number and costs for a few project types (R01, R21, etc.) at a few of the bigger institues (GM, CA, AI, etc.). This first animated graph shows how these variables move over ~15 years.
+
+```{r cost, fig.height=4, fig.show='animate', fig.width=7, message=FALSE}
+library(nihexporter)
 library(dplyr)
 library(ggplot2)
-library(knitr)
-library(nihexporter)
+library(gganimate)
+library(cowplot)
+
+insts <- c('GM', 'AI', 'CA', 'HL', 'DK', 'NS')
+activities <- c('R01', 'R21', 'P01', 'U01')
+
+costs <- projects %>%
+  filter(institute %in% insts & activity %in% activities) %>%
+  group_by(fiscal.year, institute, activity) %>%
+  summarize(n.projects = n(),
+            project.costs = sum(fy.cost, na.rm = TRUE) / 1e6)
+
+gp <- ggplot(costs, aes(x = n.projects,
+                        y = project.costs,
+                        color = institute,
+                        frame = fiscal.year)) +
+  scale_x_log10() + scale_y_log10() +
+  facet_wrap(~ activity) +
+  scale_color_brewer(palette = 'Set1') +
+  theme_cowplot() + 
+  labs(x = 'Project number',
+       y = 'Project costs (millions)',
+       title = 'Project cost and number in: ')
+ 
+p <- gp + geom_point(size = 5)
+ 
+gganimate(p)
 ```
 
-## Award amounts
+It is also helpful to view these numbers as trajectories, to see the path of funding over time.
 
-The `fy.cost` column from the `projects` table has many `NA` values.
-You need to use `na.rm` in aggregation functions to ensure robust handling of these
-values.
+```{r cost_trajectories, message=FALSE, fig.width=7, fig.height=4, fig.show='animate'} 
+p <- gp + geom_path(aes(cumulative = TRUE,
+                        group = institute,
+                        size = 2,
+                        alpha = 0.8))
 
-Let's look at spending over time for NIGMS in years that have such data:
-
-```{r inst_cost_over_time, message=FALSE, fig.cap = 'Spending at NIGMS'}
-cost.over.time <- projects %>%
-  select(institute, fy.cost, fiscal.year) %>%
-  filter(institute == 'GM') %>%
-  group_by(fiscal.year, institute) %>%
-  summarize(yearly.cost = sum(fy.cost, na.rm = TRUE)) %>%
-  filter(yearly.cost > 0)
-
-cost.over.time %>%
-  ggplot(aes(x = fiscal.year, y = yearly.cost)) +
-  geom_line()
+gganimate(p)
 ```
+
+## Funding distribution
 
 Let's look at WHERE the money is going. This example illustrates linking of the `project` and `project.orgs` tables via the `org.duns` column.
 
@@ -103,13 +167,9 @@ money.per.pi %>%
 
 ## Productivity
 
-In order to measure the "return"" on the money the NIH invests in the research enterprise,
-we can measure scholarly output (i.e., publications) per dollar invested.
+To measure the "return"" on the money the NIH invests in the research enterprise, we can measure scholarly output (i.e., publications) per dollar invested.
 
-Here we identify th highest performing grants outside of the R01 category.
-Much has been made of the wasteful spending outside of
-investigator-initiated research. Here we can see that this is not always
-the case.
+Here we identify th highest performing grants outside of the R01 category. Much has been made of the wasteful spending outside of investigator-initiated research. Here we can see that this is not always the case.
 
 ```{r highperf_no_r01, message=FALSE, warning = FALSE}
 high.perf.not.r01 <- projects %>%
@@ -163,8 +223,7 @@ costly.pubs.r01 %>%
 
 ## Duration
 
-I am always impressed at how long people keep their grants. Let's identify
-the longest running R01 projects. This leverages date manipulation with `lubridate`.
+I am always impressed at how long people keep their grants. Let's identify the longest running R01 projects. 
 
 ```{r grant_stamina, message=FALSE}
 long.grants <- projects %>%
