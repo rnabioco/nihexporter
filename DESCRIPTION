@@ -10,7 +10,7 @@ Depends:
     R (>= 3.1.0),
     dplyr,
     jsonlite,
-    httr
+    httr,
 Remotes: dgrtwo/gganimate 
 Suggests:
     ggplot2,
@@ -19,7 +19,10 @@ Suggests:
     readr,
     maps,
     purrr,
-    testthat
+    testthat,
+    gganimate,
+    cowplot,
+    animate,
 License: MIT + file LICENSE
 LazyData: true
 URL: http://github.com/jayhesselberth/nihexporter

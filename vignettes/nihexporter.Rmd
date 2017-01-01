@@ -3,11 +3,11 @@ title: "nihexporter"
 output:
   rmarkdown::html_vignette: default
   html_document:
-    code_folding: show
-vignette: >
+    code_folding: hide
+vignette: |
   %\VignetteIndexEntry{Overview}
-  %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
+  %\VignetteEngine{knitr::rmarkdown}
 ---
 
 ```{r setup, echo = FALSE}
@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r gif_animation_hook, echo = FALSE, cache = FALSE}
+```{r gif_animation_hook, echo=FALSE, cache=FALSE}
 library(knitr)
 library(animation)
 
@@ -42,7 +42,7 @@ opts_knit$set(animation.fun = function(x, options, format = "gif") {
 
   animation::im.convert(figs, output = mov.fname)
   
-  sprintf("![%s](%s)", options$label, paste0(opts_knit$get("base.url"), mov.fname))
+  sprintf("![%s](%s)", options$fig.cap, paste0(opts_knit$get("base.url"), mov.fname))
 })
 
 opts_chunk$set(cache = TRUE, message = FALSE, warning = FALSE, fig.show = "animate")
@@ -80,7 +80,7 @@ We'll use animated charts to illustrate funding trends at the NIH.
 
 First we'll take a look at project number and costs for a few project types (R01, R21, etc.) at a few of the bigger institues (GM, CA, AI, etc.). This first animated graph shows how these variables move over ~15 years.
 
-```{r cost, fig.height=4, fig.show='animate', fig.width=7, message=FALSE}
+```{r cost, fig.height=4, fig.show='animate', fig.width=7, message=FALSE, fig.cap='Project costs and numbers'}
 library(nihexporter)
 library(dplyr)
 library(ggplot2)
@@ -102,24 +102,23 @@ gp <- ggplot(costs, aes(x = n.projects,
                         frame = fiscal.year)) +
   scale_x_log10() + scale_y_log10() +
   facet_wrap(~ activity) +
-  scale_color_brewer(palette = 'Set1') +
+  scale_color_brewer(palette = 'Dark2') +
   theme_cowplot() + 
   labs(x = 'Project number',
        y = 'Project costs (millions)',
        title = 'Project cost and number in: ')
  
-p <- gp + geom_point(size = 5)
+p <- gp + geom_point(size = 3)
  
 gganimate(p)
 ```
 
-It is also helpful to view these numbers as trajectories, to see the path of funding over time.
+**It is also helpful to view these plots as trajectories to see the path of funding over time.** The following graphs indicate that U01 and R21 projects have had significant recent investment from certain institutes, while R01 and P01 projects have remained relatively constant in number and cost.
 
-```{r cost_trajectories, message=FALSE, fig.width=7, fig.height=4, fig.show='animate'} 
+```{r cost_trajectories, message=FALSE, fig.width=7, fig.height=4, fig.show='animate', cache=FALSE, fig.cap='Cost trajectories'} 
 p <- gp + geom_path(aes(cumulative = TRUE,
-                        group = institute,
-                        size = 2,
-                        alpha = 0.8))
+                        group = institute),
+                    arrow = arrow(length = unit(0.1, "npc")))
 
 gganimate(p)
 ```
@@ -188,17 +187,6 @@ high.perf.not.r01 <- projects %>%
 high.perf.not.r01 %>%
   head(10) %>%
   kable()
-```
-
-The highest performer has `r high.perf.not.r01 %>% head(1) %>% select(n.pubs)` publications at a cost of `r high.perf.not.r01 %>% head(1) %>% select(cost.per.pub)` dollars per publication. Here are the Pubmed IDS of some of those publications:
-
-```{r cheap_pubs, echo=FALSE, message=FALSE, wanrning = FALSE}
-high.perf.not.r01 %>%
-  head(1) %>%
-  select(project.num) %>%
-  left_join(publinks) %>%
-  head(10) %>%
-  knitr::kable()
 ```
 
 Here we quantitate the return on R01 investment and identify the most expensive publications, in grant dollars. One might argue that grants with higher `cost.per.pub` are less good investments.

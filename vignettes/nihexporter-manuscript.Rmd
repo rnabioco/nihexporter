@@ -1,9 +1,9 @@
 ---
 title: '`nihexporter`: an R data package for NIH funding data'
-author: Jay Hesselberth, Erin Baschal, Nick Ellinwood, Ashley Pacheco, Sally Peach,
-  Mary Sweet, Yuying Wang
+author: Jay Hesselberth, Erin Baschal, Nick Ellinwood, Ashley Pacheco, Sally Peach, Mary Sweet, Yuying Wang
 date: 'Last update: `r format(Sys.time(), "%d %B, %Y")`'
 output:
+  rmarkdown::html_vignette: default
   html_document:
     fig_caption: yes
     force_captions: yes
@@ -12,6 +12,10 @@ output:
     number_sections: yes
     toc: yes
     code_folding: hide
+vignette: >
+  %\VignetteIndexEntry{bioRxiv pre-print}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
 ---
 
 # Abstract
