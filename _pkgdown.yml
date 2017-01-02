@@ -20,13 +20,13 @@ reference:
   contents:
   - projects
   - project_pis
-  - org_info
   - project_orgs
-  - publinks
+  - project_io
+  - org_info
   - publications
+  - publinks
   - patents
   - clinical_studies
-  - project_io
 
 navbar:
   type: "inverse"
