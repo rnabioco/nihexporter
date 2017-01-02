@@ -457,7 +457,7 @@ long.grants %>%
 
 Geographical distribution of grant dollar is easily visualized using the package.
 
-```{r geography, fig.cap = 'Geographic distribution of NIH dollars', warning = FALSE, message = FALSE}
+```{r geography, fig.cap = 'Geographic distribution of NIH dollars', warning = FALSE, message = FALSE, eval=FALSE}
 state.data <- data.frame(org.state = state.abb,
                          state.name = tolower(state.name))
 
