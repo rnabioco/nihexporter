@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NIH EXPORTER 2000-2016 • nihexporter</title>
+<title>NIH funding from 1985-2016 • nihexporter</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/paper/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
@@ -80,14 +80,13 @@
 
 <p>The <code>nihexporter</code> R package provides a minimal set of data from the <a href="http://exporter.nih.gov/default.aspx">NIH EXPORTER</a> database, which contains information on NIH biomedical research funding from 1985-2016.</p>
 <p>To keep the package lightweight, many details are omitted but can be easily retrieved from <a href="https://projectreporter.nih.gov/">NIH RePORTER</a>.</p>
-<div id="installation" class="section level3">
-<h3 class="hasAnchor">
-<a href="#installation" class="anchor"> </a>Installation</h3>
+<div id="installation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#installation" class="anchor"> </a>Installation</h2>
 <p>Install the package from github with:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># install.packages('devtools')</span>
 devtools::<span class="kw">install_github</span>(<span class="st">"jayhesselberth/nihexporter"</span>)</code></pre></div>
 <p><strong>Note</strong>: this is a large data package (&gt;40 Mb), so <a href="http://thecoatlessprofessor.com/programming/size-and-limitations-of-packages-on-cran/">it will not be submitted to CRAN</a>.</p>
-</div>
 <div id="tables" class="section level3">
 <h3 class="hasAnchor">
 <a href="#tables" class="anchor"> </a>Tables</h3>
@@ -101,7 +100,7 @@ devtools::<span class="kw">install_github</span>(<span class="st">"jayhesselbert
 <li><p><code>clinical_studies</code>: links project IDs to associated <a href="https://clinicaltrials.gov/">clinical trials</a>.</p></li>
 <li><p><code>project_io</code>: pre-computed <code>n.pubs</code>, <code>n.patents</code> and <code>project.cost</code> for each <code>project.num</code>.</p></li>
 </ul>
-<p><strong>Note:</strong> <a href="https://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=0&amp;index=1">Abstracts</a> from NIH EXPORTER are not provided as they significantly increase the size of the package.</p>
+<p><strong>Note:</strong> <a href="https://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=0&amp;index=1">Abstracts</a> from NIH EXPORTER are not provided because they significantly increase the size of the package.</p>
 </div>
 <div id="functions" class="section level3">
 <h3 class="hasAnchor">
@@ -119,10 +118,51 @@ devtools::<span class="kw">install_github</span>(<span class="st">"jayhesselbert
 <code>nih.institutes</code>: 27 NIH institutes in two-letter format</li>
 </ul>
 </div>
-<div id="example-fiscal-summaries" class="section level3">
+</div>
+<div id="examples" class="section level2">
+<h2 class="hasAnchor">
+<a href="#examples" class="anchor"> </a>Examples</h2>
+<div id="activity-spending-and-numbers" class="section level3">
 <h3 class="hasAnchor">
-<a href="#example-fiscal-summaries" class="anchor"> </a>Example: Fiscal summaries</h3>
-<p>One can use the <code>nihexporter</code> package to find the top-ten all-time most expensive projects.</p>
+<a href="#activity-spending-and-numbers" class="anchor"> </a>Activity spending and numbers</h3>
+<p>The animated plot below shows the trajactory of activity spending and number over time for select activities (e.g., R01 and P01) for some institutes. It indicates that U01 and R21 activities have had significant recent investment from certain institutes, whereas R01 and P01 activities have remained relatively constant in number and spending.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(nihexporter)
+<span class="kw">library</span>(tidyverse)
+<span class="kw">library</span>(gganimate)
+
+insts &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">'GM'</span>, <span class="st">'AI'</span>, <span class="st">'CA'</span>, <span class="st">'HL'</span>, <span class="st">'DK'</span>, <span class="st">'NS'</span>)
+activities &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">'R01'</span>, <span class="st">'R21'</span>, <span class="st">'P01'</span>, <span class="st">'U01'</span>)
+
+costs &lt;-<span class="st"> </span>projects %&gt;%
+<span class="st">  </span><span class="kw">filter</span>(institute %in%<span class="st"> </span>insts &amp;<span class="st"> </span>activity %in%<span class="st"> </span>activities) %&gt;%
+<span class="st">  </span><span class="kw">group_by</span>(fiscal.year, institute, activity) %&gt;%
+<span class="st">  </span><span class="kw">summarize</span>(<span class="dt">n.projects =</span> <span class="kw">n</span>(),
+            <span class="dt">project.costs =</span> <span class="kw">sum</span>(fy.cost, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>) /<span class="st"> </span><span class="fl">1e6</span>)
+
+gp &lt;-<span class="st"> </span><span class="kw">ggplot</span>(costs, <span class="kw">aes</span>(<span class="dt">x =</span> n.projects,
+                        <span class="dt">y =</span> project.costs,
+                        <span class="dt">color =</span> institute,
+                        <span class="dt">frame =</span> fiscal.year)) +
+<span class="st">  </span><span class="kw">scale_x_log10</span>() +<span class="st"> </span><span class="kw">scale_y_log10</span>() +
+<span class="st">  </span><span class="kw">facet_wrap</span>(~<span class="st"> </span>activity) +
+<span class="st">  </span><span class="kw">scale_color_brewer</span>(<span class="dt">palette =</span> <span class="st">'Dark2'</span>) +
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">'Project number'</span>,
+       <span class="dt">y =</span> <span class="st">'Total spending on activity (millions)'</span>,
+       <span class="dt">title =</span> <span class="st">'Values for FY'</span>)
+
+p &lt;-<span class="st"> </span>gp +<span class="st"> </span><span class="kw">geom_path</span>(<span class="kw">aes</span>(<span class="dt">cumulative =</span> <span class="ot">TRUE</span>,
+                        <span class="dt">group =</span> institute),
+                    <span class="dt">arrow =</span> <span class="kw">arrow</span>(<span class="dt">length =</span> <span class="kw">unit</span>(<span class="fl">0.1</span>, <span class="st">"npc"</span>)))
+
+<span class="kw">gganimate</span>(p)</code></pre></div>
+<div class="figure">
+<img src="img/README-cost-.gif" alt="’’"><p class="caption">’’</p>
+</div>
+</div>
+<div id="fiscal-summaries" class="section level3">
+<h3 class="hasAnchor">
+<a href="#fiscal-summaries" class="anchor"> </a>Fiscal summaries</h3>
+<p>One can also use the <code>nihexporter</code> package to find the top-ten all-time most expensive projects.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(nihexporter)
 <span class="kw">library</span>(dplyr)
 
@@ -150,9 +190,10 @@ expensive_projects
 <span class="co">#&gt; 10  N01CO12400        CA  225180953     0.2251810</span></code></pre></div>
 <p>The most expensive project (<code>ZIHLM200888</code>) funds the National Library of Medicine’s intramural program, including <a href="http://pubmed.com">PubMed</a> and the <a href="https://www.ncbi.nlm.nih.gov/">NCBI</a>, which provides BLAST, GenBank, RefSeq and dbGAP.</p>
 </div>
-<div id="resources" class="section level3">
-<h3 class="hasAnchor">
-<a href="#resources" class="anchor"> </a>Resources</h3>
+</div>
+<div id="resources" class="section level2">
+<h2 class="hasAnchor">
+<a href="#resources" class="anchor"> </a>Resources</h2>
 <ul>
 <li><p><a href="http://biorxiv.org/content/early/2015/12/02/033456"><code>nihexporter</code> pre-print on bioRxiv</a></p></li>
 <li><p><a href="https://list.nih.gov/cgi-bin/wa.exe?A0=NIH-REPORT-PUBLIC-L">RePORTER / EXPORTER mailing list archives</a></p></li>

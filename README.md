@@ -8,7 +8,8 @@ The `nihexporter` R package provides a minimal set of data from the [NIH EXPORTE
 
 To keep the package lightweight, many details are omitted but can be easily retrieved from [NIH RePORTER](https://projectreporter.nih.gov/).
 
-### Installation
+Installation
+------------
 
 Install the package from github with:
 
@@ -37,7 +38,7 @@ devtools::install_github("jayhesselberth/nihexporter")
 
 -   `project_io`: pre-computed `n.pubs`, `n.patents` and `project.cost` for each `project.num`.
 
-**Note:** [Abstracts](https://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=0&index=1) from NIH EXPORTER are not provided as they significantly increase the size of the package.
+**Note:** [Abstracts](https://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=0&index=1) from NIH EXPORTER are not provided because they significantly increase the size of the package.
 
 ### Functions
 
@@ -47,9 +48,50 @@ devtools::install_github("jayhesselberth/nihexporter")
 
 -   `nih.institutes`: 27 NIH institutes in two-letter format
 
-### Example: Fiscal summaries
+Examples
+--------
 
-One can use the `nihexporter` package to find the top-ten all-time most expensive projects.
+### Activity spending and numbers
+
+The animated plot below shows the trajactory of activity spending and number over time for select activities (e.g., R01 and P01) for some institutes. It indicates that U01 and R21 activities have had significant recent investment from certain institutes, whereas R01 and P01 activities have remained relatively constant in number and spending.
+
+``` r
+library(nihexporter)
+library(tidyverse)
+library(gganimate)
+
+insts <- c('GM', 'AI', 'CA', 'HL', 'DK', 'NS')
+activities <- c('R01', 'R21', 'P01', 'U01')
+
+costs <- projects %>%
+  filter(institute %in% insts & activity %in% activities) %>%
+  group_by(fiscal.year, institute, activity) %>%
+  summarize(n.projects = n(),
+            project.costs = sum(fy.cost, na.rm = TRUE) / 1e6)
+
+gp <- ggplot(costs, aes(x = n.projects,
+                        y = project.costs,
+                        color = institute,
+                        frame = fiscal.year)) +
+  scale_x_log10() + scale_y_log10() +
+  facet_wrap(~ activity) +
+  scale_color_brewer(palette = 'Dark2') +
+  labs(x = 'Project number',
+       y = 'Total spending on activity (millions)',
+       title = 'Values for FY')
+
+p <- gp + geom_path(aes(cumulative = TRUE,
+                        group = institute),
+                    arrow = arrow(length = unit(0.1, "npc")))
+
+gganimate(p)
+```
+
+![''](img/README-cost-.gif)
+
+### Fiscal summaries
+
+One can also use the `nihexporter` package to find the top-ten all-time most expensive projects.
 
 ``` r
 library(nihexporter)
@@ -81,7 +123,8 @@ expensive_projects
 
 The most expensive project (`ZIHLM200888`) funds the National Library of Medicine's intramural program, including [PubMed](http://pubmed.com) and the [NCBI](https://www.ncbi.nlm.nih.gov/), which provides BLAST, GenBank, RefSeq and dbGAP.
 
-### Resources
+Resources
+---------
 
 -   [`nihexporter` pre-print on bioRxiv](http://biorxiv.org/content/early/2015/12/02/033456)
 
