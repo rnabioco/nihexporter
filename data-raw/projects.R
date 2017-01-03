@@ -1,21 +1,14 @@
 # projects table
-# 
-# loads CSV files from NIH EXPORTER into tbl_df format
-#
-library(dplyr)
-library(stringr)
-library(tidyr)
-library(lubridate)
-library(readr)
-library(data.table)
+#' load PROJECTS CSV files and create these tables:
+#' - projects
+#' - project_orgs
+#' - project_pis
+#' - org_info
 
-## PROJECTS tables
+source('data-raw/common.R')
 
-# load projects data
 path <- 'data-raw//PROJECTS'
-csvfiles <- dir(path, pattern = '\\.csv', full.names = TRUE)
-
-col_types <- cols_only( 
+col_types <- cols_only(
   APPLICATION_ID    = col_integer(),
   ACTIVITY          = col_character(),
   ADMINISTERING_IC  = col_character(),
@@ -37,14 +30,7 @@ col_types <- cols_only(
   TOTAL_COST        = col_double()
 )
 
-tables <- lapply(csvfiles, function(x) read_csv(x, col_types = col_types))
-projects.tbl <- tbl_df(rbindlist(tables, fill = TRUE))
-
-# coerce colnames
-names(projects.tbl) <- names(projects.tbl) %>%
-  str_to_lower() %>%
-  str_replace_all('_','.')
-
+projects.tbl <- load_tbl(path, col_types)
 
 # org table - link on org.duns
 org_info <- projects.tbl %>%
@@ -59,13 +45,11 @@ org_info <- projects.tbl %>%
          org.city = as.factor(org.city)) %>%
   distinct() %>%
   arrange(org.duns)
-save(org_info, file = 'data/org_info.rdata', compress = 'xz')
 
-nih.institutes <- c("AA", "AG", "AI", "AR", "AT", "CA", "DA", "DC", "DE", "DK", "EB", "ES", "EY", "GM", "HD", "HG", "HG", "HL", "LM", "MD", "MH", "NR", "NS", "RM", "RR", "TR", "TW") 
+use_data(org_info, compress = 'xz')
 
-# projects table - only provide data after fy 2000 as costs are only available 2000 and onward.
 projects <- projects.tbl %>%
-  select(application.id, 
+  select(application.id,
          administering.ic, activity,
          application.type, arra.funded,
          core.project.num, foa.number,
@@ -73,10 +57,10 @@ projects <- projects.tbl %>%
          study.section, suffix, total.cost) %>%
   rename(project.num = core.project.num,
          fiscal.year = fy,
-         institute = administering.ic) %>%  
+         institute = administering.ic) %>%
   filter(!is.na(project.num) & !is.na(total.cost)) %>%
   filter(!grepl('-', project.num)) %>%
-  filter(institute %in% nih.institutes) %>% 
+  filter(institute %in% nih.institutes) %>%
   mutate(institute = as.factor(institute),
          activity = as.factor(activity),
          application.type = as.factor(application.type),
@@ -85,28 +69,21 @@ projects <- projects.tbl %>%
          foa.number = as.factor(foa.number),
          study.section = as.factor(study.section),
          suffix = as.factor(suffix),
-         project.num = as.factor(project.num),
          project.end = mdy(project.end),
          project.start = mdy(project.start),
          fy.cost = as.double(total.cost)) %>%
   select(-total.cost)
 
-save(projects, file = 'data/projects.rdata', compress = 'xz')         
+use_data(projects, compress = 'xz')
 
-# ======================================================================
-# XXX load fixes for DUNS numbers and parse here
+#' load fixes for DUNS numbers and parse here
 duns_path <- 'data-raw//DUNS_FIX'
-duns_csvfiles <- dir(duns_path, pattern = '\\.csv', full.names = TRUE)
-duns_col_types <- cols( 
+duns_col_types <- cols(
   APPLICATION_ID = col_integer(),
   ORG_DUNS = col_character()
 )
-duns_tables <- lapply(duns_csvfiles, function(x) read_csv(x, col_types = duns_col_types))
-duns.tbl <- tbl_df(rbindlist(duns_tables, fill = TRUE))
 
-names(duns.tbl) <- names(duns.tbl) %>%
-  str_to_lower() %>%
-  str_replace_all('_','.')
+duns.tbl <- load_tbl(duns_path, duns_col_types)
 
 # now join the DUNS numbers. we want DUNS from the new tables from 2000-2008 (those are WRONG in the project.tbl),
 # and the DUNS from 2009 onward are correct in the projects.tbl
@@ -132,7 +109,7 @@ project_orgs <- all_duns %>%
   arrange(application.id) %>%
   unique()
 
-save(project_orgs, file = 'data/project_orgs.rdata', compress = 'xz')         
+use_data(project_orgs, compress = 'xz')
 
 # project_pis table
 project_pis <- projects.tbl %>%
@@ -147,7 +124,9 @@ project_pis <- projects.tbl %>%
   setNames(c('project.num', 'pi.num', 'pi.id')) %>%
   filter(pi.id != '' & project.num != '') %>%
   mutate(pi.id = str_extract(pi.id, '^\\d+'),
-         pi.id = as.numeric(pi.id)) %>%
+         pi.id = as.integer(pi.id)) %>%
   select(project.num, pi.id) %>%
-  arrange(project.num)
-save(project_pis, file = 'data/project_pis.rdata', compress = 'xz')
+  na.omit() %>% unique()
+  arrange(project.num) %>%
+
+use_data(project_pis, compress = 'xz')

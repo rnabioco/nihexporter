@@ -1,19 +1,9 @@
-library(dplyr)
-library(stringr)
-library(tidyr)
-library(readr)
+#' load and parse patent CSV files
 
-# PUBLINKS tables
+source('data-raw/common.R')
+
 path = 'data-raw//PATENTS'
-csvfiles <- dir(path, pattern = '\\.csv', full.names = TRUE)
-tables <- lapply(csvfiles, read_csv)
-
-patents <- bind_rows(tables)
-patents.tbl <- tbl_df(patents)
-
-names(patents.tbl) <- names(patents.tbl) %>%
-  str_to_lower() %>%
-  str_replace_all('_','.')
+patents.tbl <- load_tbl(path)
 
 patents <- patents.tbl %>%
   select(patent.id, project.id) %>%
@@ -21,4 +11,4 @@ patents <- patents.tbl %>%
   filter(!grepl('-', project.num)) %>%
   arrange(project.num)
 
-save(patents, file = 'data/patents.rdata', compress = 'xz')
+use_data(patents, compress = 'xz')

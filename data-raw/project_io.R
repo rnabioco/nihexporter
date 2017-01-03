@@ -1,6 +1,6 @@
-# make the `project_io` table
+#' create and save the `project_io` table
 
-library(dplyr)
+source('data-raw/common.R')
 
 project_costs <- projects %>%
   filter(institute %in% nih.institutes) %>%
@@ -25,4 +25,4 @@ project_io <- pub_output %>%
   filter(!grepl('-', project.num)) %>%
   arrange(project.num)
 
-save(project_io, file = "data/project_io.rdata", compress = "xz")
+use_data(project_io, compress = 'xz')
