@@ -146,7 +146,7 @@ gp &lt;-<span class="st"> </span><span class="kw">ggplot</span>(costs, <span cla
 <span class="st">  </span><span class="kw">scale_x_log10</span>() +<span class="st"> </span><span class="kw">scale_y_log10</span>() +
 <span class="st">  </span><span class="kw">facet_wrap</span>(~<span class="st"> </span>activity) +
 <span class="st">  </span><span class="kw">scale_color_brewer</span>(<span class="dt">palette =</span> <span class="st">'Dark2'</span>) +
-<span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">'Project number'</span>,
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">'Number of projects'</span>,
        <span class="dt">y =</span> <span class="st">'Total spending on activity (millions)'</span>,
        <span class="dt">title =</span> <span class="st">'Values for FY'</span>)
 
@@ -162,33 +162,35 @@ p &lt;-<span class="st"> </span>gp +<span class="st"> </span><span class="kw">ge
 <div id="fiscal-summaries" class="section level3">
 <h3 class="hasAnchor">
 <a href="#fiscal-summaries" class="anchor"> </a>Fiscal summaries</h3>
-<p>One can also use the <code>nihexporter</code> package to find the top-ten all-time most expensive projects.</p>
+<p>One can also use the <code>nihexporter</code> package to examine spending among the institutes. For example, here we identify the top-ten all-time most expensive projects.</p>
+<p>The most expensive project below (<code>ZIHLM200888</code>) funds the National Library of Medicine’s intramural program, including <a href="http://pubmed.com">PubMed</a> and the <a href="https://www.ncbi.nlm.nih.gov/">NCBI</a>, which provides BLAST, GenBank, RefSeq and dbGAP.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(nihexporter)
 <span class="kw">library</span>(dplyr)
+<span class="kw">library</span>(scales)
 
 expensive_projects &lt;-<span class="st"> </span>project_io %&gt;%
 <span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(total.cost)) %&gt;%
-<span class="st">  </span><span class="kw">head</span>(<span class="dv">10</span>) %&gt;%
+<span class="st">  </span><span class="kw">head</span>(<span class="dv">10</span>) %&gt;%<span class="st"> </span>
 <span class="st">  </span><span class="kw">left_join</span>(projects, <span class="dt">by =</span> <span class="st">'project.num'</span>) %&gt;%
 <span class="st">  </span><span class="kw">select</span>(project.num, institute, total.cost) %&gt;%<span class="st"> </span>
 <span class="st">  </span><span class="kw">unique</span>() %&gt;%
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">cost.billions =</span> total.cost /<span class="st"> </span><span class="fl">1e9</span>)
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">total.cost =</span> <span class="kw">comma</span>(total.cost)) %&gt;%
+<span class="st">  </span><span class="kw">setNames</span>(<span class="kw">c</span>(<span class="st">'Project'</span>, <span class="st">'Institute'</span>, <span class="st">'Total cost (USD)'</span>))
 
 expensive_projects
-<span class="co">#&gt; # A tibble: 10 × 4</span>
-<span class="co">#&gt;    project.num institute total.cost cost.billions</span>
-<span class="co">#&gt;          &lt;chr&gt;    &lt;fctr&gt;      &lt;dbl&gt;         &lt;dbl&gt;</span>
-<span class="co">#&gt; 1  ZIHLM200888        LM 1544981304     1.5449813</span>
-<span class="co">#&gt; 2  ZIFBC000001        CA  652060692     0.6520607</span>
-<span class="co">#&gt; 3  U54HG003067        HG  527942706     0.5279427</span>
-<span class="co">#&gt; 4  U54HG003079        HG  414975466     0.4149755</span>
-<span class="co">#&gt; 5  ZIFAI000001        AI  389496063     0.3894961</span>
-<span class="co">#&gt; 6  U10CA098543        CA  335523333     0.3355233</span>
-<span class="co">#&gt; 7  U54HG003273        HG  305945737     0.3059457</span>
-<span class="co">#&gt; 8  U19AI067854        AI  290473421     0.2904734</span>
-<span class="co">#&gt; 9  U54HG002045        HG  242268294     0.2422683</span>
-<span class="co">#&gt; 10  N01CO12400        CA  225180953     0.2251810</span></code></pre></div>
-<p>The most expensive project (<code>ZIHLM200888</code>) funds the National Library of Medicine’s intramural program, including <a href="http://pubmed.com">PubMed</a> and the <a href="https://www.ncbi.nlm.nih.gov/">NCBI</a>, which provides BLAST, GenBank, RefSeq and dbGAP.</p>
+<span class="co">#&gt; # A tibble: 10 × 3</span>
+<span class="co">#&gt;        Project Institute `Total cost (USD)`</span>
+<span class="co">#&gt;          &lt;chr&gt;    &lt;fctr&gt;              &lt;chr&gt;</span>
+<span class="co">#&gt; 1  ZIHLM200888        LM      1,544,981,304</span>
+<span class="co">#&gt; 2  ZIFBC000001        CA        652,060,692</span>
+<span class="co">#&gt; 3  U54HG003067        HG        527,942,706</span>
+<span class="co">#&gt; 4  U54HG003079        HG        414,975,466</span>
+<span class="co">#&gt; 5  ZIFAI000001        AI        389,496,063</span>
+<span class="co">#&gt; 6  U10CA098543        CA        335,523,333</span>
+<span class="co">#&gt; 7  U54HG003273        HG        305,945,737</span>
+<span class="co">#&gt; 8  U19AI067854        AI        290,473,421</span>
+<span class="co">#&gt; 9  U54HG002045        HG        242,268,294</span>
+<span class="co">#&gt; 10  N01CO12400        CA        225,180,953</span></code></pre></div>
 </div>
 </div>
 <div id="resources" class="section level2">

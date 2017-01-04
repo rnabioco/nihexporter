@@ -76,7 +76,7 @@ gp <- ggplot(costs, aes(x = n.projects,
   scale_x_log10() + scale_y_log10() +
   facet_wrap(~ activity) +
   scale_color_brewer(palette = 'Dark2') +
-  labs(x = 'Project number',
+  labs(x = 'Number of projects',
        y = 'Total spending on activity (millions)',
        title = 'Values for FY')
 
@@ -91,37 +91,39 @@ gganimate(p)
 
 ### Fiscal summaries
 
-One can also use the `nihexporter` package to find the top-ten all-time most expensive projects.
+One can also use the `nihexporter` package to examine spending among the institutes. For example, here we identify the top-ten all-time most expensive projects.
+
+The most expensive project below (`ZIHLM200888`) funds the National Library of Medicine's intramural program, including [PubMed](http://pubmed.com) and the [NCBI](https://www.ncbi.nlm.nih.gov/), which provides BLAST, GenBank, RefSeq and dbGAP.
 
 ``` r
 library(nihexporter)
 library(dplyr)
+library(scales)
 
 expensive_projects <- project_io %>%
   arrange(desc(total.cost)) %>%
-  head(10) %>%
+  head(10) %>% 
   left_join(projects, by = 'project.num') %>%
   select(project.num, institute, total.cost) %>% 
   unique() %>%
-  mutate(cost.billions = total.cost / 1e9)
+  mutate(total.cost = comma(total.cost)) %>%
+  setNames(c('Project', 'Institute', 'Total cost (USD)'))
 
 expensive_projects
-#> # A tibble: 10 × 4
-#>    project.num institute total.cost cost.billions
-#>          <chr>    <fctr>      <dbl>         <dbl>
-#> 1  ZIHLM200888        LM 1544981304     1.5449813
-#> 2  ZIFBC000001        CA  652060692     0.6520607
-#> 3  U54HG003067        HG  527942706     0.5279427
-#> 4  U54HG003079        HG  414975466     0.4149755
-#> 5  ZIFAI000001        AI  389496063     0.3894961
-#> 6  U10CA098543        CA  335523333     0.3355233
-#> 7  U54HG003273        HG  305945737     0.3059457
-#> 8  U19AI067854        AI  290473421     0.2904734
-#> 9  U54HG002045        HG  242268294     0.2422683
-#> 10  N01CO12400        CA  225180953     0.2251810
+#> # A tibble: 10 × 3
+#>        Project Institute `Total cost (USD)`
+#>          <chr>    <fctr>              <chr>
+#> 1  ZIHLM200888        LM      1,544,981,304
+#> 2  ZIFBC000001        CA        652,060,692
+#> 3  U54HG003067        HG        527,942,706
+#> 4  U54HG003079        HG        414,975,466
+#> 5  ZIFAI000001        AI        389,496,063
+#> 6  U10CA098543        CA        335,523,333
+#> 7  U54HG003273        HG        305,945,737
+#> 8  U19AI067854        AI        290,473,421
+#> 9  U54HG002045        HG        242,268,294
+#> 10  N01CO12400        CA        225,180,953
 ```
-
-The most expensive project (`ZIHLM200888`) funds the National Library of Medicine's intramural program, including [PubMed](http://pubmed.com) and the [NCBI](https://www.ncbi.nlm.nih.gov/), which provides BLAST, GenBank, RefSeq and dbGAP.
 
 Resources
 ---------

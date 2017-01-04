@@ -13,7 +13,9 @@ library(ggplot2)
 library(cowplot)
 theme_set(theme_cowplot() +
           theme(axis.title.y = element_text(size = rel(0.8), angle = 90),
-                axis.title.x = element_text(size = rel(0.8), angle = 00)))
+                axis.title.x = element_text(size = rel(0.8), angle = 00),
+                strip.text = element_text(size = rel(0.8), angle = 00, lineheight = 0.5),
+                title = element_text(size = rel(0.8), angle = 00)))
 ```
 
 ```{r gif_animation_hook, echo=FALSE, cache=FALSE}
@@ -122,7 +124,7 @@ gp <- ggplot(costs, aes(x = n.projects,
   scale_x_log10() + scale_y_log10() +
   facet_wrap(~ activity) +
   scale_color_brewer(palette = 'Dark2') +
-  labs(x = 'Project number',
+  labs(x = 'Number of projects',
        y = 'Total spending on activity (millions)',
        title = 'Values for FY')
 
@@ -135,24 +137,26 @@ gganimate(p)
 
 ### Fiscal summaries
 
-One can also use the `nihexporter` package to find the top-ten all-time most expensive projects.
+One can also use the `nihexporter` package to examine spending among the institutes. For example, here we identify the top-ten all-time most expensive projects.
+
+The most expensive project below (`ZIHLM200888`) funds the National Library of Medicine's intramural program, including [PubMed](http://pubmed.com) and the [NCBI](https://www.ncbi.nlm.nih.gov/), which provides BLAST, GenBank, RefSeq and dbGAP.
 
 ```{r expensive_projects, warning=FALSE, message=FALSE}
 library(nihexporter)
 library(dplyr)
+library(scales)
 
 expensive_projects <- project_io %>%
   arrange(desc(total.cost)) %>%
-  head(10) %>%
+  head(10) %>% 
   left_join(projects, by = 'project.num') %>%
   select(project.num, institute, total.cost) %>% 
   unique() %>%
-  mutate(cost.billions = total.cost / 1e9)
+  mutate(total.cost = comma(total.cost)) %>%
+  setNames(c('Project', 'Institute', 'Total cost (USD)'))
 
 expensive_projects
 ```
-
-The most expensive project (`ZIHLM200888`) funds the National Library of Medicine's intramural program, including [PubMed](http://pubmed.com) and the [NCBI](https://www.ncbi.nlm.nih.gov/), which provides BLAST, GenBank, RefSeq and dbGAP.
 
 ## Resources
 
