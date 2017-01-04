@@ -7,6 +7,7 @@ urlbase="http://exporter.nih.gov/CSVs/final/"
 ## common functions ----------------------------
 
 download_files () {
+
     dir=$1
     urlbase=$2
     zipfile=$3
@@ -23,7 +24,7 @@ download_files () {
 unzip_files () {
 
     dir=$1
-    $
+
     if [ ! -d $dir ]; then
         echo "unzip error: directory $dir does not exist"
         exit 1
@@ -96,6 +97,8 @@ for year in ${years[@]}; do
     download_files($dir, $urlbase, $zipfile)
 done
 
+unzip_files($dir)
+
 ## FY FUNDING FOR 1985-1999 --------------------
 
 years=$(seq 1985 1999)
@@ -106,3 +109,4 @@ for year in ${years[@]}; do
     download_files($dir, $urlbase, $zipfile)
 done
 
+unzip_files($dir)
