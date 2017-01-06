@@ -1,12 +1,16 @@
-# nihexporter 0.9.0
+# nihexporter 0.9.0.9000 (unreleased)
 
 ## Major changes
  
-- Added 2016 data. Incorporate project costs back through 1985.
+- Reload `projects` data. `fy.cost` now spans 1985-2016. [TODO]
+
+- Recalculate `project_io` table. [TODO]
 
 - New `clinical_studies` table.
 
 - `rcr` values added to the `publications` table, and added new `rcr()` function that enables retrieval of [RCR values](https://icite.od.nih.gov/stats) for specific PMIDs.
+
+- remove duplicate rows and `NA`s from `project_pis` table.
 
 ## Minor changes
 

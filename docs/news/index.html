@@ -94,15 +94,17 @@
     </div>
 
     <div class="contents">
-    <div id="nihexporter-0-9-0" class="section level1">
+    <div id="nihexporter-0-9-0-9000-unreleased" class="section level1">
 <h1 class="hasAnchor">
-<a href="#nihexporter-0-9-0" class="anchor"> </a>nihexporter 0.9.0</h1>
+<a href="#nihexporter-0-9-0-9000-unreleased" class="anchor"> </a>nihexporter 0.9.0.9000 (unreleased)</h1>
 <div id="major-changes" class="section level2">
 <h2 class="hasAnchor">
 <a href="#major-changes" class="anchor"> </a>Major changes</h2>
-<ul><li><p>Added 2016 data. Incorporate project costs back through 1985.</p></li>
+<ul><li><p>Reload <code>projects</code> data. <code>fy.cost</code> now spans 1985-2016. [TODO]</p></li>
+<li><p>Recalculate <code>project_io</code> table. [TODO]</p></li>
 <li><p>New <code>clinical_studies</code> table.</p></li>
 <li><p><code>rcr</code> values added to the <code>publications</code> table, and added new <code><a href="../reference/rcr.html">rcr()</a></code> function that enables retrieval of <a href="https://icite.od.nih.gov/stats">RCR values</a> for specific PMIDs.</p></li>
+<li><p>remove duplicate rows and <code>NA</code>s from <code>project_pis</code> table.</p></li>
 </ul></div>
 <div id="minor-changes" class="section level2">
 <h2 class="hasAnchor">
@@ -206,7 +208,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#nihexporter-0-9-0">0.9.0</a></li>
+        <li><a href="#nihexporter-0-9-0-9000-unreleased">0.9.0.9000</a></li>
         <li><a href="#nihexporter-0-8">0.8</a></li>
         <li><a href="#nihexporter-0-7">0.7</a></li>
         <li><a href="#nihexporter-0-6-1">0.6.1</a></li>
