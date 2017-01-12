@@ -16,7 +16,6 @@ Suggests:
     gganimate,
     tidyverse,
     ggplot2,
-    scales,
     stringr,
     purrr,
     broom,
@@ -26,6 +25,8 @@ Suggests:
     testthat,
     cowplot,
     animation,
+    RSQLite (>= 1.0.0),
+    RPostgreSQL,
 License: MIT + file LICENSE
 LazyData: true
 URL: http://github.com/jayhesselberth/nihexporter
