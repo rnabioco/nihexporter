@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • nihexporter</title>
+<title>Database versions of the nihexporter data — nihexporter-db • nihexporter</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -34,7 +34,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
@@ -87,88 +87,41 @@
       </header>
 
       <div class="row">
-  <div class="col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Function reference</h1>
-      <h4>version&nbsp;0.9.0.9000</h4>
+    <h1>Database versions of the nihexporter data</h1>
     </div>
 
-    <div class="contents">
-      <h2 id="section-variables" class="hasAnchor"><a href="#section-variables" class="anchor"></a>Variables</h2>
-      <p class="section-desc"></p>
-
-      
-      <p><a href="nih.institutes.html">Two-letter acronyms for NIH institutes</a></p>
-      <ul>
-        <li><code><a href="nih.institutes.html">nih.institutes</a></code></li>
-      </ul>
-          <h2 id="section-functions" class="hasAnchor"><a href="#section-functions" class="anchor"></a>Functions</h2>
-      <p class="section-desc"></p>
-
-      
-      <p><a href="rcr.html">Retrieve Relative Citation Ratio (RCR) for PubMed IDs.</a></p>
-      <ul>
-        <li><code><a href="rcr.html">rcr</a></code></li>
-      </ul>
-          <h2 id="section-tables" class="hasAnchor"><a href="#section-tables" class="anchor"></a>Tables</h2>
-      <p class="section-desc"></p>
-
-      
-      <p><a href="clinical_studies.html">Clinical trial information.</a></p>
-      <ul>
-        <li><code><a href="clinical_studies.html">clinical_studies</a></code></li>
-      </ul>
-      
-      <p><a href="org_info.html">Organization information.</a></p>
-      <ul>
-        <li><code><a href="org_info.html">org_info</a></code></li>
-      </ul>
-      
-      <p><a href="patents.html">Table linking patent IDs to project IDs.</a></p>
-      <ul>
-        <li><code><a href="patents.html">patents</a></code></li>
-      </ul>
-      
-      <p><a href="project_io.html">Pre-computed total costs, number of patents and publications per project.</a></p>
-      <ul>
-        <li><code><a href="project_io.html">project_io</a></code></li>
-      </ul>
-      
-      <p><a href="project_orgs.html">Table linking organizations to applications.</a></p>
-      <ul>
-        <li><code><a href="project_orgs.html">project_orgs</a></code></li>
-      </ul>
-      
-      <p><a href="project_pis.html">Principal investigators.</a></p>
-      <ul>
-        <li><code><a href="project_pis.html">project_pis</a></code></li>
-      </ul>
-      
-      <p><a href="projects.html">Project information.</a></p>
-      <ul>
-        <li><code><a href="projects.html">projects</a></code></li>
-      </ul>
-      
-      <p><a href="publications.html">Publication information.</a></p>
-      <ul>
-        <li><code><a href="publications.html">publications</a></code></li>
-      </ul>
-      
-      <p><a href="publinks.html">Table linking PubMed IDs to project IDs.</a></p>
-      <ul>
-        <li><code><a href="publinks.html">publinks</a></code></li>
-      </ul>
     
-    </div>
-  </div>
+    <p>These functions cache the data from the <code>nihexporter</code> database in
+a local database, for use in examples and vignettes. Indexes are created
+to making joining tables on natural keys efficient.</p>
+    
 
+    <pre><span class='fu'>nihexporter_sqlite</span>(<span class='kw'>path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+
+<span class='fu'>nihexporter_postgres</span>(<span class='kw'>dbname</span> <span class='kw'>=</span> <span class='st'>"nihexporter"</span>, <span class='no'>...</span>)
+
+<span class='fu'>has_nihexporter</span>(<span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"sqlite"</span>, <span class='st'>"postgresql"</span>), <span class='no'>...</span>)
+
+<span class='fu'>copy_nihexporter</span>(<span class='no'>src</span>, <span class='no'>...</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <dl class="dl-horizontal">
+      <dt>path</dt>
+      <dd>location of sqlite database file</dd>
+      <dt>dbname, ...</dt>
+      <dd>Arguments passed on to <code>src_postgres</code></dd>
+    </dl>
+    
+
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-variables">Variables</a></li>
-      <li><a href="#section-functions">Functions</a></li>
-      <li><a href="#section-tables">Tables</a></li>
-    </ul>
+      <li><a href="#arguments">Arguments</a></li>
+                </ul>
+
   </div>
 </div>
 

@@ -44,6 +44,8 @@ devtools::install_github("jayhesselberth/nihexporter")
 
 -   `rcr()` retrieves [Relative Citation Ratios](https://icite.od.nih.gov/) and associated information for PubMed IDs.
 
+-   `nihexporter_sqlite()` can be used to cache data in a local SQLite database.
+
 ### Variables
 
 -   `nih.institutes`: 27 NIH institutes in two-letter format
