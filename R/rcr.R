@@ -40,9 +40,11 @@ rcr <- function(pmids) {
   path <- 'api/pubs'
   query <- list('pmids' = paste0(pmids, collapse = ','))
 
-  url_built <- modify_url(url, path = path, query = query)
+  url_built <- httr::modify_url(url, path = path, query = query)
 
-  raw <- GET(url_built) %>% content(., 'text') %>% fromJSON(.)
+  raw <- httr::GET(url_built) %>%
+    httr::content(., 'text') %>%
+    jsonlite::fromJSON(.)
 
   as_data_frame(raw$data)
 }
