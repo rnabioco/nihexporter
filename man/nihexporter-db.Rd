@@ -23,8 +23,8 @@ copy_nihexporter(src, ...)
 }
 \description{
 These functions cache the data from the \code{nihexporter} database in
-a local database, for use in examples and vignettes. Indexes are created
-to making joining tables on natural keys efficient.
+a local database for use in examples and vignettes. Indexes are created
+to make joining tables on natural keys efficient.
 }
 \keyword{internal}
 

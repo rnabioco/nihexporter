@@ -70,70 +70,112 @@
   <div class="col-md-9">
     <div class="page-header toc-ignore">
       <h1>nihexporter</h1>
-                        <h4 class="author">Jay Hesselberth <a href="mailto:jay.hesselberth@gmail.com">jay.hesselberth@gmail.com</a>
-</h4>
             
-            <h4 class="date">2016-12-31</h4>
           </div>
 
     
     
 <div class="contents">
-<div id="overview" class="section level1">
+<div id="package-overview" class="section level1">
 <h1 class="hasAnchor">
-<html><body><a href="#overview" class="anchor"> </a></body></html>Overview</h1>
-<p>The <code>nihexporter</code> package provides the following tables of data:</p>
+<html><body><a href="#package-overview" class="anchor"> </a></body></html>Package overview</h1>
+<div id="tables" class="section level2">
+<h2 class="hasAnchor">
+<html><body><a href="#tables" class="anchor"> </a></body></html>Tables</h2>
+<p>The <code>nihexporter</code> package contains several relational tables that contain a variety of information about NIH funding.</p>
 <ul>
 <li>
-<code>projects</code> has information about projects in each fiscal year, keyed by <code>project.num</code>
-</li>
+<code>projects</code> has information about projects in each fiscal year</li>
 <li>
 <code>org_info</code> has information about project organizations</li>
 <li>
 <code>project_orgs</code> links applications to organizations</li>
 <li>
-<code>project_pis</code> links PI information to a project</li>
+<code>project_pis</code> links principal investigators to projects</li>
 <li>
-<code>publinks</code> table links PubMed IDs to <code>project.num</code>
+<code>publinks</code> links PubMed IDs to projects</li>
+<li>
+<code>publications</code> contains <a href="https://icite.od.nih.gov/">Relative Citation Ratio</a> values and other information.</li>
+<li>
+<code>clinical_studies</code> has information about <a href="http://clinicaltrials.org">clinical trials</a>
 </li>
 <li>
-<code>publications</code> links project IDs to PubMed IDs</li>
+<code>patents</code> links patents to projects</li>
 <li>
-<code>patents</code> links patent IDs to project IDs</li>
+<code>project_io</code> contains pre-computed values for total project cost (<code>project.cost</code>), as well as the number of publications (<code>n.pubs</code>) and patents (<code>n.patents</code>).</li>
 </ul>
-<p>See the documentation in the R package for more information about each table.</p>
-<p>The package also has several precomputed variables and tables that enable quick and easy exploratory analysis:</p>
+</div>
+<div id="functions" class="section level2">
+<h2 class="hasAnchor">
+<html><body><a href="#functions" class="anchor"> </a></body></html>Functions</h2>
+<ul>
+<li>
+<code><a href="../reference/rcr.html">rcr()</a></code> uses PubMed IDs to retrieve <a href="https://icite.od.nih.gov/">RCR</a> values from the iCite database.</li>
+</ul>
+</div>
+<div id="variables" class="section level2">
+<h2 class="hasAnchor">
+<html><body><a href="#variables" class="anchor"> </a></body></html>Variables</h2>
 <ul>
 <li>
 <code>nih.institutes</code>: Two-letter format for 27 NIH institutes</li>
-<li>
-<code>project_io</code>: This table contains pre-computed values for overall project cost (<code>project.cost</code>), as well as the number of publications (<code>n.pubs</code>) and patents (<code>n.patents</code>) associated with each project.</li>
 </ul>
+</div>
 </div>
 <div id="examples" class="section level1">
 <h1 class="hasAnchor">
 <html><body><a href="#examples" class="anchor"> </a></body></html>Examples</h1>
-<p>Many of the examples generate project numbers that you can use to look up project specifics in <a href="http://projectreporter.nih.gov/reporter.cfm">NIH REPORTER</a>. We use the amazing <code>dplyr</code>, <code>ggplot2</code> and <code>knitr</code> packages to manipulate and plot the data.</p>
-<div id="award-amounts" class="section level2">
+<p>We’ll use animated charts to illustrate funding trends at the NIH.</p>
+<div id="project-number-and-cost" class="section level2">
 <h2 class="hasAnchor">
-<html><body><a href="#award-amounts" class="anchor"> </a></body></html>Award amounts</h2>
-<p>The <code>fy.cost</code> column from the <code>projects</code> table has many <code>NA</code> values. You need to use <code>na.rm</code> in aggregation functions to ensure robust handling of these values.</p>
-<p>Let’s look at spending over time for NIGMS in years that have such data:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cost.over.time &lt;-<span class="st"> </span>projects %&gt;%
-<span class="st">  </span><span class="kw">select</span>(institute, fy.cost, fiscal.year) %&gt;%
-<span class="st">  </span><span class="kw">filter</span>(institute ==<span class="st"> 'GM'</span>) %&gt;%
-<span class="st">  </span><span class="kw">group_by</span>(fiscal.year, institute) %&gt;%
-<span class="st">  </span><span class="kw">summarize</span>(<span class="dt">yearly.cost =</span> <span class="kw">sum</span>(fy.cost, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)) %&gt;%
-<span class="st">  </span><span class="kw">filter</span>(yearly.cost &gt;<span class="st"> </span><span class="dv">0</span>)
+<html><body><a href="#project-number-and-cost" class="anchor"> </a></body></html>Project number and cost</h2>
+<p>First we’ll take a look at project number and costs for a few project types (R01, R21, etc.) at a few of the bigger institues (GM, CA, AI, etc.). This first animated graph shows how these variables move over ~15 years.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(nihexporter)
+<span class="kw">library</span>(dplyr)
+<span class="kw">library</span>(ggplot2)
+<span class="kw">library</span>(gganimate)
+<span class="kw">library</span>(cowplot)
 
-cost.over.time %&gt;%
-<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> fiscal.year, <span class="dt">y =</span> yearly.cost)) +
-<span class="st">  </span><span class="kw">geom_line</span>()</code></pre></div>
+insts &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">'GM'</span>, <span class="st">'AI'</span>, <span class="st">'CA'</span>, <span class="st">'HL'</span>, <span class="st">'DK'</span>, <span class="st">'NS'</span>)
+activities &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">'R01'</span>, <span class="st">'R21'</span>, <span class="st">'P01'</span>, <span class="st">'U01'</span>)
+
+costs &lt;-<span class="st"> </span>projects %&gt;%
+<span class="st">  </span><span class="kw">filter</span>(institute %in%<span class="st"> </span>insts &amp;<span class="st"> </span>activity %in%<span class="st"> </span>activities) %&gt;%
+<span class="st">  </span><span class="kw">group_by</span>(fiscal.year, institute, activity) %&gt;%
+<span class="st">  </span><span class="kw">summarize</span>(<span class="dt">n.projects =</span> <span class="kw">n</span>(),
+            <span class="dt">project.costs =</span> <span class="kw">sum</span>(fy.cost, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>) /<span class="st"> </span><span class="fl">1e6</span>)
+
+gp &lt;-<span class="st"> </span><span class="kw">ggplot</span>(costs, <span class="kw">aes</span>(<span class="dt">x =</span> n.projects,
+                        <span class="dt">y =</span> project.costs,
+                        <span class="dt">color =</span> institute,
+                        <span class="dt">frame =</span> fiscal.year)) +
+<span class="st">  </span><span class="kw">scale_x_log10</span>() +<span class="st"> </span><span class="kw">scale_y_log10</span>() +
+<span class="st">  </span><span class="kw">facet_wrap</span>(~<span class="st"> </span>activity) +
+<span class="st">  </span><span class="kw">scale_color_brewer</span>(<span class="dt">palette =</span> <span class="st">'Dark2'</span>) +
+<span class="st">  </span><span class="kw">theme_cowplot</span>() +<span class="st"> </span>
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">'Project number'</span>,
+       <span class="dt">y =</span> <span class="st">'Project costs (millions)'</span>,
+       <span class="dt">title =</span> <span class="st">'Project cost and number in: '</span>)
+ 
+p &lt;-<span class="st"> </span>gp +<span class="st"> </span><span class="kw">geom_point</span>(<span class="dt">size =</span> <span class="dv">3</span>)
+ 
+<span class="kw">gganimate</span>(p)</code></pre></div>
 <div class="figure">
-<img src="nihexporter_files/figure-html/inst_cost_over_time-1.png" alt="Spending at NIGMS" width="672"><p class="caption">
-Spending at NIGMS
-</p>
+<img src="img/README-fig-cost-.gif" alt="Project costs and numbers"><p class="caption">Project costs and numbers</p>
 </div>
+<p><strong>It is also helpful to view these plots as trajectories to see the path of funding over time.</strong> The following graphs indicate that U01 and R21 projects have had significant recent investment from certain institutes, while R01 and P01 projects have remained relatively constant in number and cost.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p &lt;-<span class="st"> </span>gp +<span class="st"> </span><span class="kw">geom_path</span>(<span class="kw">aes</span>(<span class="dt">cumulative =</span> <span class="ot">TRUE</span>,
+                        <span class="dt">group =</span> institute),
+                    <span class="dt">arrow =</span> <span class="kw">arrow</span>(<span class="dt">length =</span> <span class="kw">unit</span>(<span class="fl">0.1</span>, <span class="st">"npc"</span>)))
+
+<span class="kw">gganimate</span>(p)</code></pre></div>
+<div class="figure">
+<img src="img/README-fig-cost_trajectories-.gif" alt="Cost trajectories"><p class="caption">Cost trajectories</p>
+</div>
+</div>
+<div id="funding-distribution" class="section level2">
+<h2 class="hasAnchor">
+<html><body><a href="#funding-distribution" class="anchor"> </a></body></html>Funding distribution</h2>
 <p>Let’s look at WHERE the money is going. This example illustrates linking of the <code>project</code> and <code>project.orgs</code> tables via the <code>org.duns</code> column.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">money.per.institution &lt;-<span class="st"> </span>projects %&gt;%
 <span class="st">  </span><span class="kw">filter</span>(activity ==<span class="st"> 'R01'</span>) %&gt;%
@@ -208,7 +250,8 @@ money.per.institution %&gt;%
 </tbody>
 </table>
 <p>One can also identiy PIs that have accrued large project dollars.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">money.per.pi &lt;-<span class="st"> </span>projects %&gt;%
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
+money.per.pi &lt;-<span class="st"> </span>projects %&gt;%
 <span class="st">  </span><span class="kw">filter</span>(activity ==<span class="st"> 'R01'</span>) %&gt;%
 <span class="st">  </span><span class="kw">select</span>(project.num, fy.cost) %&gt;%
 <span class="st">  </span><span class="kw">group_by</span>(project.num) %&gt;%
@@ -219,10 +262,9 @@ money.per.institution %&gt;%
 <span class="st">  </span><span class="kw">filter</span>(pi.id !=<span class="st"> ''</span>) %&gt;%
 <span class="st">  </span><span class="kw">group_by</span>(pi.id) %&gt;%
 <span class="st">  </span><span class="kw">summarise</span>(<span class="dt">pi.millionaire =</span> <span class="kw">sum</span>(total.award.millions)) %&gt;%
-<span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(pi.millionaire))  </code></pre></div>
-<pre><code>## Warning in left_join_impl(x, y, by$x, by$y, suffix$x, suffix$y): joining
-## character vector and factor, coercing into character vector</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">money.per.pi %&gt;%
+<span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(pi.millionaire))  
+
+money.per.pi %&gt;%
 <span class="st">  </span><span class="kw">head</span>(<span class="dv">10</span>) %&gt;%<span class="st"> </span>knitr::<span class="kw">kable</span>()</code></pre></div>
 <table class="table">
 <thead><tr class="header">
@@ -231,44 +273,44 @@ money.per.institution %&gt;%
 </tr></thead>
 <tbody>
 <tr class="odd">
+<td align="right">1888524</td>
+<td align="right">106.05161</td>
+</tr>
+<tr class="even">
 <td align="right">1883846</td>
-<td align="right">1631.0306</td>
+<td align="right">100.24001</td>
+</tr>
+<tr class="odd">
+<td align="right">2085656</td>
+<td align="right">74.03335</td>
 </tr>
 <tr class="even">
 <td align="right">6719627</td>
-<td align="right">1184.5336</td>
+<td align="right">74.03335</td>
 </tr>
 <tr class="odd">
 <td align="right">1858142</td>
-<td align="right">996.0695</td>
+<td align="right">61.17618</td>
+</tr>
+<tr class="even">
+<td align="right">1866338</td>
+<td align="right">54.20069</td>
+</tr>
+<tr class="odd">
+<td align="right">1864273</td>
+<td align="right">53.63087</td>
 </tr>
 <tr class="even">
 <td align="right">1862760</td>
-<td align="right">983.2956</td>
+<td align="right">51.59885</td>
 </tr>
 <tr class="odd">
-<td align="right">8802713</td>
-<td align="right">713.6060</td>
+<td align="right">1876724</td>
+<td align="right">49.41011</td>
 </tr>
 <tr class="even">
-<td align="right">8187946</td>
-<td align="right">651.5645</td>
-</tr>
-<tr class="odd">
-<td align="right">1889062</td>
-<td align="right">585.5148</td>
-</tr>
-<tr class="even">
-<td align="right">7733544</td>
-<td align="right">547.3865</td>
-</tr>
-<tr class="odd">
-<td align="right">1960402</td>
-<td align="right">531.2409</td>
-</tr>
-<tr class="even">
-<td align="right">1862204</td>
-<td align="right">530.0165</td>
+<td align="right">1878095</td>
+<td align="right">48.72868</td>
 </tr>
 </tbody>
 </table>
@@ -276,7 +318,7 @@ money.per.institution %&gt;%
 <div id="productivity" class="section level2">
 <h2 class="hasAnchor">
 <html><body><a href="#productivity" class="anchor"> </a></body></html>Productivity</h2>
-<p>In order to measure the “return”" on the money the NIH invests in the research enterprise, we can measure scholarly output (i.e., publications) per dollar invested.</p>
+<p>To measure the “return”" on the money the NIH invests in the research enterprise, we can measure scholarly output (i.e., publications) per dollar invested.</p>
 <p>Here we identify th highest performing grants outside of the R01 category. Much has been made of the wasteful spending outside of investigator-initiated research. Here we can see that this is not always the case.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">high.perf.not.r01 &lt;-<span class="st"> </span>projects %&gt;%
 <span class="st">  </span><span class="kw">filter</span>(activity !=<span class="st"> 'R01'</span>) %&gt;%
@@ -364,55 +406,6 @@ high.perf.not.r01 %&gt;%
 </tr>
 </tbody>
 </table>
-<p>The highest performer has 719 publications at a cost of 3406.511822 dollars per publication. Here are the Pubmed IDS of some of those publications:</p>
-<table class="table">
-<thead><tr class="header">
-<th align="left">project.num</th>
-<th align="right">pmid</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td align="left">P30CA007175</td>
-<td align="right">3934045</td>
-</tr>
-<tr class="even">
-<td align="left">P30CA007175</td>
-<td align="right">2983611</td>
-</tr>
-<tr class="odd">
-<td align="left">P30CA007175</td>
-<td align="right">2856928</td>
-</tr>
-<tr class="even">
-<td align="left">P30CA007175</td>
-<td align="right">3863702</td>
-</tr>
-<tr class="odd">
-<td align="left">P30CA007175</td>
-<td align="right">3895298</td>
-</tr>
-<tr class="even">
-<td align="left">P30CA007175</td>
-<td align="right">2866268</td>
-</tr>
-<tr class="odd">
-<td align="left">P30CA007175</td>
-<td align="right">3996611</td>
-</tr>
-<tr class="even">
-<td align="left">P30CA007175</td>
-<td align="right">3860305</td>
-</tr>
-<tr class="odd">
-<td align="left">P30CA007175</td>
-<td align="right">2994004</td>
-</tr>
-<tr class="even">
-<td align="left">P30CA007175</td>
-<td align="right">4077147</td>
-</tr>
-</tbody>
-</table>
 <p>Here we quantitate the return on R01 investment and identify the most expensive publications, in grant dollars. One might argue that grants with higher <code>cost.per.pub</code> are less good investments.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">costly.pubs.r01 &lt;-<span class="st"> </span>projects %&gt;%
 <span class="st">  </span><span class="kw">filter</span>(activity ==<span class="st"> 'R01'</span>) %&gt;%
@@ -424,10 +417,9 @@ high.perf.not.r01 %&gt;%
 <span class="st">  </span><span class="kw">summarize</span>(<span class="dt">n.pubs =</span> <span class="kw">n</span>()) %&gt;%
 <span class="st">  </span><span class="kw">mutate</span>(<span class="dt">cost.per.pub =</span> overall.cost /<span class="st"> </span>n.pubs) %&gt;%
 <span class="st">  </span><span class="kw">ungroup</span>() %&gt;%
-<span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(cost.per.pub))</code></pre></div>
-<pre><code>## Warning in left_join_impl(x, y, by$x, by$y, suffix$x, suffix$y): joining
-## character vector and factor, coercing into character vector</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">costly.pubs.r01 %&gt;%
+<span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(cost.per.pub))
+
+costly.pubs.r01 %&gt;%
 <span class="st">  </span><span class="kw">head</span>(<span class="dv">10</span>) %&gt;%
 <span class="st">  </span>knitr::<span class="kw">kable</span>()</code></pre></div>
 <table class="table">
@@ -504,7 +496,7 @@ high.perf.not.r01 %&gt;%
 <div id="duration" class="section level2">
 <h2 class="hasAnchor">
 <html><body><a href="#duration" class="anchor"> </a></body></html>Duration</h2>
-<p>I am always impressed at how long people keep their grants. Let’s identify the longest running R01 projects. This leverages date manipulation with <code>lubridate</code>.</p>
+<p>I am always impressed at how long people keep their grants. Let’s identify the longest running R01 projects.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">long.grants &lt;-<span class="st"> </span>projects %&gt;%
 <span class="st">  </span><span class="kw">filter</span>(activity ==<span class="st"> 'R01'</span>) %&gt;%
 <span class="st">  </span><span class="kw">select</span>(project.num, project.start, project.end) %&gt;%
@@ -584,10 +576,17 @@ long.grants %&gt;%
         <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-<li><a href="#overview">Overview</a></li>
+<li>
+<a href="#package-overview">Package overview</a><ul class="nav nav-pills nav-stacked">
+<li><a href="#tables">Tables</a></li>
+      <li><a href="#functions">Functions</a></li>
+      <li><a href="#variables">Variables</a></li>
+      </ul>
+</li>
       <li>
 <a href="#examples">Examples</a><ul class="nav nav-pills nav-stacked">
-<li><a href="#award-amounts">Award amounts</a></li>
+<li><a href="#project-number-and-cost">Project number and cost</a></li>
+      <li><a href="#funding-distribution">Funding distribution</a></li>
       <li><a href="#productivity">Productivity</a></li>
       <li><a href="#duration">Duration</a></li>
       </ul>
