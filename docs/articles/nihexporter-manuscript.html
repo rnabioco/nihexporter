@@ -74,7 +74,7 @@
 <code>nihexporter</code>: an R data package for NIH funding data</h1>
                         <h4 class="author">Jay Hesselberth, Erin Baschal, Nick Ellinwood, Ashley Pacheco, Sally Peach, Mary Sweet, Yuying Wang</h4>
             
-            <h4 class="date">Last update: 12 January, 2017</h4>
+            <h4 class="date">Last update: 05 March, 2017</h4>
           </div>
 
     
@@ -163,20 +163,20 @@
 <span class="kw">library</span>(ggplot2)
 <span class="kw">library</span>(nihexporter)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">select_inst &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">'GM'</span>, <span class="st">'AI'</span>, <span class="st">'CA'</span>)
-cost.over.time &lt;-<span class="st"> </span>projects %&gt;%
-<span class="st">  </span><span class="kw">select</span>(institute, fy.cost, fiscal.year) %&gt;%
-<span class="st">  </span><span class="kw">filter</span>(institute %in%<span class="st"> </span>select_inst) %&gt;%
-<span class="st">  </span><span class="kw">group_by</span>(fiscal.year, institute) %&gt;%
+cost.over.time &lt;-<span class="st"> </span>projects <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">select</span>(institute, fy.cost, fiscal.year) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span>(institute <span class="op">%in%</span><span class="st"> </span>select_inst) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">group_by</span>(fiscal.year, institute) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">summarize</span>(<span class="dt">yearly.cost =</span> <span class="kw">sum</span>(fy.cost, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>))
 
-cost.over.time %&gt;%
+cost.over.time <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">factor</span>(fiscal.year), 
-             <span class="dt">y =</span> yearly.cost /<span class="st"> </span><span class="fl">1e9</span>,
-             <span class="dt">group =</span> institute, <span class="dt">color =</span> institute)) +
-<span class="st">  </span><span class="kw">geom_line</span>() +<span class="st"> </span><span class="kw">geom_point</span>() +
-<span class="st">  </span><span class="kw">theme_bw</span>() +
-<span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">'bottom'</span>) +
-<span class="st">  </span><span class="kw">xlab</span>(<span class="st">'Fiscal year'</span>) +
+             <span class="dt">y =</span> yearly.cost <span class="op">/</span><span class="st"> </span><span class="fl">1e9</span>,
+             <span class="dt">group =</span> institute, <span class="dt">color =</span> institute)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_line</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">theme_bw</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">'bottom'</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">xlab</span>(<span class="st">'Fiscal year'</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">ylab</span>(<span class="st">'Project costs (dollars in billions)'</span>)</code></pre></div>
 <div class="figure">
 <img src="nihexporter-manuscript_files/figure-html/inst_cost_over_time-1.png" alt="Project spending at NIGMS, NCI and NIAID" width="672"><p class="caption">
@@ -191,21 +191,21 @@ Project spending at NIGMS, NCI and NIAID
 <h3 class="hasAnchor">
 <html><body><a href="#by-institution" class="anchor"> </a></body></html>By Institution</h3>
 <p>Let’s look <em>where</em> the money is going. This example illustrates linking of the <code>project</code>, <code>org_info</code> and <code>project_orgs</code> tables.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">institution_funding &lt;-<span class="st"> </span>projects %&gt;%
-<span class="st">  </span><span class="kw">filter</span>(activity ==<span class="st"> 'R01'</span>) %&gt;%
-<span class="st">  </span><span class="kw">left_join</span>(project_orgs, <span class="dt">by =</span> <span class="st">'application.id'</span>) %&gt;%
-<span class="st">  </span><span class="kw">group_by</span>(org.duns, fiscal.year) %&gt;%
-<span class="st">  </span><span class="kw">summarise</span>(<span class="dt">total.dollars =</span> <span class="kw">sum</span>(fy.cost, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)) %&gt;%
-<span class="st">  </span><span class="kw">ungroup</span>() %&gt;%
-<span class="st">  </span><span class="kw">left_join</span>(org_info, <span class="dt">by =</span> <span class="st">'org.duns'</span>) %&gt;%<span class="st"> </span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">institution_funding &lt;-<span class="st"> </span>projects <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span>(activity <span class="op">==</span><span class="st"> 'R01'</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">left_join</span>(project_orgs, <span class="dt">by =</span> <span class="st">'application.id'</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">group_by</span>(org.duns, fiscal.year) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">summarise</span>(<span class="dt">total.dollars =</span> <span class="kw">sum</span>(fy.cost, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">left_join</span>(org_info, <span class="dt">by =</span> <span class="st">'org.duns'</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(total.dollars))
 
-institution_funding %&gt;%
-<span class="st">  </span><span class="kw">select</span>(fiscal.year, org.name, org.duns, total.dollars) %&gt;%
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">total.award.millions =</span> total.dollars /<span class="st"> </span><span class="fl">1e6</span>) %&gt;%
-<span class="st">  </span><span class="kw">select</span>(-total.dollars) %&gt;%
-<span class="st">  </span><span class="kw">head</span>(<span class="dv">10</span>) %&gt;%<span class="st"> </span>
-<span class="st">  </span>knitr::<span class="kw">kable</span>(<span class="dt">caption=</span><span class="st">'R01 grant dollars awarded to specific institutions'</span>,
+institution_funding <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">select</span>(fiscal.year, org.name, org.duns, total.dollars) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">total.award.millions =</span> total.dollars <span class="op">/</span><span class="st"> </span><span class="fl">1e6</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>total.dollars) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">head</span>(<span class="dv">10</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span>knitr<span class="op">::</span><span class="kw">kable</span>(<span class="dt">caption=</span><span class="st">'R01 grant dollars awarded to specific institutions'</span>,
                <span class="dt">col.names=</span><span class="kw">c</span>(<span class="st">'Fiscal year'</span>, <span class="st">'Org.'</span>,
                            <span class="st">'DUNS'</span>, <span class="st">'Dollars (millions)'</span>))</code></pre></div>
 <table class="table">
@@ -285,20 +285,20 @@ institution_funding %&gt;%
 <h3 class="hasAnchor">
 <html><body><a href="#by-pi" class="anchor"> </a></body></html>By PI</h3>
 <p>One can also examine how dollars are accrued by specific PIs. It is not possible to assign dollars directly to a PI, because some grants have multiple investigators. Rather, these are total costs that a given PI has been associated with over all grants in NIH EXPORTER. Here we identify PIs with the largest dollar amounts accrued for R01 grants.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dollars.per.pi &lt;-<span class="st"> </span>projects %&gt;%
-<span class="st">  </span><span class="kw">filter</span>(activity ==<span class="st"> 'R01'</span>) %&gt;%
-<span class="st">  </span><span class="kw">left_join</span>(project_io, <span class="dt">by =</span> <span class="st">'project.num'</span>) %&gt;%
-<span class="st">  </span><span class="kw">left_join</span>(project_pis, <span class="dt">by =</span> <span class="st">'project.num'</span>) %&gt;%
-<span class="st">  </span><span class="kw">filter</span>(!<span class="kw">is.na</span>(pi.id)) %&gt;%
-<span class="st">  </span><span class="kw">select</span>(project.num, pi.id, total.cost) %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">unique</span>() %&gt;%
-<span class="st">  </span><span class="kw">group_by</span>(pi.id) %&gt;%
-<span class="st">  </span><span class="kw">summarise</span>(<span class="dt">pi.dollars =</span> <span class="kw">sum</span>(total.cost) /<span class="st"> </span><span class="fl">1e6</span>) %&gt;%
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dollars.per.pi &lt;-<span class="st"> </span>projects <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span>(activity <span class="op">==</span><span class="st"> 'R01'</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">left_join</span>(project_io, <span class="dt">by =</span> <span class="st">'project.num'</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">left_join</span>(project_pis, <span class="dt">by =</span> <span class="st">'project.num'</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(pi.id)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">select</span>(project.num, pi.id, total.cost) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">unique</span>() <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">group_by</span>(pi.id) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">summarise</span>(<span class="dt">pi.dollars =</span> <span class="kw">sum</span>(total.cost) <span class="op">/</span><span class="st"> </span><span class="fl">1e6</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(pi.dollars))  
 
-dollars.per.pi %&gt;%
-<span class="st">  </span><span class="kw">head</span>(<span class="dv">10</span>) %&gt;%
-<span class="st">  </span>knitr::<span class="kw">kable</span>(<span class="dt">digits =</span> <span class="dv">3</span>,
+dollars.per.pi <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">head</span>(<span class="dv">10</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span>knitr<span class="op">::</span><span class="kw">kable</span>(<span class="dt">digits =</span> <span class="dv">3</span>,
                <span class="dt">caption =</span> <span class="st">'R01 grant dollars associated with specific PIs'</span>,
                <span class="dt">col.names=</span><span class="kw">c</span>(<span class="st">'PI ID'</span>, <span class="st">'Dollars (millions)'</span>))</code></pre></div>
 <table class="table">
@@ -357,19 +357,19 @@ dollars.per.pi %&gt;%
 <html><body><a href="#productivity" class="anchor"> </a></body></html>Productivity</h2>
 <p>In order to measure the “return” on the money the NIH invests in the research enterprise, we can measure scholarly output (i.e., publications) per dollar invested.</p>
 <p>Here we identify th highest performing grants outside of the R01 category. Much has been made of the wasteful spending outside of investigator-initiated research. Here we identify the cost of publications for grants other than R01’s that cost more than 1 million dollars.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">high.perf.not.r01 &lt;-<span class="st"> </span>projects %&gt;%
-<span class="st">  </span><span class="kw">filter</span>(activity !=<span class="st"> 'R01'</span>) %&gt;%
-<span class="st">  </span><span class="kw">left_join</span>(project_io, <span class="dt">by =</span> <span class="st">'project.num'</span>) %&gt;%
-<span class="st">  </span><span class="kw">select</span>(project.num, total.cost, n.pubs) %&gt;%
-<span class="st">  </span><span class="kw">filter</span>(total.cost &gt;<span class="st"> </span><span class="fl">1e6</span> &amp;<span class="st"> </span>n.pubs &gt;<span class="st"> </span><span class="dv">0</span>) %&gt;%
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">cost.per.pub =</span> total.cost /<span class="st"> </span>n.pubs) %&gt;%
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">high.perf.not.r01 &lt;-<span class="st"> </span>projects <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span>(activity <span class="op">!=</span><span class="st"> 'R01'</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">left_join</span>(project_io, <span class="dt">by =</span> <span class="st">'project.num'</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">select</span>(project.num, total.cost, n.pubs) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span>(total.cost <span class="op">&gt;</span><span class="st"> </span><span class="fl">1e6</span> <span class="op">&amp;</span><span class="st"> </span>n.pubs <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">cost.per.pub =</span> total.cost <span class="op">/</span><span class="st"> </span>n.pubs) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">arrange</span>(cost.per.pub)
 
-high.perf.not.r01 %&gt;%
-<span class="st">  </span><span class="kw">head</span>(<span class="dv">10</span>) %&gt;%
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">total.cost =</span> <span class="kw">round</span>(total.cost /<span class="st"> </span><span class="fl">1e6</span>, <span class="dv">3</span>),
-         <span class="dt">cost.per.pub =</span> <span class="kw">comma</span>(<span class="kw">round</span>(cost.per.pub, <span class="dv">0</span>))) %&gt;%
-<span class="st">  </span>knitr::<span class="kw">kable</span>(<span class="dt">caption=</span><span class="st">'Productivity (publications / dollar) of non-R01 grants'</span>,
+high.perf.not.r01 <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">head</span>(<span class="dv">10</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">total.cost =</span> <span class="kw">round</span>(total.cost <span class="op">/</span><span class="st"> </span><span class="fl">1e6</span>, <span class="dv">3</span>),
+         <span class="dt">cost.per.pub =</span> <span class="kw">comma</span>(<span class="kw">round</span>(cost.per.pub, <span class="dv">0</span>))) <span class="op">%&gt;%</span>
+<span class="st">  </span>knitr<span class="op">::</span><span class="kw">kable</span>(<span class="dt">caption=</span><span class="st">'Productivity (publications / dollar) of non-R01 grants'</span>,
                <span class="dt">col.names=</span><span class="kw">c</span>(<span class="st">'Project ID'</span>, <span class="st">'Project cost (dollars, millions)'</span>,
                            <span class="st">'Number of publications'</span>, <span class="st">'Cost per publications (dollars)'</span>))</code></pre></div>
 <table class="table">
@@ -444,12 +444,12 @@ high.perf.not.r01 %&gt;%
 </tbody>
 </table>
 <p>We can also identify the specific publications associated with grants with the least expensive publications.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">high.perf.not.r01 %&gt;%
-<span class="st">  </span><span class="kw">head</span>(<span class="dv">1</span>) %&gt;%
-<span class="st">  </span><span class="kw">select</span>(project.num) %&gt;%
-<span class="st">  </span><span class="kw">left_join</span>(publinks, <span class="dt">by =</span> <span class="st">'project.num'</span>) %&gt;%
-<span class="st">  </span><span class="kw">head</span>(<span class="dv">5</span>) %&gt;%
-<span class="st">  </span>knitr::<span class="kw">kable</span>(<span class="dt">caption=</span><span class="st">'Publications from the most productive grants'</span>,
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">high.perf.not.r01 <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">head</span>(<span class="dv">1</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">select</span>(project.num) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">left_join</span>(publinks, <span class="dt">by =</span> <span class="st">'project.num'</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">head</span>(<span class="dv">5</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span>knitr<span class="op">::</span><span class="kw">kable</span>(<span class="dt">caption=</span><span class="st">'Publications from the most productive grants'</span>,
                <span class="dt">col.names=</span><span class="kw">c</span>(<span class="st">'Project ID'</span>, <span class="st">'Pubmed ID'</span>))</code></pre></div>
 <table class="table">
 <caption>Publications from the most productive grants</caption>
@@ -481,22 +481,22 @@ high.perf.not.r01 %&gt;%
 </tbody>
 </table>
 <p>We can also identify productive PIs with current R01s …</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">productive.pis &lt;-<span class="st"> </span>projects %&gt;%
-<span class="st">  </span><span class="kw">filter</span>(activity ==<span class="st"> 'R01'</span> &amp;<span class="st"> </span>fiscal.year ==<span class="st"> </span><span class="dv">2014</span>) %&gt;%
-<span class="st">  </span><span class="kw">select</span>(project.num) %&gt;%
-<span class="st">  </span><span class="kw">left_join</span>(project_io, <span class="dt">by =</span> <span class="st">'project.num'</span>) %&gt;%
-<span class="st">  </span><span class="kw">left_join</span>(project_pis, <span class="dt">by =</span> <span class="st">'project.num'</span>) %&gt;%
-<span class="st">  </span><span class="kw">group_by</span>(pi.id) %&gt;%
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">productive.pis &lt;-<span class="st"> </span>projects <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span>(activity <span class="op">==</span><span class="st"> 'R01'</span> <span class="op">&amp;</span><span class="st"> </span>fiscal.year <span class="op">==</span><span class="st"> </span><span class="dv">2014</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">select</span>(project.num) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">left_join</span>(project_io, <span class="dt">by =</span> <span class="st">'project.num'</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">left_join</span>(project_pis, <span class="dt">by =</span> <span class="st">'project.num'</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">group_by</span>(pi.id) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">summarize</span>(<span class="dt">total.pi.dollars =</span> <span class="kw">sum</span>(total.cost, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),
-            <span class="dt">total.pubs =</span> <span class="kw">sum</span>(n.pubs)) %&gt;%
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">pub.cost =</span> total.pi.dollars /<span class="st"> </span>total.pubs) %&gt;%
+            <span class="dt">total.pubs =</span> <span class="kw">sum</span>(n.pubs)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">pub.cost =</span> total.pi.dollars <span class="op">/</span><span class="st"> </span>total.pubs) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="co"># prevent PI Ids from being commafied</span>
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">pi.id =</span> <span class="kw">as.character</span>(pi.id)) %&gt;%
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">pi.id =</span> <span class="kw">as.character</span>(pi.id)) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">arrange</span>(pub.cost)
 
-productive.pis %&gt;%
-<span class="st">  </span><span class="kw">head</span>(<span class="dv">10</span>) %&gt;%
-<span class="st">  </span>knitr::<span class="kw">kable</span>(<span class="dt">digits =</span> <span class="dv">0</span>,
+productive.pis <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">head</span>(<span class="dv">10</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span>knitr<span class="op">::</span><span class="kw">kable</span>(<span class="dt">digits =</span> <span class="dv">0</span>,
                <span class="dt">format.args =</span> <span class="kw">list</span>(<span class="dt">big.mark =</span> <span class="st">','</span>),
                <span class="dt">col.names =</span> <span class="kw">c</span>(<span class="st">'PI ID'</span>,
                              <span class="st">'Cost per publication (dollars)'</span>,
@@ -573,27 +573,27 @@ productive.pis %&gt;%
 </tbody>
 </table>
 <p>Or we can identify the all-time most produtive PIs, independent of grant type or time frame …</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">productive.pis.all.time &lt;-<span class="st"> </span>projects %&gt;%
-<span class="st">  </span><span class="kw">select</span>(project.num, activity) %&gt;%
-<span class="st">  </span><span class="kw">left_join</span>(project_io, <span class="dt">by =</span> <span class="st">'project.num'</span>) %&gt;%
-<span class="st">  </span><span class="kw">left_join</span>(project_pis, <span class="dt">by =</span> <span class="st">'project.num'</span>) %&gt;%
-<span class="st">  </span><span class="kw">group_by</span>(pi.id, activity) %&gt;%
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">productive.pis.all.time &lt;-<span class="st"> </span>projects <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">select</span>(project.num, activity) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">left_join</span>(project_io, <span class="dt">by =</span> <span class="st">'project.num'</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">left_join</span>(project_pis, <span class="dt">by =</span> <span class="st">'project.num'</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">group_by</span>(pi.id, activity) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">summarize</span>(<span class="dt">total.pi.dollars =</span> <span class="kw">sum</span>(total.cost, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),
             <span class="dt">total.pubs =</span> <span class="kw">sum</span>(n.pubs),
-            <span class="dt">total.patents =</span> <span class="kw">sum</span>(n.patents)) %&gt;%
-<span class="st">  </span><span class="kw">ungroup</span>() %&gt;%
-<span class="st">  </span><span class="kw">filter</span>(total.pi.dollars &gt;=<span class="st"> </span><span class="fl">1e6</span>) %&gt;%
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">pub.cost =</span> total.pi.dollars /<span class="st"> </span>total.pubs,
-         <span class="dt">patent.cost =</span> total.pi.dollars /<span class="st"> </span>total.patents) %&gt;%
+            <span class="dt">total.patents =</span> <span class="kw">sum</span>(n.patents)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span>(total.pi.dollars <span class="op">&gt;=</span><span class="st"> </span><span class="fl">1e6</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">pub.cost =</span> total.pi.dollars <span class="op">/</span><span class="st"> </span>total.pubs,
+         <span class="dt">patent.cost =</span> total.pi.dollars <span class="op">/</span><span class="st"> </span>total.patents) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">select</span>(pi.id, activity, pub.cost, patent.cost, 
-         total.pubs, total.patents, total.pi.dollars) %&gt;%
+         total.pubs, total.patents, total.pi.dollars) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">mutate</span>(<span class="dt">pi.id =</span> <span class="kw">as.character</span>(pi.id))
 
-productive.pis.all.time %&gt;%
-<span class="st">  </span><span class="kw">select</span>(-patent.cost, -total.patents) %&gt;%
-<span class="st">  </span><span class="kw">arrange</span>(pub.cost) %&gt;%
-<span class="st">  </span><span class="kw">head</span>(<span class="dv">10</span>) %&gt;%
-<span class="st">  </span>knitr::<span class="kw">kable</span>(<span class="dt">digits =</span> <span class="dv">0</span>,
+productive.pis.all.time <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>patent.cost, <span class="op">-</span>total.patents) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">arrange</span>(pub.cost) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">head</span>(<span class="dv">10</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span>knitr<span class="op">::</span><span class="kw">kable</span>(<span class="dt">digits =</span> <span class="dv">0</span>,
                <span class="dt">format.args =</span> <span class="kw">list</span>(<span class="dt">big.mark =</span> <span class="st">','</span>),
                <span class="dt">caption =</span> <span class="st">'Most productive PIs all time for publications'</span>,
                <span class="dt">col.names =</span> <span class="kw">c</span>(<span class="st">'PI ID'</span>, <span class="st">'Grant type'</span>,
@@ -683,11 +683,11 @@ productive.pis.all.time %&gt;%
 </tbody>
 </table>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
-productive.pis.all.time %&gt;%
-<span class="st">  </span><span class="kw">select</span>(-pub.cost, -total.pubs) %&gt;%
-<span class="st">  </span><span class="kw">arrange</span>(patent.cost) %&gt;%
-<span class="st">  </span><span class="kw">head</span>(<span class="dv">10</span>) %&gt;%
-<span class="st">  </span>knitr::<span class="kw">kable</span>(<span class="dt">digits =</span> <span class="dv">0</span>,
+productive.pis.all.time <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>pub.cost, <span class="op">-</span>total.pubs) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">arrange</span>(patent.cost) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">head</span>(<span class="dv">10</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span>knitr<span class="op">::</span><span class="kw">kable</span>(<span class="dt">digits =</span> <span class="dv">0</span>,
                <span class="dt">format.args =</span> <span class="kw">list</span>(<span class="dt">big.mark =</span> <span class="st">','</span>),
                <span class="dt">caption =</span> <span class="st">'Most productive PIs all time for patents'</span>,
                <span class="dt">col.names =</span> <span class="kw">c</span>(<span class="st">'PI ID'</span>, <span class="st">'Grant type'</span>,
@@ -780,10 +780,10 @@ productive.pis.all.time %&gt;%
 <p>Here we flesh out this analysis and look at how all institutes perform by this measure (Berg, and now Lorsch, only analyzed GM). One caveat is that we only have access to <code>total.cost</code> in NIH EXPORTER, so the numbers include indirect costs. But, this is real cost to the tax-payer.</p>
 <p>First, we need to calculate the lifetime costs of all R01 grants.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># calculate costs of all grants, over the entire lifetime of the grant</span>
-grant_costs &lt;-<span class="st"> </span>projects %&gt;%
-<span class="st">  </span><span class="kw">filter</span>(institute %in%<span class="st"> </span>nih.institutes &amp;<span class="st"> </span>activity ==<span class="st"> 'R01'</span>) %&gt;%
-<span class="st">  </span><span class="kw">left_join</span>(project_io, <span class="dt">by =</span> <span class="st">'project.num'</span>) %&gt;%
-<span class="st">  </span><span class="kw">select</span>(institute, project.num, total.cost, n.pubs) %&gt;%
+grant_costs &lt;-<span class="st"> </span>projects <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span>(institute <span class="op">%in%</span><span class="st"> </span>nih.institutes <span class="op">&amp;</span><span class="st"> </span>activity <span class="op">==</span><span class="st"> 'R01'</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">left_join</span>(project_io, <span class="dt">by =</span> <span class="st">'project.num'</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">select</span>(institute, project.num, total.cost, n.pubs) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">unique</span>()
 
 grant_costs
@@ -802,8 +802,8 @@ grant_costs
 <span class="co">#&gt; 10        AA R01AA004961     477993     68</span>
 <span class="co">#&gt; # ... with 87,206 more rows</span></code></pre></div>
 <p>Next, we need to identify grants in each of the bins that Berg previously alluded to. <code>dplyr</code> makes this easy with the <code>ntile()</code> function. Berg previously divided grants into ~15 bins, we’ll bin into ~5%.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bin_grant_costs &lt;-<span class="st"> </span>grant_costs %&gt;%
-<span class="st">  </span><span class="kw">group_by</span>(institute) %&gt;%
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bin_grant_costs &lt;-<span class="st"> </span>grant_costs <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">group_by</span>(institute) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">group_by</span>(<span class="dt">n.tile =</span> <span class="kw">ntile</span>(total.cost, <span class="dv">20</span>)) 
 
 bin_grant_costs
@@ -826,26 +826,25 @@ bin_grant_costs
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Berg's original values ...</span>
 <span class="co"># breaks &lt;- c(175000, 200000, 225000, 250000, 300000, 375000, 400000,</span>
 <span class="co">#           450000, 500000, 600000, 700000, 800000, 900000, 1000000)</span>
-min.lifetime.cost &lt;-<span class="st"> </span><span class="kw">round</span>(<span class="kw">min</span>(grant_costs$total.cost, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>), -<span class="dv">4</span>) <span class="co"># round to 10,000s</span>
-max.lifetime.cost &lt;-<span class="st"> </span><span class="kw">round</span>(<span class="kw">max</span>(grant_costs$total.cost, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>), -<span class="dv">5</span>) 
+min.lifetime.cost &lt;-<span class="st"> </span><span class="kw">round</span>(<span class="kw">min</span>(grant_costs<span class="op">$</span>total.cost, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>), <span class="op">-</span><span class="dv">4</span>) <span class="co"># round to 10,000s</span>
+max.lifetime.cost &lt;-<span class="st"> </span><span class="kw">round</span>(<span class="kw">max</span>(grant_costs<span class="op">$</span>total.cost, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>), <span class="op">-</span><span class="dv">5</span>) 
 <span class="co"># step is average size of an award</span>
 step &lt;-<span class="st"> </span><span class="fl">1e6</span>
 
 breaks &lt;-<span class="st"> </span><span class="kw">seq</span>(min.lifetime.cost, max.lifetime.cost, step)
 breaks
-<span class="co">#&gt;  [1] 0.0e+00 1.0e+06 2.0e+06 3.0e+06 4.0e+06 5.0e+06 6.0e+06 7.0e+06</span>
-<span class="co">#&gt;  [9] 8.0e+06 9.0e+06 1.0e+07 1.1e+07 1.2e+07 1.3e+07 1.4e+07 1.5e+07</span>
-<span class="co">#&gt; [17] 1.6e+07 1.7e+07 1.8e+07 1.9e+07 2.0e+07 2.1e+07 2.2e+07 2.3e+07</span>
-<span class="co">#&gt; [25] 2.4e+07 2.5e+07 2.6e+07 2.7e+07 2.8e+07 2.9e+07 3.0e+07 3.1e+07</span>
-<span class="co">#&gt; [33] 3.2e+07 3.3e+07 3.4e+07 3.5e+07 3.6e+07 3.7e+07 3.8e+07 3.9e+07</span>
-<span class="co">#&gt; [41] 4.0e+07 4.1e+07 4.2e+07 4.3e+07 4.4e+07 4.5e+07 4.6e+07 4.7e+07</span>
-<span class="co">#&gt; [49] 4.8e+07 4.9e+07 5.0e+07 5.1e+07 5.2e+07 5.3e+07 5.4e+07 5.5e+07</span>
-<span class="co">#&gt; [57] 5.6e+07 5.7e+07 5.8e+07 5.9e+07 6.0e+07 6.1e+07 6.2e+07 6.3e+07</span>
-<span class="co">#&gt; [65] 6.4e+07 6.5e+07 6.6e+07 6.7e+07 6.8e+07 6.9e+07 7.0e+07 7.1e+07</span>
+<span class="co">#&gt;  [1] 0.0e+00 1.0e+06 2.0e+06 3.0e+06 4.0e+06 5.0e+06 6.0e+06 7.0e+06 8.0e+06</span>
+<span class="co">#&gt; [10] 9.0e+06 1.0e+07 1.1e+07 1.2e+07 1.3e+07 1.4e+07 1.5e+07 1.6e+07 1.7e+07</span>
+<span class="co">#&gt; [19] 1.8e+07 1.9e+07 2.0e+07 2.1e+07 2.2e+07 2.3e+07 2.4e+07 2.5e+07 2.6e+07</span>
+<span class="co">#&gt; [28] 2.7e+07 2.8e+07 2.9e+07 3.0e+07 3.1e+07 3.2e+07 3.3e+07 3.4e+07 3.5e+07</span>
+<span class="co">#&gt; [37] 3.6e+07 3.7e+07 3.8e+07 3.9e+07 4.0e+07 4.1e+07 4.2e+07 4.3e+07 4.4e+07</span>
+<span class="co">#&gt; [46] 4.5e+07 4.6e+07 4.7e+07 4.8e+07 4.9e+07 5.0e+07 5.1e+07 5.2e+07 5.3e+07</span>
+<span class="co">#&gt; [55] 5.4e+07 5.5e+07 5.6e+07 5.7e+07 5.8e+07 5.9e+07 6.0e+07 6.1e+07 6.2e+07</span>
+<span class="co">#&gt; [64] 6.3e+07 6.4e+07 6.5e+07 6.6e+07 6.7e+07 6.8e+07 6.9e+07 7.0e+07 7.1e+07</span>
 <span class="co">#&gt; [73] 7.2e+07 7.3e+07 7.4e+07 7.5e+07 7.6e+07 7.7e+07</span>
 
-dollar_bin_grant_costs &lt;-<span class="st"> </span>grant_costs %&gt;%
-<span class="st">  </span><span class="kw">group_by</span>(institute) %&gt;%
+dollar_bin_grant_costs &lt;-<span class="st"> </span>grant_costs <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">group_by</span>(institute) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">mutate</span>(<span class="dt">dollar.tile =</span> <span class="kw">findInterval</span>(total.cost, <span class="dt">vec =</span> breaks, 
                                     <span class="dt">all.inside =</span> <span class="ot">TRUE</span>, <span class="dt">rightmost.closed =</span> <span class="ot">TRUE</span>))
 
@@ -867,7 +866,7 @@ dollar_bin_grant_costs
 <span class="co">#&gt; 10        AA R01AA004961     477993     68           1</span>
 <span class="co">#&gt; # ... with 87,206 more rows</span>
 
-dollar_bin_grant_costs %&gt;%<span class="st"> </span><span class="kw">group_by</span>(dollar.tile) %&gt;%<span class="st"> </span><span class="kw">summarize</span>(<span class="dt">count =</span> <span class="kw">n</span>())
+dollar_bin_grant_costs <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">group_by</span>(dollar.tile) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summarize</span>(<span class="dt">count =</span> <span class="kw">n</span>())
 <span class="co">#&gt; # A tibble: 37 × 2</span>
 <span class="co">#&gt;    dollar.tile count</span>
 <span class="co">#&gt;          &lt;int&gt; &lt;int&gt;</span>
@@ -884,17 +883,17 @@ dollar_bin_grant_costs %&gt;%<span class="st"> </span><span class="kw">group_by<
 <span class="co">#&gt; # ... with 27 more rows</span></code></pre></div>
 <p>That looks better. Now we can make the summary plots …</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
-dollar_bin_grant_costs %&gt;%
+dollar_bin_grant_costs <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="co"># need to remove higher tiles because there are too few grants</span>
-<span class="st">  </span><span class="kw">filter</span>(dollar.tile &lt;=<span class="st"> </span><span class="dv">13</span>) %&gt;%
-<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">factor</span>(dollar.tile), <span class="dt">y =</span> n.pubs)) +
-<span class="st">  </span><span class="kw">geom_boxplot</span>(<span class="dt">outlier.shape =</span> <span class="ot">NA</span>) +
-<span class="st">  </span><span class="kw">scale_x_discrete</span>(<span class="dt">labels =</span> breaks /<span class="st"> </span><span class="fl">1e6</span>) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.text.x =</span> <span class="kw">element_text</span>(<span class="dt">angle=</span><span class="dv">45</span>, <span class="dt">vjust=</span><span class="fl">0.8</span>)) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">scale_y_log10</span>() +
-<span class="st">  </span><span class="kw">theme_bw</span>() +
-<span class="st">  </span><span class="kw">facet_wrap</span>(~<span class="st"> </span>institute, <span class="dt">scales =</span> <span class="st">"free_x"</span>) +
-<span class="st">  </span><span class="kw">ylab</span>(<span class="st">'Number of publications'</span>) +
+<span class="st">  </span><span class="kw">filter</span>(dollar.tile <span class="op">&lt;=</span><span class="st"> </span><span class="dv">13</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">factor</span>(dollar.tile), <span class="dt">y =</span> n.pubs)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_boxplot</span>(<span class="dt">outlier.shape =</span> <span class="ot">NA</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">scale_x_discrete</span>(<span class="dt">labels =</span> breaks <span class="op">/</span><span class="st"> </span><span class="fl">1e6</span>) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.text.x =</span> <span class="kw">element_text</span>(<span class="dt">angle=</span><span class="dv">45</span>, <span class="dt">vjust=</span><span class="fl">0.8</span>)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">scale_y_log10</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">theme_bw</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>institute, <span class="dt">scales =</span> <span class="st">"free_x"</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">ylab</span>(<span class="st">'Number of publications'</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">xlab</span>(<span class="st">'Total costs (minimum, in millions)'</span>)</code></pre></div>
 <div class="figure">
 <img src="nihexporter-manuscript_files/figure-html/plot.dollar.bins-1.png" alt="Productivity versus grant costs for each institute." width="672"><p class="caption">
@@ -920,48 +919,48 @@ Funds for specific types of grants at the GM, CA and AI institutes
 <p>Or we can see how institutes allocate money generally to different types of grants.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
 <span class="co"># from http://grants.nih.gov/grants/funding/funding_program.htm</span>
-research_projects &lt;-<span class="st"> </span>projects %&gt;%<span class="st"> </span><span class="kw">filter</span>(<span class="kw">grepl</span>(<span class="st">'^R'</span>, activity)) %&gt;%<span class="st"> </span><span class="kw">select</span>(project.num)
-program_projects &lt;-<span class="st"> </span>projects %&gt;%<span class="st"> </span><span class="kw">filter</span>(<span class="kw">grepl</span>(<span class="st">'^P'</span>, activity)) %&gt;%<span class="st"> </span><span class="kw">select</span>(project.num)
-coop_projects &lt;-<span class="st"> </span>projects %&gt;%<span class="st"> </span><span class="kw">filter</span>(<span class="kw">grepl</span>(<span class="st">'^U'</span>, activity)) %&gt;%<span class="st"> </span><span class="kw">select</span>(project.num)
+research_projects &lt;-<span class="st"> </span>projects <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(<span class="kw">grepl</span>(<span class="st">'^R'</span>, activity)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(project.num)
+program_projects &lt;-<span class="st"> </span>projects <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(<span class="kw">grepl</span>(<span class="st">'^P'</span>, activity)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(project.num)
+coop_projects &lt;-<span class="st"> </span>projects <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(<span class="kw">grepl</span>(<span class="st">'^U'</span>, activity)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(project.num)
 
 select_inst &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">'AI'</span>,<span class="st">'CA'</span>,<span class="st">'GM'</span>,<span class="st">'HG'</span>,<span class="st">'AA'</span>,<span class="st">'MH'</span>)
                 
-grant_costs &lt;-<span class="st"> </span>projects %&gt;%
-<span class="st">  </span><span class="kw">filter</span>(institute %in%<span class="st"> </span>nih.institutes) %&gt;%
+grant_costs &lt;-<span class="st"> </span>projects <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span>(institute <span class="op">%in%</span><span class="st"> </span>nih.institutes) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">select</span>(project.num, institute, fiscal.year, fy.cost)
 
-research_costs &lt;-<span class="st"> </span>grant_costs %&gt;%
-<span class="st">  </span><span class="kw">semi_join</span>(research_projects, <span class="dt">by =</span> <span class="st">'project.num'</span>) %&gt;%
-<span class="st">  </span><span class="kw">group_by</span>(project.num, institute, fiscal.year) %&gt;%
-<span class="st">  </span><span class="kw">summarize</span>(<span class="dt">project.cost =</span> <span class="kw">sum</span>(fy.cost, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)) %&gt;%
+research_costs &lt;-<span class="st"> </span>grant_costs <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">semi_join</span>(research_projects, <span class="dt">by =</span> <span class="st">'project.num'</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">group_by</span>(project.num, institute, fiscal.year) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">summarize</span>(<span class="dt">project.cost =</span> <span class="kw">sum</span>(fy.cost, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">mutate</span>(<span class="dt">type =</span> <span class="st">'research'</span>)
 
-program_costs &lt;-<span class="st"> </span>grant_costs %&gt;%
-<span class="st">  </span><span class="kw">semi_join</span>(program_projects, <span class="dt">by =</span> <span class="st">'project.num'</span>) %&gt;%
-<span class="st">  </span><span class="kw">group_by</span>(project.num, institute, fiscal.year) %&gt;%
-<span class="st">  </span><span class="kw">summarize</span>(<span class="dt">project.cost =</span> <span class="kw">sum</span>(fy.cost, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)) %&gt;%
+program_costs &lt;-<span class="st"> </span>grant_costs <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">semi_join</span>(program_projects, <span class="dt">by =</span> <span class="st">'project.num'</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">group_by</span>(project.num, institute, fiscal.year) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">summarize</span>(<span class="dt">project.cost =</span> <span class="kw">sum</span>(fy.cost, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">mutate</span>(<span class="dt">type =</span> <span class="st">'program'</span>)
 
-coop_costs &lt;-<span class="st"> </span>grant_costs %&gt;%
-<span class="st">  </span><span class="kw">semi_join</span>(coop_projects, <span class="dt">by =</span> <span class="st">'project.num'</span>) %&gt;%
-<span class="st">  </span><span class="kw">group_by</span>(project.num, institute, fiscal.year) %&gt;%
-<span class="st">  </span><span class="kw">summarize</span>(<span class="dt">project.cost =</span> <span class="kw">sum</span>(fy.cost, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)) %&gt;%
+coop_costs &lt;-<span class="st"> </span>grant_costs <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">semi_join</span>(coop_projects, <span class="dt">by =</span> <span class="st">'project.num'</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">group_by</span>(project.num, institute, fiscal.year) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">summarize</span>(<span class="dt">project.cost =</span> <span class="kw">sum</span>(fy.cost, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">mutate</span>(<span class="dt">type =</span> <span class="st">'cooperative agreements'</span>)
 
 combined_tbl &lt;-<span class="st"> </span><span class="kw">bind_rows</span>(research_costs, program_costs, coop_costs)
 
 <span class="kw">ggplot</span>(combined_tbl, <span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">factor</span>(fiscal.year),
                          <span class="dt">y =</span> project.cost,
-                         <span class="dt">fill =</span> type)) +
-<span class="st">  </span><span class="kw">geom_boxplot</span>(<span class="dt">outlier.shape =</span> <span class="ot">NA</span>) +<span class="st"> </span>
+                         <span class="dt">fill =</span> type)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_boxplot</span>(<span class="dt">outlier.shape =</span> <span class="ot">NA</span>) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">scale_y_log10</span>(<span class="dt">limits =</span> <span class="kw">c</span>(<span class="fl">1e4</span>,<span class="fl">1e7</span>),
-                <span class="dt">labels =</span> <span class="kw">trans_format</span>(<span class="st">"log10"</span>, <span class="kw">math_format</span>(<span class="dv">10</span>^.x))) +
-<span class="st">  </span><span class="kw">facet_wrap</span>(~institute) +
-<span class="st">  </span><span class="kw">theme_bw</span>() +
-<span class="st">  </span><span class="kw">scale_fill_brewer</span>(<span class="dt">palette =</span> <span class="st">"Dark2"</span>) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">'bottom'</span>) +
-<span class="st">  </span><span class="kw">xlab</span>(<span class="st">''</span>) +
-<span class="st">  </span><span class="kw">ylab</span>(<span class="st">'Total grant costs, log-scaled'</span>) +
+                <span class="dt">labels =</span> <span class="kw">trans_format</span>(<span class="st">"log10"</span>, <span class="kw">math_format</span>(<span class="dv">10</span><span class="op">^</span>.x))) <span class="op">+</span>
+<span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>institute) <span class="op">+</span>
+<span class="st">  </span><span class="kw">theme_bw</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">scale_fill_brewer</span>(<span class="dt">palette =</span> <span class="st">"Dark2"</span>) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">'bottom'</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">xlab</span>(<span class="st">''</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">ylab</span>(<span class="st">'Total grant costs, log-scaled'</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.text.x =</span> <span class="kw">element_text</span>(<span class="dt">angle =</span> <span class="dv">90</span>))</code></pre></div>
 <div class="figure">
 <img src="nihexporter-manuscript_files/figure-html/activity_comparisons-1.png" alt="Comparison of research, program and coop costs over time" width="672"><p class="caption">
@@ -973,18 +972,18 @@ Comparison of research, program and coop costs over time
 <h2 class="hasAnchor">
 <html><body><a href="#duration" class="anchor"> </a></body></html>Duration</h2>
 <p>The <code>nihexporter</code> exposes <code>project.start</code> and <code>project.end</code>, which we can use to examine the duration of projects. For example, we can identify the longest running R01 grants.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">long.grants &lt;-<span class="st"> </span>projects %&gt;%
-<span class="st">  </span><span class="kw">filter</span>(activity ==<span class="st"> 'R01'</span>) %&gt;%
-<span class="st">  </span><span class="kw">select</span>(project.num, project.start, project.end) %&gt;%
-<span class="st">  </span><span class="kw">group_by</span>(project.num) %&gt;%
-<span class="st">  </span><span class="kw">summarize</span>(<span class="dt">longest.run =</span> <span class="kw">max</span>(project.end) -<span class="st"> </span><span class="kw">min</span>(project.start)) %&gt;%
-<span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(longest.run)) %&gt;%
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">in.years =</span> <span class="kw">as.numeric</span>(longest.run) /<span class="st"> </span><span class="dv">365</span>) %&gt;%
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">long.grants &lt;-<span class="st"> </span>projects <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span>(activity <span class="op">==</span><span class="st"> 'R01'</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">select</span>(project.num, project.start, project.end) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">group_by</span>(project.num) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">summarize</span>(<span class="dt">longest.run =</span> <span class="kw">max</span>(project.end) <span class="op">-</span><span class="st"> </span><span class="kw">min</span>(project.start)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(longest.run)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">in.years =</span> <span class="kw">as.numeric</span>(longest.run) <span class="op">/</span><span class="st"> </span><span class="dv">365</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">select</span>(project.num, in.years)
 
-long.grants %&gt;%
-<span class="st">  </span><span class="kw">head</span>(<span class="dv">10</span>) %&gt;%
-<span class="st">  </span>knitr::<span class="kw">kable</span>(<span class="dt">digits =</span> <span class="dv">2</span>,
+long.grants <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">head</span>(<span class="dv">10</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span>knitr<span class="op">::</span><span class="kw">kable</span>(<span class="dt">digits =</span> <span class="dv">2</span>,
                <span class="dt">caption =</span> <span class="st">'Longest running R01 grants (all-time)'</span>,
                <span class="dt">col.names=</span><span class="kw">c</span>(<span class="st">'Project ID'</span>, <span class="st">'Duration (years)'</span>))</code></pre></div>
 <table class="table">
@@ -1043,38 +1042,38 @@ long.grants %&gt;%
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">state.data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">org.state =</span> state.abb,
                          <span class="dt">state.name =</span> <span class="kw">tolower</span>(state.name))
 
-state_funding &lt;-<span class="st"> </span>projects %&gt;%
-<span class="st">  </span><span class="kw">select</span>(application.id) %&gt;%
-<span class="st">  </span><span class="kw">left_join</span>(project_orgs) %&gt;%
-<span class="st">  </span><span class="kw">left_join</span>(org_info) %&gt;%
-<span class="st">  </span><span class="kw">left_join</span>(projects, <span class="dt">by =</span> <span class="st">'application.id'</span>) %&gt;%
-<span class="st">  </span><span class="kw">select</span>(application.id, org.state, fy.cost) %&gt;%
-<span class="st">  </span><span class="kw">group_by</span>(org.state) %&gt;%
-<span class="st">  </span><span class="kw">summarize</span>(<span class="dt">total.fy.cost =</span> <span class="kw">sum</span>(fy.cost) /<span class="st"> </span><span class="fl">1e9</span>)
+state_funding &lt;-<span class="st"> </span>projects <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">select</span>(application.id) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">left_join</span>(project_orgs) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">left_join</span>(org_info) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">left_join</span>(projects, <span class="dt">by =</span> <span class="st">'application.id'</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">select</span>(application.id, org.state, fy.cost) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">group_by</span>(org.state) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">summarize</span>(<span class="dt">total.fy.cost =</span> <span class="kw">sum</span>(fy.cost) <span class="op">/</span><span class="st"> </span><span class="fl">1e9</span>)
 
-cost.by.state &lt;-<span class="st"> </span>state_funding %&gt;%
-<span class="st">  </span><span class="kw">left_join</span>(state.data) %&gt;%
-<span class="st">  </span><span class="kw">select</span>(state.name, total.fy.cost) %&gt;%
-<span class="st">  </span><span class="kw">filter</span>(state.name !=<span class="st"> "NA"</span>) %&gt;%
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">region=</span>state.name, <span class="dt">cost =</span> total.fy.cost) %&gt;%
-<span class="st">  </span><span class="kw">select</span>(region, cost) %&gt;%
+cost.by.state &lt;-<span class="st"> </span>state_funding <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">left_join</span>(state.data) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">select</span>(state.name, total.fy.cost) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span>(state.name <span class="op">!=</span><span class="st"> "NA"</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">region=</span>state.name, <span class="dt">cost =</span> total.fy.cost) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">select</span>(region, cost) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">data.frame</span>()
 
 state.map.data &lt;-<span class="st"> </span><span class="kw">map_data</span>(<span class="st">"state"</span>)
 
 plot_data &lt;-<span class="st"> </span><span class="kw">left_join</span>(state.map.data, cost.by.state)
 
-<span class="kw">ggplot</span>() +<span class="st"> </span>
+<span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_polygon</span>(<span class="dt">data=</span>plot_data, 
-                      <span class="kw">aes</span>(<span class="dt">x=</span>long, <span class="dt">y=</span>lat, <span class="dt">group =</span> group, <span class="dt">fill=</span>plot_data$cost),
-                      <span class="dt">colour=</span><span class="st">"black"</span>) +
-<span class="st">  </span><span class="kw">scale_fill_continuous</span>(<span class="dt">low =</span> <span class="st">"lightgrey"</span>, <span class="dt">high =</span> <span class="st">"red"</span>, <span class="dt">guide=</span><span class="st">"colorbar"</span>) +
-<span class="st">  </span><span class="kw">theme_bw</span>() +
-<span class="st">  </span><span class="kw">labs</span>(<span class="dt">fill =</span> <span class="st">"Total Cost per year </span><span class="ch">\n</span><span class="st"> (Billions of dollars)"</span>,<span class="dt">x=</span><span class="st">""</span>, <span class="dt">y=</span><span class="st">""</span>) +
+                      <span class="kw">aes</span>(<span class="dt">x=</span>long, <span class="dt">y=</span>lat, <span class="dt">group =</span> group, <span class="dt">fill=</span>plot_data<span class="op">$</span>cost),
+                      <span class="dt">colour=</span><span class="st">"black"</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">scale_fill_continuous</span>(<span class="dt">low =</span> <span class="st">"lightgrey"</span>, <span class="dt">high =</span> <span class="st">"red"</span>, <span class="dt">guide=</span><span class="st">"colorbar"</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">theme_bw</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">fill =</span> <span class="st">"Total Cost per year </span><span class="ch">\n</span><span class="st"> (Billions of dollars)"</span>,<span class="dt">x=</span><span class="st">""</span>, <span class="dt">y=</span><span class="st">""</span>) <span class="op">+</span>
 <span class="st">       </span><span class="co">#title = "Total cost per fiscal year by state" </span>
-<span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">breaks=</span><span class="kw">c</span>()) +
-<span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks=</span><span class="kw">c</span>()) +
-<span class="st">  </span><span class="kw">theme</span>(<span class="dt">panel.border =</span>  <span class="kw">element_blank</span>()) +
+<span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">breaks=</span><span class="kw">c</span>()) <span class="op">+</span>
+<span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks=</span><span class="kw">c</span>()) <span class="op">+</span>
+<span class="st">  </span><span class="kw">theme</span>(<span class="dt">panel.border =</span>  <span class="kw">element_blank</span>()) <span class="op">+</span>
 <span class="st">  </span><span class="kw">coord_fixed</span>(<span class="dt">ratio =</span> <span class="fl">1.4</span>)</code></pre></div>
 </div>
 </div>
