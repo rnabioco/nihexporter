@@ -15,4 +15,3 @@ patents
 Table linking patent IDs to project IDs.
 }
 \keyword{datasets}
-

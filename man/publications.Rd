@@ -23,4 +23,3 @@ Publication information.
   values for select \code{pmid} values.
 }
 \keyword{datasets}
-

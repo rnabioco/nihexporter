@@ -16,4 +16,3 @@ project_io
 Pre-computed total costs, number of patents and publications per project.
 }
 \keyword{datasets}
-

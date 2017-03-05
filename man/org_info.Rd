@@ -21,4 +21,3 @@ Be wary of this table as the DUNS reporting in the NIH EXPORTER was not
   previously correct for years 2000-2008.
 }
 \keyword{datasets}
-

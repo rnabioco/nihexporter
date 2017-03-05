@@ -37,4 +37,3 @@ rcr(pmids)
 \seealso{
 \url{https://icite.od.nih.gov/api}
 }
-

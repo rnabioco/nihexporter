@@ -15,4 +15,3 @@ clinical_studies
 Clinical trial information.
 }
 \keyword{datasets}
-
