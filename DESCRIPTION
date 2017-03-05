@@ -12,6 +12,7 @@ Depends:
     dplyr,
 Remotes: dgrtwo/gganimate 
 Suggests:
+    scales,
     DT,
     gganimate,
     tidyverse,
