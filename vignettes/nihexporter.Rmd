@@ -115,7 +115,7 @@ gganimate(p)
 
 **It is also helpful to view these plots as trajectories to see the path of funding over time.** The following graphs indicate that U01 and R21 projects have had significant recent investment from certain institutes, while R01 and P01 projects have remained relatively constant in number and cost.
 
-```{r cost_trajectories, message=FALSE, fig.width=7, fig.height=4, fig.show='animate', cache=FALSE, fig.cap='Cost trajectories'} 
+```{r cost_trajectories, message=FALSE, fig.width=7, fig.height=4, fig.show='animate', fig.cap='Cost trajectories'}
 p <- gp + geom_path(aes(cumulative = TRUE,
                         group = institute),
                     arrow = arrow(length = unit(0.1, "npc")))
