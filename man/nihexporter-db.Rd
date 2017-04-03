@@ -19,7 +19,7 @@ copy_nihexporter(src, ...)
 \arguments{
 \item{path}{location of sqlite database file}
 
-\item{dbname, ...}{Arguments passed on to \code{\link{src_postgres}}}
+\item{dbname, ...}{Arguments passed on to \code{\link[=src_postgres]{src_postgres()}}}
 }
 \description{
 These functions cache the data from the \code{nihexporter} database in

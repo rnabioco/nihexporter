@@ -5,7 +5,7 @@
 \alias{publications}
 \title{Publication information.}
 \format{A data frame with 4 variables: \code{pmid}, \code{pmc.id},
-  \code{pub.year}, \code{rcr}}
+\code{pub.year}, \code{rcr}}
 \source{
 \url{https://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=4&index=2}
 
@@ -19,7 +19,7 @@ Publication information.
 }
 \note{
 \code{rcr} values change over time. Values in this table were
-  downloaded on 31 Dec 2016. Use \code{\link{rcr}} to obtain current
-  values for select \code{pmid} values.
+downloaded on 31 Dec 2016. Use \code{\link[=rcr]{rcr()}} to obtain current
+values for select \code{pmid} values.
 }
 \keyword{datasets}
