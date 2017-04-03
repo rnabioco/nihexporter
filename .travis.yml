@@ -1,25 +1,8 @@
-# .travis.yml for `nihexporter` 
+# .travis.yml for `nihexporter`
 # based on http://docs.travis-ci.com/user/languages/r/
 
-sudo: required
-
+dist: trusty
+sudo: false
+warnings_are_errors: false
 language: r
-
-warnings_are_errors: true
-
-r_binary_pacakges:
-  - dplyr
-  - ggplot2
-  - knitr
-  - stringr
-  - readr
-
-notifications:
-  email:
-    on_success: jay.hesselberth@gmail.com
-    on_failure: jay.hesselberth@gmail.com
-
-branches:
-  only:
-    - master
-    - v0.7-release
+cache: packages
