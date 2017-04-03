@@ -1,6 +1,6 @@
 #' Database versions of the nihexporter data
 #'
-#' These functions cache the data from the \code{nihexporter} database in
+#' These functions cache the data from the `nihexporter` database in
 #' a local database for use in examples and vignettes. Indexes are created
 #' to make joining tables on natural keys efficient.
 #'
@@ -22,7 +22,7 @@ nihexporter_sqlite <- function(path = NULL) {
 
 #' @export
 #' @rdname nihexporter-db
-#' @param dbname,... Arguments passed on to \code{\link{src_postgres}}
+#' @param dbname,... Arguments passed on to [src_postgres()]
 nihexporter_postgres <- function(dbname = "nihexporter", ...) {
   cache_computation("nihexporter_postgres", {
     message("Caching nihexporter db in postgresql db ", dbname)

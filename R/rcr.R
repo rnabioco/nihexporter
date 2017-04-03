@@ -4,18 +4,18 @@
 #'
 #' @return a data_frame the following variables:
 #' \describe{
-#' \item{\code{pmid}}{PubMed ID}
-#' \item{\code{authors}}{publication authors}
-#' \item{\code{citation_count}}{total citations}
-#' \item{\code{citations_per_year}}{mean citations per year}
-#' \item{\code{expected_citations_per_year}}{estimated}
-#' \item{\code{field_citation_rate}}{rate relative to field}
-#' \item{\code{is_research_article}}{boolean}
-#' \item{\code{journal}}{journal name abbr.}
-#' \item{\code{nih_percentile}}{percentile}
-#' \item{\code{relative_citation_ratio}}{RCR}
-#' \item{\code{title}}{article title}
-#' \item{\code{year}}{publication year}
+#' \item{`pmid`}{PubMed ID}
+#' \item{`authors`}{publication authors}
+#' \item{`citation_count`}{total citations}
+#' \item{`citations_per_year`}{mean citations per year}
+#' \item{`expected_citations_per_year`}{estimated}
+#' \item{`field_citation_rate`}{rate relative to field}
+#' \item{`is_research_article`}{boolean}
+#' \item{`journal`}{journal name abbr.}
+#' \item{`nih_percentile`}{percentile}
+#' \item{`relative_citation_ratio`}{RCR}
+#' \item{`title`}{article title}
+#' \item{`year`}{publication year}
 #' }
 #'
 #' @import httr
