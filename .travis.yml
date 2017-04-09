@@ -2,7 +2,7 @@
 # based on http://docs.travis-ci.com/user/languages/r/
 
 dist: trusty
-sudo: false
+sudo: required
 warnings_are_errors: false
 language: r
 cache: packages
