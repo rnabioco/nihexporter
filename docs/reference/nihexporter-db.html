@@ -25,7 +25,7 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -100,7 +100,7 @@ a local database for use in examples and vignettes. Indexes are created
 to make joining tables on natural keys efficient.</p>
     
 
-    <pre><span class='fu'>nihexporter_sqlite</span>(<span class='kw'>path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+    <pre class="usage"><span class='fu'>nihexporter_sqlite</span>(<span class='kw'>path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
 <span class='fu'>nihexporter_postgres</span>(<span class='kw'>dbname</span> <span class='kw'>=</span> <span class='st'>"nihexporter"</span>, <span class='no'>...</span>)
 
@@ -109,12 +109,17 @@ to make joining tables on natural keys efficient.</p>
 <span class='fu'>copy_nihexporter</span>(<span class='no'>src</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>path</dt>
-      <dd><p>location of sqlite database file</p></dd>
-      <dt>dbname, ...</dt>
-      <dd><p>Arguments passed on to <code>src_postgres()</code></p></dd>
-    </dl>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>path</th>
+      <td><p>location of sqlite database file</p></td>
+    </tr>
+    <tr>
+      <th>dbname, ...</th>
+      <td><p>Arguments passed on to <code>src_postgres()</code></p></td>
+    </tr>
+    </table>
     
 
   </div>

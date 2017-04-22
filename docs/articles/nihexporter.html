@@ -9,7 +9,7 @@
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/paper/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script><script src="../pkgdown.js"></script><!-- mathjax --><script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
+<script src="../jquery.sticky-kit.min.js"></script><script src="../pkgdown.js"></script><!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
@@ -78,10 +78,10 @@
 <div class="contents">
 <div id="package-overview" class="section level1">
 <h1 class="hasAnchor">
-<html><body><a href="#package-overview" class="anchor"> </a></body></html>Package overview</h1>
+<a href="#package-overview" class="anchor"></a>Package overview</h1>
 <div id="tables" class="section level2">
 <h2 class="hasAnchor">
-<html><body><a href="#tables" class="anchor"> </a></body></html>Tables</h2>
+<a href="#tables" class="anchor"></a>Tables</h2>
 <p>The <code>nihexporter</code> package contains several relational tables that contain a variety of information about NIH funding.</p>
 <ul>
 <li>
@@ -107,7 +107,7 @@
 </div>
 <div id="functions" class="section level2">
 <h2 class="hasAnchor">
-<html><body><a href="#functions" class="anchor"> </a></body></html>Functions</h2>
+<a href="#functions" class="anchor"></a>Functions</h2>
 <ul>
 <li>
 <code><a href="../reference/rcr.html">rcr()</a></code> uses PubMed IDs to retrieve <a href="https://icite.od.nih.gov/">RCR</a> values from the iCite database.</li>
@@ -115,7 +115,7 @@
 </div>
 <div id="variables" class="section level2">
 <h2 class="hasAnchor">
-<html><body><a href="#variables" class="anchor"> </a></body></html>Variables</h2>
+<a href="#variables" class="anchor"></a>Variables</h2>
 <ul>
 <li>
 <code>nih.institutes</code>: Two-letter format for 27 NIH institutes</li>
@@ -124,11 +124,11 @@
 </div>
 <div id="examples" class="section level1">
 <h1 class="hasAnchor">
-<html><body><a href="#examples" class="anchor"> </a></body></html>Examples</h1>
+<a href="#examples" class="anchor"></a>Examples</h1>
 <p>We’ll use animated charts to illustrate funding trends at the NIH.</p>
 <div id="project-number-and-cost" class="section level2">
 <h2 class="hasAnchor">
-<html><body><a href="#project-number-and-cost" class="anchor"> </a></body></html>Project number and cost</h2>
+<a href="#project-number-and-cost" class="anchor"></a>Project number and cost</h2>
 <p>First we’ll take a look at project number and costs for a few project types (R01, R21, etc.) at a few of the bigger institues (GM, CA, AI, etc.). This first animated graph shows how these variables move over ~15 years.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(nihexporter)
 <span class="kw">library</span>(dplyr)
@@ -175,7 +175,7 @@ p &lt;-<span class="st"> </span>gp <span class="op">+</span><span class="st"> </
 </div>
 <div id="funding-distribution" class="section level2">
 <h2 class="hasAnchor">
-<html><body><a href="#funding-distribution" class="anchor"> </a></body></html>Funding distribution</h2>
+<a href="#funding-distribution" class="anchor"></a>Funding distribution</h2>
 <p>Let’s look at WHERE the money is going. This example illustrates linking of the <code>project</code> and <code>project.orgs</code> tables via the <code>org.duns</code> column.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">money.per.institution &lt;-<span class="st"> </span>projects <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">filter</span>(activity <span class="op">==</span><span class="st"> 'R01'</span>) <span class="op">%&gt;%</span>
@@ -317,7 +317,7 @@ money.per.pi <span class="op">%&gt;%</span>
 </div>
 <div id="productivity" class="section level2">
 <h2 class="hasAnchor">
-<html><body><a href="#productivity" class="anchor"> </a></body></html>Productivity</h2>
+<a href="#productivity" class="anchor"></a>Productivity</h2>
 <p>To measure the “return”" on the money the NIH invests in the research enterprise, we can measure scholarly output (i.e., publications) per dollar invested.</p>
 <p>Here we identify th highest performing grants outside of the R01 category. Much has been made of the wasteful spending outside of investigator-initiated research. Here we can see that this is not always the case.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">high.perf.not.r01 &lt;-<span class="st"> </span>projects <span class="op">%&gt;%</span>
@@ -495,7 +495,7 @@ costly.pubs.r01 <span class="op">%&gt;%</span>
 </div>
 <div id="duration" class="section level2">
 <h2 class="hasAnchor">
-<html><body><a href="#duration" class="anchor"> </a></body></html>Duration</h2>
+<a href="#duration" class="anchor"></a>Duration</h2>
 <p>I am always impressed at how long people keep their grants. Let’s identify the longest running R01 projects.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">long.grants &lt;-<span class="st"> </span>projects <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">filter</span>(activity <span class="op">==</span><span class="st"> 'R01'</span>) <span class="op">%&gt;%</span>

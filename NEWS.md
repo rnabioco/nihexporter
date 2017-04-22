@@ -1,4 +1,4 @@
-# nihexporter 0.9.0.9000 (unreleased)
+# nihexporter 0.9.0.9000
 
 ## Major changes
  
