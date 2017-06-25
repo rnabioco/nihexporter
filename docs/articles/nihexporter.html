@@ -140,33 +140,33 @@ insts &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">'
 activities &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">'R01'</span>, <span class="st">'R21'</span>, <span class="st">'P01'</span>, <span class="st">'U01'</span>)
 
 costs &lt;-<span class="st"> </span>projects <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">filter</span>(institute <span class="op">%in%</span><span class="st"> </span>insts <span class="op">&amp;</span><span class="st"> </span>activity <span class="op">%in%</span><span class="st"> </span>activities) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">group_by</span>(fiscal.year, institute, activity) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">summarize</span>(<span class="dt">n.projects =</span> <span class="kw">n</span>(),
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(institute <span class="op">%in%</span><span class="st"> </span>insts <span class="op">&amp;</span><span class="st"> </span>activity <span class="op">%in%</span><span class="st"> </span>activities) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(fiscal.year, institute, activity) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">n.projects =</span> <span class="kw"><a href="http://dplyr.tidyverse.org/reference/n.html">n</a></span>(),
             <span class="dt">project.costs =</span> <span class="kw">sum</span>(fy.cost, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>) <span class="op">/</span><span class="st"> </span><span class="fl">1e6</span>)
 
-gp &lt;-<span class="st"> </span><span class="kw">ggplot</span>(costs, <span class="kw">aes</span>(<span class="dt">x =</span> n.projects,
+gp &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(costs, <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> n.projects,
                         <span class="dt">y =</span> project.costs,
                         <span class="dt">color =</span> institute,
                         <span class="dt">frame =</span> fiscal.year)) <span class="op">+</span>
-<span class="st">  </span><span class="kw">scale_x_log10</span>() <span class="op">+</span><span class="st"> </span><span class="kw">scale_y_log10</span>() <span class="op">+</span>
-<span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>activity) <span class="op">+</span>
-<span class="st">  </span><span class="kw">scale_color_brewer</span>(<span class="dt">palette =</span> <span class="st">'Dark2'</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">theme_cowplot</span>() <span class="op">+</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">'Project number'</span>,
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/scale_continuous">scale_x_log10</a></span>() <span class="op">+</span><span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/scale_continuous">scale_y_log10</a></span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/facet_wrap">facet_wrap</a></span>(<span class="op">~</span><span class="st"> </span>activity) <span class="op">+</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/scale_brewer">scale_color_brewer</a></span>(<span class="dt">palette =</span> <span class="st">'Dark2'</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/cowplot/topics/theme_cowplot">theme_cowplot</a></span>() <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">labs</a></span>(<span class="dt">x =</span> <span class="st">'Project number'</span>,
        <span class="dt">y =</span> <span class="st">'Project costs (millions)'</span>,
        <span class="dt">title =</span> <span class="st">'Project cost and number in: '</span>)
  
-p &lt;-<span class="st"> </span>gp <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="dt">size =</span> <span class="dv">3</span>)
+p &lt;-<span class="st"> </span>gp <span class="op">+</span><span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_point">geom_point</a></span>(<span class="dt">size =</span> <span class="dv">3</span>)
  
 <span class="kw">gganimate</span>(p)</code></pre></div>
 <div class="figure">
 <img src="img/README-fig-cost-.gif" alt="Project costs and numbers"><p class="caption">Project costs and numbers</p>
 </div>
 <p><strong>It is also helpful to view these plots as trajectories to see the path of funding over time.</strong> The following graphs indicate that U01 and R21 projects have had significant recent investment from certain institutes, while R01 and P01 projects have remained relatively constant in number and cost.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p &lt;-<span class="st"> </span>gp <span class="op">+</span><span class="st"> </span><span class="kw">geom_path</span>(<span class="kw">aes</span>(<span class="dt">cumulative =</span> <span class="ot">TRUE</span>,
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p &lt;-<span class="st"> </span>gp <span class="op">+</span><span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_path</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">cumulative =</span> <span class="ot">TRUE</span>,
                         <span class="dt">group =</span> institute),
-                    <span class="dt">arrow =</span> <span class="kw">arrow</span>(<span class="dt">length =</span> <span class="kw">unit</span>(<span class="fl">0.1</span>, <span class="st">"npc"</span>)))
+                    <span class="dt">arrow =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/reexports">arrow</a></span>(<span class="dt">length =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/reexports">unit</a></span>(<span class="fl">0.1</span>, <span class="st">"npc"</span>)))
 
 <span class="kw">gganimate</span>(p)</code></pre></div>
 <div class="figure">
@@ -178,18 +178,18 @@ p &lt;-<span class="st"> </span>gp <span class="op">+</span><span class="st"> </
 <a href="#funding-distribution" class="anchor"></a>Funding distribution</h2>
 <p>Let’s look at WHERE the money is going. This example illustrates linking of the <code>project</code> and <code>project.orgs</code> tables via the <code>org.duns</code> column.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">money.per.institution &lt;-<span class="st"> </span>projects <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">filter</span>(activity <span class="op">==</span><span class="st"> 'R01'</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">left_join</span>(project_orgs) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">select</span>(org.duns, fiscal.year, fy.cost) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">group_by</span>(org.duns, fiscal.year) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">summarise</span>(<span class="dt">total.award.billions =</span> <span class="kw">sum</span>(fy.cost, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>) <span class="op">/</span><span class="st"> </span><span class="fl">1e9</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(total.award.billions)) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">left_join</span>(org_info) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">select</span>(fiscal.year, org.name, total.award.billions)
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(activity <span class="op">==</span><span class="st"> 'R01'</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/join.html">left_join</a></span>(project_orgs) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(org.duns, fiscal.year, fy.cost) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(org.duns, fiscal.year) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span>(<span class="dt">total.award.billions =</span> <span class="kw">sum</span>(fy.cost, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>) <span class="op">/</span><span class="st"> </span><span class="fl">1e9</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span>() <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(<span class="kw"><a href="http://dplyr.tidyverse.org/reference/desc.html">desc</a></span>(total.award.billions)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/join.html">left_join</a></span>(org_info) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(fiscal.year, org.name, total.award.billions)
 
 money.per.institution <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">head</span>(<span class="dv">10</span>) <span class="op">%&gt;%</span><span class="st"> </span>knitr<span class="op">::</span><span class="kw">kable</span>()</code></pre></div>
+<span class="st">  </span><span class="kw">head</span>(<span class="dv">10</span>) <span class="op">%&gt;%</span><span class="st"> </span>knitr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>()</code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">fiscal.year</th>
@@ -252,20 +252,20 @@ money.per.institution <span class="op">%&gt;%</span>
 <p>One can also identiy PIs that have accrued large project dollars.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
 money.per.pi &lt;-<span class="st"> </span>projects <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">filter</span>(activity <span class="op">==</span><span class="st"> 'R01'</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">select</span>(project.num, fy.cost) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">group_by</span>(project.num) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">summarise</span>(<span class="dt">total.award.millions =</span> <span class="kw">sum</span>(fy.cost, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>) <span class="op">/</span><span class="st"> </span><span class="fl">1e6</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(total.award.millions)) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">left_join</span>(project_pis) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">filter</span>(pi.id <span class="op">!=</span><span class="st"> ''</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">group_by</span>(pi.id) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">summarise</span>(<span class="dt">pi.millionaire =</span> <span class="kw">sum</span>(total.award.millions)) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(pi.millionaire))  
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(activity <span class="op">==</span><span class="st"> 'R01'</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(project.num, fy.cost) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(project.num) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span>(<span class="dt">total.award.millions =</span> <span class="kw">sum</span>(fy.cost, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>) <span class="op">/</span><span class="st"> </span><span class="fl">1e6</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span>() <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(<span class="kw"><a href="http://dplyr.tidyverse.org/reference/desc.html">desc</a></span>(total.award.millions)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/join.html">left_join</a></span>(project_pis) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(pi.id <span class="op">!=</span><span class="st"> ''</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(pi.id) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span>(<span class="dt">pi.millionaire =</span> <span class="kw">sum</span>(total.award.millions)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(<span class="kw"><a href="http://dplyr.tidyverse.org/reference/desc.html">desc</a></span>(pi.millionaire))  
 
 money.per.pi <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">head</span>(<span class="dv">10</span>) <span class="op">%&gt;%</span><span class="st"> </span>knitr<span class="op">::</span><span class="kw">kable</span>()</code></pre></div>
+<span class="st">  </span><span class="kw">head</span>(<span class="dv">10</span>) <span class="op">%&gt;%</span><span class="st"> </span>knitr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>()</code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">pi.id</th>
@@ -321,17 +321,17 @@ money.per.pi <span class="op">%&gt;%</span>
 <p>To measure the “return”" on the money the NIH invests in the research enterprise, we can measure scholarly output (i.e., publications) per dollar invested.</p>
 <p>Here we identify th highest performing grants outside of the R01 category. Much has been made of the wasteful spending outside of investigator-initiated research. Here we can see that this is not always the case.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">high.perf.not.r01 &lt;-<span class="st"> </span>projects <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">filter</span>(activity <span class="op">!=</span><span class="st"> 'R01'</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">group_by</span>(project.num) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">summarise</span>(<span class="dt">overall.cost =</span> <span class="kw">sum</span>(fy.cost, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">filter</span>(overall.cost <span class="op">&gt;</span><span class="st"> </span><span class="fl">1e6</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">left_join</span>(publinks) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(pmid)) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">group_by</span>(project.num, overall.cost) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">summarize</span>(<span class="dt">n.pubs =</span> <span class="kw">n</span>()) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">cost.per.pub =</span> overall.cost <span class="op">/</span><span class="st"> </span>n.pubs) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">arrange</span>(cost.per.pub)
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(activity <span class="op">!=</span><span class="st"> 'R01'</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(project.num) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span>(<span class="dt">overall.cost =</span> <span class="kw">sum</span>(fy.cost, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(overall.cost <span class="op">&gt;</span><span class="st"> </span><span class="fl">1e6</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/join.html">left_join</a></span>(publinks) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="op">!</span><span class="kw">is.na</span>(pmid)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(project.num, overall.cost) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">n.pubs =</span> <span class="kw"><a href="http://dplyr.tidyverse.org/reference/n.html">n</a></span>()) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">cost.per.pub =</span> overall.cost <span class="op">/</span><span class="st"> </span>n.pubs) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span>() <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(cost.per.pub)
 
 high.perf.not.r01 <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">head</span>(<span class="dv">10</span>) <span class="op">%&gt;%</span>
@@ -408,20 +408,20 @@ high.perf.not.r01 <span class="op">%&gt;%</span>
 </table>
 <p>Here we quantitate the return on R01 investment and identify the most expensive publications, in grant dollars. One might argue that grants with higher <code>cost.per.pub</code> are less good investments.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">costly.pubs.r01 &lt;-<span class="st"> </span>projects <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">filter</span>(activity <span class="op">==</span><span class="st"> 'R01'</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">group_by</span>(project.num) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">summarise</span>(<span class="dt">overall.cost =</span> <span class="kw">sum</span>(fy.cost, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">left_join</span>(publinks) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(pmid)) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">group_by</span>(project.num, overall.cost) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">summarize</span>(<span class="dt">n.pubs =</span> <span class="kw">n</span>()) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">cost.per.pub =</span> overall.cost <span class="op">/</span><span class="st"> </span>n.pubs) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(cost.per.pub))
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(activity <span class="op">==</span><span class="st"> 'R01'</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(project.num) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span>(<span class="dt">overall.cost =</span> <span class="kw">sum</span>(fy.cost, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/join.html">left_join</a></span>(publinks) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="op">!</span><span class="kw">is.na</span>(pmid)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(project.num, overall.cost) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">n.pubs =</span> <span class="kw"><a href="http://dplyr.tidyverse.org/reference/n.html">n</a></span>()) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">cost.per.pub =</span> overall.cost <span class="op">/</span><span class="st"> </span>n.pubs) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span>() <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(<span class="kw"><a href="http://dplyr.tidyverse.org/reference/desc.html">desc</a></span>(cost.per.pub))
 
 costly.pubs.r01 <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">head</span>(<span class="dv">10</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span>knitr<span class="op">::</span><span class="kw">kable</span>()</code></pre></div>
+<span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>()</code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">project.num</th>
@@ -498,16 +498,16 @@ costly.pubs.r01 <span class="op">%&gt;%</span>
 <a href="#duration" class="anchor"></a>Duration</h2>
 <p>I am always impressed at how long people keep their grants. Let’s identify the longest running R01 projects.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">long.grants &lt;-<span class="st"> </span>projects <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">filter</span>(activity <span class="op">==</span><span class="st"> 'R01'</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">select</span>(project.num, project.start, project.end) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">group_by</span>(project.num) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">summarize</span>(<span class="dt">longest.run =</span> <span class="kw">max</span>(project.end) <span class="op">-</span><span class="st"> </span><span class="kw">min</span>(project.start)) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(longest.run)) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">in.years =</span> <span class="kw">as.numeric</span>(longest.run) <span class="op">/</span><span class="st"> </span><span class="dv">365</span>)
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(activity <span class="op">==</span><span class="st"> 'R01'</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(project.num, project.start, project.end) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(project.num) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">longest.run =</span> <span class="kw">max</span>(project.end) <span class="op">-</span><span class="st"> </span><span class="kw">min</span>(project.start)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(<span class="kw"><a href="http://dplyr.tidyverse.org/reference/desc.html">desc</a></span>(longest.run)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">in.years =</span> <span class="kw">as.numeric</span>(longest.run) <span class="op">/</span><span class="st"> </span><span class="dv">365</span>)
 
 long.grants <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">head</span>(<span class="dv">10</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span>knitr<span class="op">::</span><span class="kw">kable</span>()</code></pre></div>
+<span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>()</code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">project.num</th>
@@ -574,7 +574,8 @@ long.grants <span class="op">%&gt;%</span>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
         <div id="tocnav">
-      <h2>Contents</h2>
+      <h2 class="hasAnchor">
+<a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
 <li>
 <a href="#package-overview">Package overview</a><ul class="nav nav-pills nav-stacked">

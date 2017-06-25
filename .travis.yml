@@ -6,3 +6,5 @@ sudo: required
 warnings_are_errors: false
 language: r
 cache: packages
+r_build_args: '--no-build-vignettes'
+r_check_args: '--as-cran --ignore-vignettes'
