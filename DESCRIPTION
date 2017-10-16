@@ -2,7 +2,8 @@ Package: nihexporter
 Title: NIH funding from 1985-2016
 Version: 0.9.0.9000
 Authors@R: person('Jay', 'Hesselberth', role = c("aut", "cre"),
-                  email = 'jay.hesselberth@gmail.com')
+                  email = 'jay.hesselberth@gmail.com',
+                  comment = c(ORCID = '0000-0002-6299-179X'))
 Description: Provides data for biomedical research funding
     from the National Institutes of Health spanning 2000-2016.
 Depends:

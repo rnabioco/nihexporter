@@ -2,6 +2,10 @@ template:
   params:
     bootswatch: paper
 
+authors:
+  Jay Hesselberth:
+    href: https://hesselberthlab.org
+
 home:
   links:
   - text: NIH EXPORTER

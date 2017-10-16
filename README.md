@@ -112,18 +112,18 @@ expensive_projects <- project_io %>%
   setNames(c('Project', 'Institute', 'Total cost (USD)'))
 
 expensive_projects
-#> # A tibble: 10 × 3
+#> # A tibble: 10 x 3
 #>        Project Institute `Total cost (USD)`
 #>          <chr>    <fctr>              <chr>
-#> 1  ZIHLM200888        LM      1,544,981,304
-#> 2  ZIFBC000001        CA        652,060,692
-#> 3  U54HG003067        HG        527,942,706
-#> 4  U54HG003079        HG        414,975,466
-#> 5  ZIFAI000001        AI        389,496,063
-#> 6  U10CA098543        CA        335,523,333
-#> 7  U54HG003273        HG        305,945,737
-#> 8  U19AI067854        AI        290,473,421
-#> 9  U54HG002045        HG        242,268,294
+#>  1 ZIHLM200888        LM      1,544,981,304
+#>  2 ZIFBC000001        CA        652,060,692
+#>  3 U54HG003067        HG        527,942,706
+#>  4 U54HG003079        HG        414,975,466
+#>  5 ZIFAI000001        AI        389,496,063
+#>  6 U10CA098543        CA        335,523,333
+#>  7 U54HG003273        HG        305,945,737
+#>  8 U19AI067854        AI        290,473,421
+#>  9 U54HG002045        HG        242,268,294
 #> 10  N01CO12400        CA        225,180,953
 ```
 
