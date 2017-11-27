@@ -6,51 +6,11 @@ output: github_document
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.path = "img/README-",
-  cache.path = "img/README-cache-"
+  fig.path = "man/figures/README-"
 )
-library(ggplot2)
-library(cowplot)
-theme_set(theme_cowplot() +
-          theme(axis.title.y = element_text(size = rel(0.8), angle = 90),
-                axis.title.x = element_text(size = rel(0.8), angle = 00),
-                strip.text = element_text(size = rel(0.8), angle = 00, lineheight = 0.5),
-                title = element_text(size = rel(0.8), angle = 00)))
 ```
 
-```{r gif_animation_hook, echo=FALSE, cache=FALSE}
-library(knitr)
-library(animation)
-
-# copied from gganimate README
- 
-ani.options(autobrowse = FALSE, interval = 1)
-
-opts_knit$set(animation.fun = function(x, options, format = "gif") {
-  x = c(knitr:::sans_ext(x), knitr:::file_ext(x))
-  fig.num = options$fig.num
-  format = sub("^[.]", "", format)
-  fig.fname = paste0(sub(paste0(fig.num, "$"), "*", x[1]), 
-                     ".", x[2])
-  mov.fname = paste0(sub(paste0(fig.num, "$"), "", x[1]), ".", 
-                     format)
-
-  # order correctly
-  figs <- Sys.glob(fig.fname)
-  figs <- figs[order(as.numeric(stringr::str_match(figs, paste0("(\\d+)\\.", x[2]))[, 2]))]
-
-  animation::im.convert(figs, output = mov.fname)
-  
-  sprintf("![''](%s)", paste0(opts_knit$get("base.url"), mov.fname))
-  
-  # remove intermediate files
-  # on.exit(unlink(figs))
-})
-
-opts_chunk$set(cache = TRUE, message = FALSE, warning = FALSE, fig.show = "animate")
-```
-
-# `nihexporter`
+# nihexporter
 
 [![Travis-CI Build Status](https://travis-ci.org/jayhesselberth/nihexporter.png?branch=master)](https://travis-ci.org/jayhesselberth/nihexporter) [![CRAN status](https://www.r-pkg.org/badges/version/nihexporter)](https://www.r-pkg.org/badges/version/nihexporter)
 
@@ -62,14 +22,14 @@ To keep the package lightweight, many details are omitted but can be easily retr
 
 Install the package from github with:
   
-```r
+``` r
 # install.packages('devtools')
 devtools::install_github("jayhesselberth/nihexporter")
 ```
 
 **Note**: this is a large data package (>40 Mb), so [it will not be submitted to CRAN](http://thecoatlessprofessor.com/programming/size-and-limitations-of-packages-on-cran/).
 
-### Tables
+## Tables
 
 * `projects`: provides data on funded projects by NIH.
 
@@ -89,82 +49,21 @@ devtools::install_github("jayhesselberth/nihexporter")
 
 **Note:** [Abstracts](https://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=0&index=1) from NIH EXPORTER are not provided because they significantly increase the size of the package.
 
-### Functions
+## Functions
 
 * `rcr()` retrieves [Relative Citation Ratios](https://icite.od.nih.gov/) and associated information for PubMed IDs.
 
 * `nihexporter_sqlite()` can be used to cache data in a local SQLite database.
 
-### Variables
+## Variables
 
 * `nih.institutes`: 27 NIH institutes in two-letter format 
 
-## Examples
-
-### Activity spending and numbers
-
-The animated plot below shows the trajactory of activity spending and number over time for select activities (e.g., R01 and P01) for some institutes. It indicates that U01 and R21 activities have had significant recent investment from certain institutes, whereas R01 and P01 activities have remained relatively constant in number and spending.
-
-```{r cost, fig.height=4, fig.width=4.5, fig.show='animate', message=FALSE, fig.cap='Project costs and numbers'}
-library(nihexporter)
-library(tidyverse)
-library(gganimate)
-
-insts <- c('GM', 'AI', 'CA', 'HL', 'DK', 'NS')
-activities <- c('R01', 'R21', 'P01', 'U01')
-
-costs <- projects %>%
-  filter(institute %in% insts & activity %in% activities) %>%
-  group_by(fiscal.year, institute, activity) %>%
-  summarize(n.projects = n(),
-            project.costs = sum(fy.cost, na.rm = TRUE) / 1e6)
-
-gp <- ggplot(costs, aes(x = n.projects,
-                        y = project.costs,
-                        color = institute,
-                        frame = fiscal.year)) +
-  scale_x_log10() + scale_y_log10() +
-  facet_wrap(~ activity) +
-  scale_color_brewer(palette = 'Dark2') +
-  labs(x = 'Number of projects',
-       y = 'Total spending on activity (millions)',
-       title = 'Values for FY')
-
-p <- gp + geom_path(aes(cumulative = TRUE,
-                        group = institute),
-                    arrow = arrow(length = unit(0.1, "npc")))
-
-gganimate(p)
-```
-
-### Fiscal summaries
-
-One can also use the `nihexporter` package to examine spending among the institutes. For example, here we identify the top-ten all-time most expensive projects.
-
-The most expensive project below (`ZIHLM200888`) funds the National Library of Medicine's intramural program, including [PubMed](http://pubmed.com) and the [NCBI](https://www.ncbi.nlm.nih.gov/), which provides BLAST, GenBank, RefSeq and dbGAP.
-
-```{r expensive_projects, warning=FALSE, message=FALSE}
-library(nihexporter)
-library(dplyr)
-library(scales)
-
-expensive_projects <- project_io %>%
-  arrange(desc(total.cost)) %>%
-  head(10) %>% 
-  left_join(projects, by = 'project.num') %>%
-  select(project.num, institute, total.cost) %>% 
-  unique() %>%
-  mutate(total.cost = comma(total.cost)) %>%
-  setNames(c('Project', 'Institute', 'Total cost (USD)'))
-
-expensive_projects
-```
-
 ## Resources
 
-- [`nihexporter` pre-print on bioRxiv](http://biorxiv.org/content/early/2015/12/02/033456)
++ [`nihexporter` pre-print on bioRxiv](http://biorxiv.org/content/early/2015/12/02/033456)
 
-- [RePORTER / EXPORTER mailing list archives](https://list.nih.gov/cgi-bin/wa.exe?A0=NIH-REPORT-PUBLIC-L)
++ [RePORTER / EXPORTER mailing list archives](https://list.nih.gov/cgi-bin/wa.exe?A0=NIH-REPORT-PUBLIC-L)
 
-- [Relative Citation Ratio manuscript at PLoS](http://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.1002541)
++ [Relative Citation Ratio manuscript at PLoS](http://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.1002541)
 
