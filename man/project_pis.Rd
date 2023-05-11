@@ -4,10 +4,12 @@
 \name{project_pis}
 \alias{project_pis}
 \title{Principal investigators.}
-\format{A data frame with 2 variables: \code{project.num} and \code{pi.id}
+\format{
+A data frame with 2 variables: \code{project.num} and \code{pi.id}
 
 The \code{pi.id} is a unique identifier that can be used to identify specific
-principal investigators in NIH REPORTER.}
+principal investigators in NIH REPORTER.
+}
 \source{
 \url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=3&index=0}
 }

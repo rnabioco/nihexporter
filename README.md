@@ -1,63 +1,81 @@
 
-nihexporter
-===========
+<!-- badges: start -->
 
-[![Travis-CI Build Status](https://travis-ci.org/jayhesselberth/nihexporter.png?branch=master)](https://travis-ci.org/jayhesselberth/nihexporter) [![CRAN status](https://www.r-pkg.org/badges/version/nihexporter)](https://www.r-pkg.org/badges/version/nihexporter)
+[![R-CMD-check](https://github.com/jayhesselberth/nihexporter/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/jayhesselberth/nihexporter/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
 
-The `nihexporter` R package provides a minimal set of data from the [NIH EXPORTER](http://exporter.nih.gov/default.aspx) database, which contains information on NIH biomedical research funding from 1985-2016.
+# nihexporter
 
-To keep the package lightweight, many details are omitted but can be easily retrieved from [NIH RePORTER](https://projectreporter.nih.gov/).
+The `nihexporter` R package provides a minimal set of data from the [NIH
+EXPORTER](http://exporter.nih.gov/default.aspx) database, which contains
+information on NIH biomedical research funding from 1985-2016.
 
-Installation
-------------
+To keep the package lightweight, many details are omitted but can be
+easily retrieved from [NIH RePORTER](https://projectreporter.nih.gov/).
+
+## Installation
 
 Install the package from github with:
 
 ``` r
-# install.packages('devtools')
-devtools::install_github("jayhesselberth/nihexporter")
+# install.packages('pak')
+pak::pkg_install("jayhesselberth/nihexporter")
 ```
 
-**Note**: this is a large data package (&gt;40 Mb), so [it will not be submitted to CRAN](http://thecoatlessprofessor.com/programming/size-and-limitations-of-packages-on-cran/).
+**Note**: this is a large data package (\>40 Mb), so [it will not be
+submitted to
+CRAN](http://thecoatlessprofessor.com/programming/size-and-limitations-of-packages-on-cran/).
 
-Tables
-------
+## Tables
 
--   `projects`: provides data on funded projects by NIH.
+- `projects`: provides data on funded projects by NIH.
 
--   `project_pis`: links project numbers (`project.num`) to principal investigator IDs (`pi.id`).
+- `project_pis`: links project numbers (`project.num`) to principal
+  investigator IDs (`pi.id`).
 
--   `project_orgs`: links DUNS numbers (`org.duns`) from `projects` table to information on specific organizations .
+- `project_orgs`: links DUNS numbers (`org.duns`) from `projects` table
+  to information on specific organizations .
 
--   `publinks`: links Pubmed IDs (`pmid`) to project numbers (`project.num`).
+- `publinks`: links Pubmed IDs (`pmid`) to project numbers
+  (`project.num`).
 
--   `publications`: provides information for individual publications, including their [Relative Citation Ratio](https://icite.od.nih.gov) values (`rcr`).
+- `publications`: provides information for individual publications,
+  including their [Relative Citation Ratio](https://icite.od.nih.gov)
+  values (`rcr`).
 
--   `patents`: links project IDs (`project.num`) to `patent.id`.
+- `patents`: links project IDs (`project.num`) to `patent.id`.
 
--   `clinical_studies`: links project IDs to associated [clinical trials](https://clinicaltrials.gov/).
+- `clinical_studies`: links project IDs to associated [clinical
+  trials](https://clinicaltrials.gov/).
 
--   `project_io`: pre-computed `n.pubs`, `n.patents` and `project.cost` for each `project.num`.
+- `project_io`: pre-computed `n.pubs`, `n.patents` and `project.cost`
+  for each `project.num`.
 
-**Note:** [Abstracts](https://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=0&index=1) from NIH EXPORTER are not provided because they significantly increase the size of the package.
+**Note:**
+[Abstracts](https://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=0&index=1)
+from NIH EXPORTER are not provided because they significantly increase
+the size of the package.
 
-Functions
----------
+## Functions
 
--   `rcr()` retrieves [Relative Citation Ratios](https://icite.od.nih.gov/) and associated information for PubMed IDs.
+- `rcr()` retrieves [Relative Citation
+  Ratios](https://icite.od.nih.gov/) and associated information for
+  PubMed IDs.
 
--   `nihexporter_sqlite()` can be used to cache data in a local SQLite database.
+- `nihexporter_sqlite()` can be used to cache data in a local SQLite
+  database.
 
-Variables
----------
+## Variables
 
--   `nih.institutes`: 27 NIH institutes in two-letter format
+- `nih.institutes`: 27 NIH institutes in two-letter format
 
-Resources
----------
+## Resources
 
--   [`nihexporter` pre-print on bioRxiv](http://biorxiv.org/content/early/2015/12/02/033456)
+- [`nihexporter` pre-print on
+  bioRxiv](http://biorxiv.org/content/early/2015/12/02/033456)
 
--   [RePORTER / EXPORTER mailing list archives](https://list.nih.gov/cgi-bin/wa.exe?A0=NIH-REPORT-PUBLIC-L)
+- [RePORTER / EXPORTER mailing list
+  archives](https://list.nih.gov/cgi-bin/wa.exe?A0=NIH-REPORT-PUBLIC-L)
 
--   [Relative Citation Ratio manuscript at PLoS](http://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.1002541)
+- [Relative Citation Ratio manuscript at
+  PLoS](http://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.1002541)

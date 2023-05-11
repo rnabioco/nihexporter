@@ -1,10 +1,6 @@
 template:
-  params:
-    bootswatch: paper
-
-authors:
-  Jay Hesselberth:
-    href: https://hesselberthlab.org
+  package: rbitemplate
+  bootstrap: 5
 
 home:
   links:

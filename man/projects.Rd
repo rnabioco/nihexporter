@@ -4,7 +4,8 @@
 \name{projects}
 \alias{projects}
 \title{Project information.}
-\format{A data frame with 13 variables:
+\format{
+A data frame with 13 variables:
 \describe{
 \item{\code{application.id}}{unique ID for the EXPORTER database}
 \item{\code{project.num}}{core project number, e.g. R01GM1234556}
@@ -19,7 +20,8 @@
 \item{\code{project.end}}{in ymd format}
 \item{\code{study.section}}{3 letter code}
 \item{\code{fy.cost}}{total (direct + indirect) for fiscal year}
-}}
+}
+}
 \source{
 \url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=3&index=0}
 }

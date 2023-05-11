@@ -4,7 +4,9 @@
 \name{patents}
 \alias{patents}
 \title{Table linking patent IDs to project IDs.}
-\format{A data frame with two variables: \code{patent.id}, \code{project.num}}
+\format{
+A data frame with two variables: \code{patent.id}, \code{project.num}
+}
 \source{
 \url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=5&index=3}
 }

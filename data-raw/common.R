@@ -1,12 +1,8 @@
 #' common functions
 
-library(readr)
-library(dplyr)
-library(stringr)
+library(tidyverse)
+library(usethis)
 library(devtools)
-library(purrr)
-library(tidyr)
-library(lubridate)
 
 # provides `nih.institutes`
 source('R/vars.R')

@@ -4,8 +4,10 @@
 \name{project_io}
 \alias{project_io}
 \title{Pre-computed total costs, number of patents and publications per project.}
-\format{A data frame with four variables: \code{project.num},
-\code{n.pubs}, \code{n.patents} and \code{total.cost}}
+\format{
+A data frame with four variables: \code{project.num},
+\code{n.pubs}, \code{n.patents} and \code{total.cost}
+}
 \source{
 Computed from \link{projects} table.
 }

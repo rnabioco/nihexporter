@@ -4,7 +4,9 @@
 \name{clinical_studies}
 \alias{clinical_studies}
 \title{Clinical trial information.}
-\format{A data frame with three variables: \code{project.num}, \code{trial.id} and \code{study.status}}
+\format{
+A data frame with three variables: \code{project.num}, \code{trial.id} and \code{study.status}
+}
 \source{
 \url{https://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=5&index=4}
 }

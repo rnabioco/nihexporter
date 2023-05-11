@@ -4,7 +4,9 @@
 \name{publinks}
 \alias{publinks}
 \title{Table linking PubMed IDs to project IDs.}
-\format{A data frame with two variables: \code{pmid}, \code{project.num}}
+\format{
+A data frame with two variables: \code{pmid}, \code{project.num}
+}
 \source{
 \url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=2&index=5}
 }
