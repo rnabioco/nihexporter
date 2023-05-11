@@ -10,7 +10,8 @@ Depends:
     R (>= 3.1.0),
     jsonlite,
     httr,
-    tidyverse
+    tidyverse,
+    dplyr
 Suggests:
     DT,
     gganimate,
@@ -25,6 +26,7 @@ Suggests:
     RPostgreSQL,
 License: MIT + file LICENSE
 LazyData: true
+LazyDataCompression: xz
 Encoding: UTF-8
 URL: http://github.com/jayhesselberth/nihexporter
 BugReports: http://github.com/jayhesselberth/nihexporter/issues

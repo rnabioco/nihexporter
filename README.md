@@ -1,10 +1,10 @@
 
+# nihexporter
+
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/jayhesselberth/nihexporter/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/jayhesselberth/nihexporter/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
-
-# nihexporter
 
 The `nihexporter` R package provides a minimal set of data from the [NIH
 EXPORTER](http://exporter.nih.gov/default.aspx) database, which contains

@@ -163,7 +163,7 @@ high.perf.not.r01 <- projects %>%
 high.perf.not.r01 %>%
   head(10) %>%
   mutate(total.cost = round(total.cost / 1e6, 3),
-         cost.per.pub = scales::comma(round(cost.per.pub, 0))) %>%
+         cost.per.pub = comma(round(cost.per.pub, 0))) %>%
   knitr::kable(caption='Productivity (publications / dollar) of non-R01 grants',
                col.names=c('Project ID', 'Project cost (dollars, millions)',
                            'Number of publications', 'Cost per publications (dollars)'))
