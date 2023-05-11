@@ -67,7 +67,7 @@
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>a data_frame the following variables:</p><dl><dt><code>pmid</code></dt>
+<p>a tibble including the following variables:</p><dl><dt><code>pmid</code></dt>
 <dd><p>PubMed ID</p></dd>
 
 <dt><code>authors</code></dt>
@@ -104,7 +104,8 @@
 <dd><p>publication year</p></dd>
 
 
-</dl></div>
+</dl><p>See URL for full details.</p>
+    </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p><a href="https://icite.od.nih.gov/api" class="external-link">https://icite.od.nih.gov/api</a></p></div>
@@ -114,12 +115,6 @@
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">pmids</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">26001965</span>, <span class="fl">25015380</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">rcr</span><span class="op">(</span><span class="va">pmids</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> No encoding supplied: defaulting to UTF-8.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>`as_data_frame()` was deprecated in tibble 2.0.0.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Please use `as_tibble()` (with slightly different semantics) to convert</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span>   to a tibble, or `as.data.frame()` to convert to a data frame.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The deprecated feature was likely used in the <span style="color: #0000BB;">nihexporter</span> package.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span>   Please report the issue to the authors.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 2 × 25</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       pmid  year title                 authors journal is_research_article</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              </span>
