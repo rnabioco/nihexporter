@@ -1,12 +1,10 @@
 ---
-title: '`nihexporter`: an R data package for NIH funding data'
-author: Jay Hesselberth
-output:
-  rmarkdown::html_vignette
+title: 'Introduction to nihexporter'
+output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{bioRxiv pre-print}
+  %\VignetteIndexEntry{Introduction to nihexporter}
   %\VignetteEngine{knitr::rmarkdown}
-  \usepackage[utf8]{inputenc}
+  %\VignetteEncoding{UTF-8}
 ---
 
 # Abstract
