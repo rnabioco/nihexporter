@@ -10,7 +10,7 @@ rcr(pmids)
 \item{pmids}{vector of PubMed IDs to retrieve (max of 1000 at a time)}
 }
 \value{
-a data_frame the following variables:
+a tibble including the following variables:
 \describe{
 \item{\code{pmid}}{PubMed ID}
 \item{\code{authors}}{publication authors}
@@ -25,6 +25,8 @@ a data_frame the following variables:
 \item{\code{title}}{article title}
 \item{\code{year}}{publication year}
 }
+
+See URL for full details.
 }
 \description{
 Retrieve Relative Citation Ratio (RCR) for PubMed IDs.

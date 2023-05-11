@@ -7,10 +7,9 @@ Authors@R: person('Jay', 'Hesselberth', role = c("aut", "cre"),
 Description: Provides data for biomedical research funding
     from the National Institutes of Health spanning 2000-2016.
 Depends:
-    R (>= 3.1.0),
+    R (>= 4.1.0),
     jsonlite,
-    httr,
-    tidyverse,
+    httr2,
     dplyr
 Suggests:
     DT,
@@ -22,6 +21,7 @@ Suggests:
     testthat,
     cowplot,
     animation,
+    tidyverse,
     RSQLite (>= 1.0.0),
     RPostgreSQL,
 License: MIT + file LICENSE

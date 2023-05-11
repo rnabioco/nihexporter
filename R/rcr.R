@@ -2,7 +2,7 @@
 #'
 #' @param pmids vector of PubMed IDs to retrieve (max of 1000 at a time)
 #'
-#' @return a data_frame the following variables:
+#' @return a tibble including the following variables:
 #' \describe{
 #' \item{`pmid`}{PubMed ID}
 #' \item{`authors`}{publication authors}
@@ -18,7 +18,9 @@
 #' \item{`year`}{publication year}
 #' }
 #'
-#' @import httr
+#' See URL for full details.
+#'
+#' @import httr2
 #' @import jsonlite
 #' @import dplyr
 #'
@@ -36,16 +38,16 @@ rcr <- function(pmids) {
     stop('maximum pubmed ids exceeded', call. = FALSE)
 
   ## icite url
-  url <- 'https://icite.od.nih.gov'
-  path <- 'api/pubs'
-  query <- list('pmids' = paste0(pmids, collapse = ','))
+  req <- request('https://icite.od.nih.gov')
+  resp <- req |>
+    req_url_path_append('api/pubs') |>
+    req_url_query('pmids' = paste0(pmids, collapse = ',')) |>
+    req_perform()
 
-  url_built <- httr::modify_url(url, path = path, query = query)
+  raw <- resp |>
+    resp_body_string() |>
+    jsonlite::fromJSON()
 
-  raw <- httr::GET(url_built) %>%
-    httr::content(., 'text') %>%
-    jsonlite::fromJSON(.)
-
-  as_data_frame(raw$data)
+  tibble(raw$data)
 }
 
