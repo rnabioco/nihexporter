@@ -1,10 +1,12 @@
-# nihexporter 0.9.0.9000
+# nihexporter 0.9
 
 ## Major changes
  
-- Reload `projects` data. `fy.cost` now spans 1985-2016. [TODO]
+- Reload `projects` data. `fy.cost` now spans 1985-2021.
 
-- Recalculate `project_io` table. [TODO]
+- Some columns in the `projects` table updated to `date` types
+
+- Recalculate `project_io` table. 
 
 - New `clinical_studies` table.
 
@@ -17,6 +19,8 @@
 - Added pkgdown documentation
 
 - removed a few unused columns (`journal.title.abbr` from `publications`) from tables to minimize package size.
+
+- Refactored data loading scripts
 
 # nihexporter 0.8
 
