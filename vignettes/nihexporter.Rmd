@@ -427,7 +427,7 @@ coop_projects <- projects |> filter(grepl('^U', activity)) |> select(project_num
 select_inst <- c('AI','CA','GM','HG','AA','MH')
                 
 grant_costs <- projects |>
-  filter(institute %in% nih_institutes) |>
+  filter(institute %in% select_inst) |>
   select(project_num, institute, fiscal_year, fy_cost)
 
 research_costs <- grant_costs |>
