@@ -10,7 +10,7 @@ home:
 reference:
 - title: Variables
   contents:
-  - nih.institutes
+  - nih_institutes
 
 - title: Functions
   contents:
