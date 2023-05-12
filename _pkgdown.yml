@@ -1,3 +1,5 @@
+url: https://rnabioco.github.io/nihexporter
+
 template:
   package: rbitemplate
   bootstrap: 5
@@ -5,7 +7,7 @@ template:
 home:
   links:
   - text: NIH EXPORTER
-    href: https://exporter.nih.gov/
+    href: https://reporter.nih.gov/exporter
 
 reference:
 - title: Variables
