@@ -3,7 +3,7 @@ globalVariables(".")
 
 #' Two-letter acronyms for NIH institutes
 #'
-#' @source \url{http://grants.nih.gov/grants/acronym_list.htm}
+#' @source \url{https://grants.nih.gov/grants/acronym_list.htm}
 #'
 #' @export
 #'

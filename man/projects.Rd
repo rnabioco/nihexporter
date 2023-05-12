@@ -8,7 +8,7 @@
 A data frame with 19 variables
 }
 \source{
-\url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=3&index=0}
+\url{https://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=3&index=0}
 }
 \usage{
 projects

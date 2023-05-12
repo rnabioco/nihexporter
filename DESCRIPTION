@@ -30,8 +30,8 @@ License: MIT + file LICENSE
 LazyData: true
 LazyDataCompression: xz
 Encoding: UTF-8
-URL: http://github.com/jayhesselberth/nihexporter
-BugReports: http://github.com/jayhesselberth/nihexporter/issues
+URL: https://github.com/rnabioco/nihexporter
+BugReports: https://github.com/rnabioco/nihexporter/issues
 VignetteBuilder: knitr
 RoxygenNote: 7.2.3
 Roxygen: list(markdown = TRUE)

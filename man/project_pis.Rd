@@ -11,7 +11,7 @@ The \code{pi.id} is a unique identifier that can be used to identify specific
 principal investigators in NIH REPORTER.
 }
 \source{
-\url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=3&index=0}
+\url{https://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=3&index=0}
 }
 \usage{
 project_pis

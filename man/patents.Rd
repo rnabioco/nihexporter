@@ -8,7 +8,7 @@
 A data frame with two variables: \code{patent.id}, \code{project.num}
 }
 \source{
-\url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=5&index=3}
+\url{https://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=5&index=3}
 }
 \usage{
 patents

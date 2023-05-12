@@ -13,12 +13,12 @@ knitr::opts_chunk$set(
 # nihexporter
 
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/jayhesselberth/nihexporter/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/jayhesselberth/nihexporter/actions/workflows/R-CMD-check.yaml)
+[![R-CMD-check](https://github.com/rnabioco/nihexporter/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/rnabioco/nihexporter/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-The `nihexporter` R package provides a minimal set of data from the [NIH EXPORTER](http://exporter.nih.gov/default.aspx) database, which contains information on NIH biomedical research funding from 1985-2021.
+The `nihexporter` R package provides a minimal set of data from the [NIH EXPORTER](https://reporter.nih.gov/exporter) database, which contains information on NIH biomedical research funding from 1985-2021.
 
-To keep the package lightweight, many details are omitted but can be easily retrieved from [NIH RePORTER](https://projectreporter.nih.gov/).
+To keep the package lightweight, many details are omitted but can be easily retrieved from [NIH RePORTER](https://reporter.nih.gov/).
 
 ## Installation
 
@@ -61,9 +61,9 @@ pak::pkg_install("jayhesselberth/nihexporter")
 
 ## Resources
 
-+ [`nihexporter` pre-print on bioRxiv](http://biorxiv.org/content/early/2015/12/02/033456)
++ [`nihexporter` pre-print on bioRxiv](https://biorxiv.org/content/early/2015/12/02/033456)
 
 + [RePORTER / EXPORTER mailing list archives](https://list.nih.gov/cgi-bin/wa.exe?A0=NIH-REPORT-PUBLIC-L)
 
-+ [Relative Citation Ratio manuscript at PLoS](http://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.1002541)
++ [Relative Citation Ratio manuscript at PLoS](https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.1002541)
 

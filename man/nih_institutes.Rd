@@ -8,7 +8,7 @@
 An object of class \code{character} of length 27.
 }
 \source{
-\url{http://grants.nih.gov/grants/acronym_list.htm}
+\url{https://grants.nih.gov/grants/acronym_list.htm}
 }
 \usage{
 nih_institutes

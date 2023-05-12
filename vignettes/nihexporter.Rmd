@@ -11,7 +11,7 @@ vignette: >
 
 The National Institutes of Health (NIH) is the major source of federal funding for biomedical research in the United States. Analysis of past and current NIH funding can illustrate funding trends and identify productive research topics, but these analyses are conducted *ad hoc* by the institutes themselves and only provide a small glimpse of the available data. The NIH provides free access to funding data via NIH EXPORTER, but few tools have been developed to enable analysis of these data.
 
-We developed the `nihexporter` R package, which provides access to [NIH EXPORTER](http://exporter.nih.gov/) data. We used the package to develop several analysis vignettes that show funding trends across NIH institutes over 15 years and highlight differences in how institutes change their funding profiles. Investigators and institutions can use the package to perform self-studies of their own NIH funding.
+We developed the `nihexporter` R package, which provides access to [NIH EXPORTER](https://reporter.nih.gov/exporter) data. We used the package to develop several analysis vignettes that show funding trends across NIH institutes over 15 years and highlight differences in how institutes change their funding profiles. Investigators and institutions can use the package to perform self-studies of their own NIH funding.
 
 # Introduction
 
@@ -275,7 +275,7 @@ productive_pis_all_time |>
   )
 ```
 
-When [Jeremy Berg](http://www.nigms.nih.gov/about/director/pages/berg.aspx) was head of the Institute of General Medical Sciences (NIGMS) from 2003-2011, he routinely provided analysis of funding trends at NIGMS in his "Feedback Loop" blog. One of these measured the productivity per grant dollar by measuring its "scholarly output" (*i.e.*, publications) as a function of direct costs. In this [plot](http://loop.nigms.nih.gov/2010/09/measuring-the-scientific-output-and-impact-of-nigms-grants/) there is an increase in productivity per dollar, until an inflection point at $700K, after which the number of publications *drops*, suggesting a negative influence of grant money on scholarly output. This was interesting and covered [here](http://www.nature.com/news/2010/101116/full/468356a.html).
+When [Jeremy Berg](https://www.nigms.nih.gov/about/director/pages/berg.aspx) was head of the Institute of General Medical Sciences (NIGMS) from 2003-2011, he routinely provided analysis of funding trends at NIGMS in his "Feedback Loop" blog. One of these measured the productivity per grant dollar by measuring its "scholarly output" (*i.e.*, publications) as a function of direct costs. In this [plot](https://loop.nigms.nih.gov/2010/09/measuring-the-scientific-output-and-impact-of-nigms-grants/) there is an increase in productivity per dollar, until an inflection point at $700K, after which the number of publications *drops*, suggesting a negative influence of grant money on scholarly output. This was interesting and covered [here](https://www.nature.com/articles/468356a).
 
 Here we flesh out this analysis and look at how all institutes perform by this measure (Berg, and now Lorsch, only analyzed GM). One caveat is that we only have access to `total.cost` in NIH EXPORTER, so the numbers include indirect costs. But, this is real cost to the tax-payer.
 
@@ -360,7 +360,7 @@ ggplot(
 
 ## Comparison of grant programs
 
-The NIH provides funds through differet [grant programs](http://grants.nih.gov/grants/funding/funding_program.htm):
+The NIH provides funds through differet [grant programs](https://grants.nih.gov/grants/funding/funding_program.htm):
 
   * `research`: investigator-intitiated, actvities begin with `R` (e.g., R01)
   
@@ -418,7 +418,7 @@ Or we can see how institutes allocate money generally to different types of gran
 
 ```{r activity_comparisons, fig.cap = 'Comparison of research, program and coop costs over time'}
 
-# from http://grants.nih.gov/grants/funding/funding_program.htm
+# from https://grants.nih.gov/grants/funding/funding_program.htm
 research_projects <- projects |> filter(grepl('^R', activity)) |> select(project_num)
 program_projects <- projects |> filter(grepl('^P', activity)) |> select(project_num)
 coop_projects <- projects |> filter(grepl('^U', activity)) |> select(project_num)

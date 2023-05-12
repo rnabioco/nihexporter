@@ -2,7 +2,7 @@
 #'
 #' @format A data frame with 19 variables
 #'
-#' @source \url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=3&index=0}
+#' @source \url{https://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=3&index=0}
 "projects"
 
 #' Principal investigators.
@@ -12,7 +12,7 @@
 #' The `pi.id` is a unique identifier that can be used to identify specific
 #' principal investigators in NIH REPORTER.
 #'
-#' @source \url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=3&index=0}
+#' @source \url{https://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=3&index=0}
 #'
 "project_pis"
 
@@ -20,7 +20,7 @@
 #'
 #' @format A data frame with two variables: `pmid`, `project.num`
 #'
-#' @source \url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=2&index=5}
+#' @source \url{https://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=2&index=5}
 "publinks"
 
 #' Publication information.
@@ -40,7 +40,7 @@
 #'
 #' @format A data frame with two variables: `patent.id`, `project.num`
 #'
-#' @source \url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=5&index=3}
+#' @source \url{https://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=5&index=3}
 "patents"
 
 #' Clinical trial information.
