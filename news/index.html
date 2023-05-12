@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">nihexporter</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,19 +48,22 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.9.0.9000" id="nihexporter-0909000">nihexporter 0.9.0.9000<a class="anchor" aria-label="anchor" href="#nihexporter-0909000"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.9" id="nihexporter-09">nihexporter 0.9<a class="anchor" aria-label="anchor" href="#nihexporter-09"></a></h2>
 <div class="section level3">
-<h3 id="major-changes-0-9-0-9000">Major changes<a class="anchor" aria-label="anchor" href="#major-changes-0-9-0-9000"></a></h3>
-<ul><li><p>Reload <code>projects</code> data. <code>fy.cost</code> now spans 1985-2016. [TODO]</p></li>
-<li><p>Recalculate <code>project_io</code> table. [TODO]</p></li>
+<h3 id="major-changes-0-9">Major changes<a class="anchor" aria-label="anchor" href="#major-changes-0-9"></a></h3>
+<ul><li><p>Reload <code>projects</code> data. <code>fy.cost</code> now spans 1985-2021.</p></li>
+<li><p>Some columns in the <code>projects</code> table updated to <code>date</code> types</p></li>
+<li><p>Recalculate <code>project_io</code> table.</p></li>
 <li><p>New <code>clinical_studies</code> table.</p></li>
+<li><p>Removed <code>project_orgs</code> and <code>org_info</code> tables, now in main <code>projects</code> table.</p></li>
 <li><p><code>rcr</code> values added to the <code>publications</code> table, and added new <code><a href="../reference/rcr.html">rcr()</a></code> function that enables retrieval of <a href="https://icite.od.nih.gov/stats" class="external-link">RCR values</a> for specific PMIDs.</p></li>
 <li><p>remove duplicate rows and <code>NA</code>s from <code>project_pis</code> table.</p></li>
 </ul></div>
 <div class="section level3">
-<h3 id="minor-changes-0-9-0-9000">Minor changes<a class="anchor" aria-label="anchor" href="#minor-changes-0-9-0-9000"></a></h3>
+<h3 id="minor-changes-0-9">Minor changes<a class="anchor" aria-label="anchor" href="#minor-changes-0-9"></a></h3>
 <ul><li><p>Added pkgdown documentation</p></li>
 <li><p>removed a few unused columns (<code>journal.title.abbr</code> from <code>publications</code>) from tables to minimize package size.</p></li>
+<li><p>Refactored data loading scripts</p></li>
 </ul></div>
 </div>
     <div class="section level2">
