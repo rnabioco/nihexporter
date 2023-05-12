@@ -31,9 +31,6 @@ pak::pkg_install("jayhesselberth/nihexporter")
 - `project_pis`: links project numbers (`project.num`) to principal
   investigator IDs (`pi.id`).
 
-- `project_orgs`: links DUNS numbers (`org.duns`) from `projects` table
-  to information on specific organizations .
-
 - `publinks`: links Pubmed IDs (`pmid`) to project numbers
   (`project.num`).
 
