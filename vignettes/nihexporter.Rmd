@@ -176,7 +176,6 @@ high_perf_not_r01 |>
       'Number of publications', 'Cost per publications (USD, thousands)'
     )
   )
-i
 ```
 
 We can also identify the specific publications associated with grants with the least expensive publications.
@@ -396,7 +395,7 @@ ggplot(
   facet_wrap(~institute, nrow = 3) + 
   scale_y_log10(
     limits = c(1e4, 1e7),
-    labels = trans_format("log10", math_format(10^.x))
+    labels = scales::trans_format("log10", scales::math_format(10^.x))
     ) +
   annotation_logticks(
     sides = "l",
@@ -467,7 +466,7 @@ ggplot(
   geom_boxplot(outlier.shape = NA) + 
   scale_y_log10(
     limits = c(1e4,1e7),
-    labels = trans_format("log10", math_format(10^.x))
+    labels = scales::trans_format("log10", scales::math_format(10^.x))
     ) +
   facet_wrap(~institute) +
   theme_cowplot() +
