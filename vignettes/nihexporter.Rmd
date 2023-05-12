@@ -484,24 +484,25 @@ ggplot(
 
 ## Duration
 
-The `nihexporter` exposes `project.start` and `project.end`, which we can use to examine the duration of projects. For example, we can identify the longest running R01 grants.
+`nihexporter` exposes `project.start` and `project.end`, which we can use to examine the duration of projects. For example, we can identify the longest running R01 grants.
 
-```{r grant_stamina, eval=FALSE}
+```{r grant_stamina}
 long_grants <- projects |>
   filter(activity == 'R01') |>
   select(project_num, project_start, project_end) |>
   group_by(project_num) |>
-  # use lubridate here
-  summarize(longest_run = max(project_end) - min(project_start)) |>
+  summarize(
+    longest_run = max(project_end, na.rm = TRUE) - min(project_start, na.rm = TRUE)) |>
   arrange(desc(longest_run)) |>
-  mutate(in_years = as.numeric(longest_run) / 365) |>
+  mutate(in_years = round(as.numeric(longest_run) / 365), 3) |>
   select(project_num, in_years)
 
 long_grants |>
-  head(10) |>
-  knitr::kable(digits = 2,
-               caption = 'Longest running R01 grants (all-time)',
-               col.names=c('Project ID', 'Duration (years)'))
+  head(1000) |>
+  DT::datatable(
+    caption = 'Longest running R01 grants (all-time)',
+    colnames=c('Project ID', 'Duration (years)')
+  )
 ```
 
 ### Geographical distribution
