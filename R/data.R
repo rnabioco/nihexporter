@@ -31,30 +31,6 @@
 #'
 "project_pis"
 
-#' Organization information.
-#'
-#' @format A data frame with 4 variables: `org.duns`, `org.city`,
-#'   `org.state` and `org.name`
-#'
-#' @description `org.duns` is a unique identifier that links the \link{org_info} and
-#'   \link{project_orgs} tables.
-#'
-#' @note Be wary of this table as the DUNS reporting in the NIH EXPORTER was not
-#'   previously correct for years 2000-2008.
-#'
-#' @source \url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=3&index=0}
-#'
-"org_info"
-
-#' Table linking organizations to applications.
-#'
-#' @format A data frame with 2 variables: `org.duns` and
-#'   `application.id` used to link specific applications to organizations
-#'
-#' @source \url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=3&index=0}
-#'
-"project_orgs"
-
 #' Table linking PubMed IDs to project IDs.
 #'
 #' @format A data frame with two variables: `pmid`, `project.num`

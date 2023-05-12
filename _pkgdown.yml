@@ -20,9 +20,7 @@ reference:
   contents:
   - projects
   - project_pis
-  - project_orgs
   - project_io
-  - org_info
   - publications
   - publinks
   - patents

@@ -2,7 +2,7 @@
 
 export(copy_nihexporter)
 export(has_nihexporter)
-export(nih.institutes)
+export(nih_institutes)
 export(nihexporter_postgres)
 export(nihexporter_sqlite)
 export(rcr)

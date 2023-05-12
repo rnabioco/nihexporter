@@ -10,6 +10,8 @@
 
 - New `clinical_studies` table.
 
+- Removed `project_orgs` and `org_info` tables, now in main `projects` table.
+
 - `rcr` values added to the `publications` table, and added new `rcr()` function that enables retrieval of [RCR values](https://icite.od.nih.gov/stats) for specific PMIDs.
 
 - remove duplicate rows and `NA`s from `project_pis` table.
