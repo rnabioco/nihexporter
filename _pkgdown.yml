@@ -10,7 +10,7 @@ home:
 reference:
 - title: Variables
   contents:
-  - nih.institutes
+  - nih_institutes
 
 - title: Functions
   contents:
@@ -20,9 +20,7 @@ reference:
   contents:
   - projects
   - project_pis
-  - project_orgs
   - project_io
-  - org_info
   - publications
   - publinks
   - patents

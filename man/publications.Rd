@@ -21,7 +21,7 @@ Publication information.
 }
 \note{
 \code{rcr} values change over time. Values in this table were
-downloaded on 31 Dec 2016. Use \code{\link[=rcr]{rcr()}} to obtain current
+downloaded on 11 May 2023. Use \code{\link[=rcr]{rcr()}} to obtain current
 values for select \code{pmid} values.
 }
 \keyword{datasets}

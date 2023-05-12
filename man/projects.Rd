@@ -5,22 +5,7 @@
 \alias{projects}
 \title{Project information.}
 \format{
-A data frame with 13 variables:
-\describe{
-\item{\code{application.id}}{unique ID for the EXPORTER database}
-\item{\code{project.num}}{core project number, e.g. R01GM1234556}
-\item{\code{activity}}{activity code, e.g. R01}
-\item{\code{application.type}}{one-digit code to identify type of application funded}
-\item{\code{arra.funded}}{'Y' indicates ARRA funded, 'N' and 'NA' are not ARRA funded}
-\item{\code{suffix}}{'A'mended and 'S'upplmental + serial number}
-\item{\code{institute}}{administering institute}
-\item{\code{fiscal.year}}{year of funding}
-\item{\code{foa.number}}{parent FOA}
-\item{\code{project.start}}{in ymd format}
-\item{\code{project.end}}{in ymd format}
-\item{\code{study.section}}{3 letter code}
-\item{\code{fy.cost}}{total (direct + indirect) for fiscal year}
-}
+A data frame with 19 variables
 }
 \source{
 \url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=3&index=0}

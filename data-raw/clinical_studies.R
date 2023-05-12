@@ -2,14 +2,15 @@
 
 source('data-raw/common.R')
 
-path = 'data-raw//CLINICAL_STUDIES'
-clinical_studies.tbl <- load_tbl(path)
+path <- here('data-raw/downloads/ClinicalStudies.csv')
+clinical_studies_tbl <- read_csv(path) |>
+  janitor::clean_names()
 
-clinical_studies <- clinical_studies.tbl %>%
-  rename(project.num = core.project.number,
-         trial.id = clinicaltrials.gov.id) %>%
-  select(project.num, trial.id, study.status) %>%
-  mutate(study.status = as.factor(study.status)) %>%
-  arrange(project.num)
+clinical_studies <- clinical_studies_tbl |>
+  rename(project_num = core_project_number,
+         trial_id = clinical_trials_gov_id) |>
+  select(project_num, trial_id, study_status) |>
+  mutate(study_status = as_factor(study_status)) |>
+  arrange(project_num)
 
-use_data(clinical_studies, compress = 'xz')
+use_data(clinical_studies, compress = 'xz', overwrite = TRUE)
