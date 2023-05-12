@@ -1,21 +1,6 @@
 #' Project information.
 #'
-#' @format A data frame with 13 variables:
-#' \describe{
-#' \item{`application.id`}{unique ID for the EXPORTER database}
-#' \item{`project.num`}{core project number, e.g. R01GM1234556}
-#' \item{`activity`}{activity code, e.g. R01}
-#' \item{`application.type`}{one-digit code to identify type of application funded}
-#' \item{`arra.funded`}{'Y' indicates ARRA funded, 'N' and 'NA' are not ARRA funded}
-#' \item{`suffix`}{'A'mended and 'S'upplmental + serial number}
-#' \item{`institute`}{administering institute}
-#' \item{`fiscal.year`}{year of funding}
-#' \item{`foa.number`}{parent FOA}
-#' \item{`project.start`}{in ymd format}
-#' \item{`project.end`}{in ymd format}
-#' \item{`study.section`}{3 letter code}
-#' \item{`fy.cost`}{total (direct + indirect) for fiscal year}
-#' }
+#' @format A data frame with 19 variables
 #'
 #' @source \url{http://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=3&index=0}
 "projects"
@@ -44,7 +29,7 @@
 #'   `pub.year`, `rcr`
 #'
 #' @note `rcr` values change over time. Values in this table were
-#'   downloaded on 31 Dec 2016. Use [rcr()] to obtain current
+#'   downloaded on 11 May 2023. Use [rcr()] to obtain current
 #'   values for select `pmid` values.
 #'
 #' @source \url{https://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=4&index=2}
