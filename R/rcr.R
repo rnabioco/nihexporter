@@ -32,9 +32,8 @@
 #'
 #' @export
 rcr <- function(pmids) {
-
   max_pmids <- 1000
-  if(length(pmids) > max_pmids)
+  if (length(pmids) > max_pmids)
     stop('maximum pubmed ids exceeded', call. = FALSE)
 
   ## icite url
@@ -50,4 +49,3 @@ rcr <- function(pmids) {
 
   tibble(raw$data)
 }
-

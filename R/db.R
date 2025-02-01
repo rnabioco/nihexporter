@@ -37,10 +37,15 @@ has_nihexporter <- function(type = c("sqlite", "postgresql"), ...) {
 
   type <- match.arg(type)
 
-  succeeds(switch(type,
-                  sqlite = nihexporter_sqlite(...), quiet = TRUE,
-                  postgres = nihexporter_postgres(...), quiet = TRUE
-  ))
+  succeeds(
+    switch(
+      type,
+      sqlite = nihexporter_sqlite(...),
+      quiet = TRUE,
+      postgres = nihexporter_postgres(...),
+      quiet = TRUE
+    )
+  )
 }
 
 #' @export
@@ -64,12 +69,18 @@ copy_nihexporter <- function(src, ...) {
   tables <- setdiff(all, src_tbls(src))
 
   # Create missing tables
-  for(table in tables) {
+  for (table in tables) {
     df <- getExportedValue("nihexporter", table)
     message("Creating table: ", table)
 
-    copy_to(src, df, table, unique_indexes = unique_index[[table]],
-            indexes = index[[table]], temporary = FALSE)
+    copy_to(
+      src,
+      df,
+      table,
+      unique_indexes = unique_index[[table]],
+      indexes = index[[table]],
+      temporary = FALSE
+    )
   }
   src
 }
@@ -103,7 +114,6 @@ load_srcs <- function(f, src_names, quiet = NULL) {
     quiet <- !identical(Sys.getenv("NOT_CRAN"), "true")
   }
 
-
   srcs <- lapply(src_names, function(x) {
     out <- NULL
     try(out <- f(x), silent = TRUE)
@@ -115,7 +125,6 @@ load_srcs <- function(f, src_names, quiet = NULL) {
 
   compact(setNames(srcs, src_names))
 }
-
 
 db_location <- function(path = NULL, filename) {
   if (!is.null(path)) {
@@ -141,10 +150,16 @@ is_writeable <- function(x) {
 }
 
 succeeds <- function(x, quiet = FALSE) {
-  tryCatch({x; TRUE}, error = function(e) {
-    if (!quiet) message("Error: ", e$message)
-    FALSE
-  })
+  tryCatch(
+    {
+      x
+      TRUE
+    },
+    error = function(e) {
+      if (!quiet) message("Error: ", e$message)
+      FALSE
+    }
+  )
 }
 
 compact <- function(x) Filter(Negate(is.null), x)
