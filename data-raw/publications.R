@@ -33,7 +33,8 @@ chunks <- split(pmids, ceiling(seq_along(pmids) / n))
 library(furrr)
 plan(multisession, workers = 6)
 rcrs <- furrr::future_map(chunks, rcr) |>
-  tibble() |> unnest()
+  tibble() |>
+  unnest()
 
 publications <- publications |>
   left_join(rcrs, by = 'pmid', relationship = "many-to-many") |>
