@@ -15,13 +15,13 @@ We developed the `nihexporter` R package, which provides access to [NIH EXPORTER
 
 # Introduction
 
-The National Institutes of Health (NIH) is the major source federal funds for biomedical research in the United States. The NIH budget is approved by Congress each year. The NIH is divided into 25 institutes, each with its own focus and mission. For example, National Cancer Institue (NCI) focuses on malignant diseases; the National Institute for Allergy and Immune Disease focuses on the immune system and transmissible diseasei; and the National Institute for General Medical Sciences focuses on basic research, without a specific disease focus. Each institute negotiates with the NIH director for its yearly budget, with budget institutes ranging from millions to several billion dollars.
+The National Institutes of Health (NIH) is the major source federal funds for biomedical research in the United States. The NIH budget is approved by Congress each year. The NIH is divided into 25 institutes, each with its own focus and missionj. For example, National Cancer Institute (NCI) focuses on malignant diseases; the National Institute for Allergy and Immune Disease focuses on the immune system and transmissible disease; and the National Institute for General Medical Sciences focuses on basic research, without a specific disease focus. Each institute negotiates with the NIH director for its yearly budget, with budget institutes ranging from millions to several billion dollars.
 
 The NIH provides funds through competitive grants written by internal and external investigators, and the funds associated with these grants can be divided into 'direct' and 'indirect' costs. **Direct costs** are funds that are given to an investigator (or group of investigators) to conduct their proposed research. These funds buy supplies for the experiments and pay the salaries of people to do the work.
 
 By contrast, **indirect costs** are funds that are paid to institutions associated with investigators, and are used to "keep the lights on": they pay for infrastructure costs. However, the "indirect cost recovery" (ICR) rate of each institution, the fraction of each award the institute receives, is congressionally mandated, and there is a wide range in ICR rates. Some of the highest ICR rates are close to 100%, meaning that for every dollar an investigator receives, the institutions receive an equal amount. 
 
-NIH funding is an investment strategy: the institutes invest money in specific research areas, hoping for future returns in the form of publications, patents and skilled trainees. As with any investment strategy, a periodic review can help rebalance the portfolio in order to maximize returns. Analysis of NIH funding data has been performed internally by the NIH, or by contracted third-parties. Several of these analyses have highlighted funding trends and suggested metrics to gauge the 'return' on the NIH 'investment'. For example, "productivity" can be examined as a function of the number of publications produced by grants per dollar of "direct costs".
+NIH funding is an investment strategy: the institutes invest money in specific research areas, hoping for future returns in the form of new technologies and treatents, publications, patents, and skilled trainees. As with any investment strategy, a periodic review can help rebalance the portfolio in order to maximize returns. Analysis of NIH funding data has been performed internally by the NIH, or by contracted third-parties. Several of these analyses have highlighted funding trends and suggested metrics to gauge the 'return' on the NIH 'investment'. For example, "productivity" can be examined as a function of the number of publications produced by grants per dollar of "direct costs".
 
 # Methods
 
@@ -48,7 +48,11 @@ NIH EXPORTER provides access to the total costs of each grant in each fiscal yea
 
 Let's look at the costs of grants over time for a few institutes:
 
-```{r knitr.options, echo = FALSE, warning = FALSE, message = FALSE}
+```{r}
+#| label = "knitr.options",
+#| echo = FALSE,
+#| warning = FALSE,
+#| message = FALSE
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
@@ -63,27 +67,29 @@ knitr::opts_knit$set(
 )
 ```
 
-```{r load.libraries}
+```{r}
+#| label = "load.libraries"
 library(nihexporter)
 library(tidyverse)
 library(cowplot)
 library(DT)
 ```
 
-```{r inst_cost_over_time}
-select_inst <- c('GM', 'AI', 'CA')
+```{r}
+#| label = "inst_cost_over_time"
+select_inst <- c("GM", "AI", "CA")
 cost.over.time <- projects |>
   select(institute, fy_cost, fiscal_year) |>
   filter(institute %in% select_inst) |>
   summarize(
     yearly_cost = sum(fy_cost, na.rm = TRUE),
-    .by= c(fiscal_year, institute)
+    .by = c(fiscal_year, institute)
   )
 
 ggplot(
   cost.over.time,
   aes(
-    x = factor(fiscal_year), 
+    x = factor(fiscal_year),
     y = yearly_cost / 1e9,
     group = institute,
     color = institute
@@ -92,13 +98,13 @@ ggplot(
   geom_line() +
   geom_point() +
   theme_cowplot() +
-  theme(legend.position = 'top') +
+  theme(legend.position = "top") +
   labs(
-    title = 'Institute spending, FY 2000-2021',
-    x = 'Fiscal year',
-    y = 'Project costs (USD, billions)'
+    title = "Institute spending, FY 2000-2021",
+    x = "Fiscal year",
+    y = "Project costs (USD, billions)"
   ) +
-  scale_color_brewer(palette = 'Dark2') +
+  scale_color_brewer(palette = "Dark2") +
   scale_x_discrete(guide = guide_axis(angle = 45))
 ```
 
@@ -108,20 +114,21 @@ ggplot(
 
 Let's look *where* the money is going. 
 
-```{r money_per_institution}
+```{r}
+#| label = "money_per_institution"
 institution_funding <- projects |>
-  filter(activity == 'R01') |>
+  filter(activity == "R01") |>
   summarise(
     total_dollars = sum(fy_cost, na.rm = TRUE),
     .by = c(org_name, fiscal_year)
-    ) |>
+  ) |>
   arrange(desc(total_dollars))
 
 institution_funding |>
   mutate(total_dollars = total_dollars / 1e6) |>
   datatable(
-    caption='R01 grant dollars awarded to specific institutions',
-    colnames=c('Org', 'Fiscal year', 'Dollars (millions)')
+    caption = "R01 grant dollars awarded to specific institutions",
+    colnames = c("Org", "Fiscal year", "Dollars (millions)")
   )
 ```
 
@@ -129,23 +136,24 @@ institution_funding |>
 
 One can also examine how dollars are accrued by specific PIs. It is not possible to assign dollars directly to a PI, because some grants have multiple investigators. Rather, these are total costs that a given PI has been associated with over all grants in NIH EXPORTER. Here we identify PIs with the largest dollar amounts accrued for R01 grants.
 
-```{r dollars_per_pi}
+```{r}
+#| label = "dollars_per_pi"
 pi_funding_r01 <- projects |>
-  filter(activity == 'R01') |>
-  left_join(project_io, by = 'project_num') |>
-  left_join(project_pis, by = 'project_num') |>
+  filter(activity == "R01") |>
+  left_join(project_io, by = "project_num") |>
+  left_join(project_pis, by = "project_num") |>
   filter(!is.na(pi_id)) |>
-  select(project_num, pi_id, total_cost) |> 
+  select(project_num, pi_id, total_cost) |>
   summarise(
     pi_funding = sum(total_cost) / 1e6,
     .by = (pi_id)
-    ) |>
-  arrange(desc(pi_funding))  
+  ) |>
+  arrange(desc(pi_funding))
 
 pi_funding_r01 |>
   datatable(
-    caption = 'R01 funding associated with specific PIs',
-    colnames=c('PI ID', 'USD, millions')
+    caption = "R01 funding associated with specific PIs",
+    colnames = c("PI ID", "USD, millions")
   )
 ```
 
@@ -155,10 +163,11 @@ To measure the return on the NIH investment, we can measure scholarly output (i.
 
 Here we identify th highest performing grants outside of the R01 category. Much has been made of the wasteful spending outside of investigator-initiated research. Here we identify the cost of publications for grants other than R01s.
 
-```{r highperf_no_r01}
+```{r}
+#| label = "highperf_no_r01"
 high_perf_not_r01 <- projects |>
-  filter(activity != 'R01') |>
-  left_join(project_io, by = 'project_num') |>
+  filter(activity != "R01") |>
+  left_join(project_io, by = "project_num") |>
   select(project_num, total_cost, n_pubs) |>
   filter(total_cost > 1e6 & n_pubs > 0) |>
   mutate(cost_per_pub = round(total_cost / n_pubs / 1e3, 3)) |>
@@ -168,45 +177,47 @@ high_perf_not_r01 |>
   head(10) |>
   mutate(
     total_cost = round(total_cost / 1e6, 3),
-    ) |>
+  ) |>
   datatable(
-    caption = 'Productivity (publications / dollar) of non-R01 grants',
+    caption = "Productivity (publications / dollar) of non-R01 grants",
     colnames = c(
-      'Project ID', 'Project cost (USD, millions)',
-      'Number of publications', 'Cost per publications (USD, thousands)'
+      "Project ID", "Project cost (USD, millions)",
+      "Number of publications", "Cost per publications (USD, thousands)"
     )
   )
 ```
 
 We can also identify the specific publications associated with grants with the least expensive publications.
 
-```{r cheap_pubs}
+```{r}
+#| label = "cheap_pubs"
 high_perf_not_r01 |>
   head(1) |>
   select(project_num) |>
-  left_join(publinks, by = 'project_num') |>
+  left_join(publinks, by = "project_num") |>
   datatable(
-    caption='Publications from the most productive grants',
-    colnames=c('Project ID', 'Pubmed ID')
+    caption = "Publications from the most productive grants",
+    colnames = c("Project ID", "Pubmed ID")
   )
 ```
 
 We can also identify productive PIs with current R01s ...
 
-```{r productive_pis}
+```{r}
+#| label = "productive_pis"
 productive_pis <- projects |>
-  filter(activity == 'R01') |>
+  filter(activity == "R01") |>
   select(project_num) |>
-  left_join(project_io, by = 'project_num') |>
-  left_join(project_pis, by = 'project_num') |>
+  left_join(project_io, by = "project_num") |>
+  left_join(project_pis, by = "project_num") |>
   summarize(
     total_pi_funding = sum(total_cost, na.rm = TRUE),
     total_pubs = sum(n_pubs),
     .by = c(pi_id)
-    ) |>
+  ) |>
   mutate(
     pub_cost = total_pi_funding / total_pubs
-    ) |>
+  ) |>
   # prevent PI Ids from being commafied
   mutate(pi_id = as.character(pi_id)) |>
   arrange(pub_cost)
@@ -214,36 +225,37 @@ productive_pis <- projects |>
 productive_pis |>
   head(100) |>
   datatable(
-    caption='Publications from the most productive grants',
+    caption = "Publications from the most productive grants",
     colnames = c(
-      'PI ID',
-      'Cost per publication (USD)',
-      'Total publications',
-      'Total project costs (USD)'
+      "PI ID",
+      "Cost per publication (USD)",
+      "Total publications",
+      "Total project costs (USD)"
     )
   )
 ```
 
 Or we can identify the all-time most produtive PIs, independent of grant type or time frame ...
 
-```{r all.time.most.productive.pis}
+```{r}
+#| label = "all.time.most.productive.pis"
 productive_pis_all_time <- projects |>
   select(project_num, activity) |>
-  left_join(project_io, by = 'project_num') |>
-  left_join(project_pis, by = 'project_num') |>
+  left_join(project_io, by = "project_num") |>
+  left_join(project_pis, by = "project_num") |>
   summarize(
     total_pi_dollars = sum(total_cost, na.rm = TRUE),
     total_pubs = sum(n_pubs),
     total_patents = sum(n_patents),
     .by = c(pi_id, activity)
-    ) |>
+  ) |>
   filter(total_pi_dollars >= 1e6) |>
   mutate(
     pub_cost = total_pi_dollars / total_pubs,
     patent_cost = total_pi_dollars / total_patents
-    ) |>
+  ) |>
   select(
-    pi_id, activity, pub_cost, patent_cost, 
+    pi_id, activity, pub_cost, patent_cost,
     total_pubs, total_patents, total_pi_dollars
   )
 
@@ -252,12 +264,13 @@ productive_pis_all_time |>
   arrange(pub_cost) |>
   head(10) |>
   DT::datatable(
-    caption = 'Most productive PIs all time for publications',
+    caption = "Most productive PIs all time for publications",
     colnames = c(
-      'PI ID', 'Grant type',
-      'Cost per publication (dollars)',
-      'Total publications',
-      'Total dollars')
+      "PI ID", "Grant type",
+      "Cost per publication (dollars)",
+      "Total publications",
+      "Total dollars"
+    )
   )
 
 productive_pis_all_time |>
@@ -265,12 +278,12 @@ productive_pis_all_time |>
   arrange(patent_cost) |>
   head(10) |>
   DT::datatable(
-    caption = 'Most productive PIs all time for patents',
+    caption = "Most productive PIs all time for patents",
     colnames = c(
-      'PI ID', 'Grant type',
-      'Cost per patent (dollars)',
-      'Total patents',
-      'Total dollars'
+      "PI ID", "Grant type",
+      "Cost per patent (dollars)",
+      "Total patents",
+      "Total dollars"
     )
   )
 ```
@@ -281,11 +294,12 @@ Here we flesh out this analysis and look at how all institutes perform by this m
 
 First, we need to calculate the lifetime costs of all R01 grants.
 
-```{r grant.costs}
+```{r}
+#| label = "grant.costs"
 # calculate costs of all grants, over the entire lifetime of the grant
 grant_costs <- projects |>
-  filter(institute %in% nih_institutes & activity == 'R01') |>
-  left_join(project_io, by = 'project_num') |>
+  filter(institute %in% nih_institutes & activity == "R01") |>
+  left_join(project_io, by = "project_num") |>
   select(institute, project_num, total_cost, n_pubs) |>
   unique()
 
@@ -294,20 +308,22 @@ grant_costs
 
 Next, we need to identify grants in each of the bins that Berg previously alluded to. `dplyr` makes this easy with the `ntile()` function. Berg previously divided grants into ~15 bins, we'll bin into ~5%.
 
-```{r bin.grant.costs}
+```{r}
+#| label = "bin.grant.costs"
 bin_grant_costs <- grant_costs |>
   group_by(institute) |>
-  group_by(n_tile = ntile(total_cost, 20)) 
+  group_by(n_tile = ntile(total_cost, 20))
 
 bin_grant_costs
 ```
 
-```{r by.dollar.breaks}
+```{r}
+#| label = "by.dollar.breaks"
 # Berg's original values ...
 # breaks <- c(175000, 200000, 225000, 250000, 300000, 375000, 400000,
 #           450000, 500000, 600000, 700000, 800000, 900000, 1000000)
 min.lifetime.cost <- round(min(grant_costs$total_cost, na.rm = TRUE), -4) # round to 10,000s
-max.lifetime.cost <- round(max(grant_costs$total_cost, na.rm = TRUE), -5) 
+max.lifetime.cost <- round(max(grant_costs$total_cost, na.rm = TRUE), -5)
 # step is average size of an award
 step <- 1e6
 
@@ -317,7 +333,8 @@ breaks
 dollar_bin_grant_costs <- grant_costs |>
   mutate(
     dollar.tile = findInterval(
-      total_cost, vec = breaks, 
+      total_cost,
+      vec = breaks,
       all.inside = TRUE, rightmost.closed = TRUE
     ),
     .by = institute
@@ -330,7 +347,9 @@ dollar_bin_grant_costs |> summarize(count = n(), .by = dollar.tile)
 
 That looks better. Now we can make the summary plots ...
 
-```{r plot.dollar.bins, fig.cap='Productivity versus grant costs for each institute.'}
+```{r}
+#| label = "plot.dollar.bins",
+#| fig.cap = "Productivity versus grant costs for each institute."
 ggplot(
   # need to remove higher tiles because there are too few grants
   filter(dollar_bin_grant_costs, dollar.tile <= 13),
@@ -340,21 +359,21 @@ ggplot(
   )
 ) +
   geom_boxplot(
-    color = 'grey50',
-    fill = 'red',
+    color = "grey50",
+    fill = "red",
     alpha = 0.1,
     outlier.shape = NA
-    ) +
-  scale_x_discrete(labels = breaks / 1e6) + 
+  ) +
+  scale_x_discrete(labels = breaks / 1e6) +
   theme(
-    axis.text.x = element_text(angle=45, vjust=0.8)
-    ) + 
+    axis.text.x = element_text(angle = 45, vjust = 0.8)
+  ) +
   scale_y_log10() +
   theme_cowplot() +
-  facet_wrap(~ institute, scales = "free_x") +
+  facet_wrap(~institute, scales = "free_x") +
   labs(
-    y = 'Number of publications',
-    x = 'Total costs (minimum, in millions USD)'
+    y = "Number of publications",
+    x = "Total costs (minimum, in millions USD)"
   )
 ```
 
@@ -370,45 +389,48 @@ The NIH provides funds through differet [grant programs](https://grants.nih.gov/
 
 We can examine the total costs spent on specific grants and specific institutes over time.
 
-```{r institute_funds, echo = FALSE, fig.cap = 'Funds for specific types of grants at the GM, CA and AI institutes'}
-select_activities <- c('R01', 'P01', 'R21', 'P30')
-select_inst <- c('GM', 'CA', 'AI')
+```{r}
+#| label = "institute_funds",
+#| echo = FALSE,
+#| fig.cap = "Funds for specific types of grants at the GM, CA and AI institutes"
+select_activities <- c("R01", "P01", "R21", "P30")
+select_inst <- c("GM", "CA", "AI")
 
 inst_costs <- projects |>
   filter(
     institute %in% select_inst & activity %in% select_activities
-    ) |>
+  ) |>
   select(institute, activity, fiscal_year, fy_cost)
 
 ggplot(
   inst_costs,
   aes(
     x = factor(fiscal_year),
-    y = fy_cost, 
+    y = fy_cost,
     fill = activity
-    )
-  ) +
+  )
+) +
   geom_boxplot(
     outlier.size = 0.2,
     outlier.shape = NA
-    ) +
-  facet_wrap(~institute, nrow = 3) + 
+  ) +
+  facet_wrap(~institute, nrow = 3) +
   scale_y_log10(
     limits = c(1e4, 1e7),
     labels = scales::trans_format("log10", scales::math_format(10^.x))
-    ) +
+  ) +
   annotation_logticks(
     sides = "l",
     scaled = TRUE
-    ) +
-  scale_fill_brewer(palette="Dark2") +
+  ) +
+  scale_fill_brewer(palette = "Dark2") +
   labs(
-    x = '',
-    y = 'Project costs (USD)',
-    title = 'Institute spending by activity'
+    x = "",
+    y = "Project costs (USD)",
+    title = "Institute spending by activity"
   ) +
   theme_cowplot() +
-  theme(legend.position = 'top') +
+  theme(legend.position = "top") +
   theme(
     axis.text.x = element_text(angle = 45, vjust = 0.5, hjust = 0.5)
   )
@@ -416,42 +438,50 @@ ggplot(
 
 Or we can see how institutes allocate money generally to different types of grants.
 
-```{r activity_comparisons, fig.cap = 'Comparison of research, program and coop costs over time'}
+```{r}
+#| label = "activity_comparisons",
+#| fig.cap = "Comparison of research, program and coop costs over time"
 
 # from https://grants.nih.gov/grants/funding/funding_program.htm
-research_projects <- projects |> filter(grepl('^R', activity)) |> select(project_num)
-program_projects <- projects |> filter(grepl('^P', activity)) |> select(project_num)
-coop_projects <- projects |> filter(grepl('^U', activity)) |> select(project_num)
+research_projects <- projects |>
+  filter(grepl("^R", activity)) |>
+  select(project_num)
+program_projects <- projects |>
+  filter(grepl("^P", activity)) |>
+  select(project_num)
+coop_projects <- projects |>
+  filter(grepl("^U", activity)) |>
+  select(project_num)
 
-select_inst <- c('AI','CA','GM','HG','AA','MH')
-                
+select_inst <- c("AI", "CA", "GM", "HG", "AA", "MH")
+
 grant_costs <- projects |>
   filter(institute %in% select_inst) |>
   select(project_num, institute, fiscal_year, fy_cost)
 
 research_costs <- grant_costs |>
-  semi_join(research_projects, by = 'project_num') |>
+  semi_join(research_projects, by = "project_num") |>
   summarize(
     project_cost = sum(fy_cost, na.rm = TRUE),
     .by = c(project_num, institute, fiscal_year)
-    ) |>
-  mutate(type = 'research')
+  ) |>
+  mutate(type = "research")
 
 program_costs <- grant_costs |>
-  semi_join(program_projects, by = 'project_num') |>
+  semi_join(program_projects, by = "project_num") |>
   summarize(
     project_cost = sum(fy_cost, na.rm = TRUE),
     .by = c(project_num, institute, fiscal_year)
-    ) |>
-  mutate(type = 'program')
+  ) |>
+  mutate(type = "program")
 
 coop_costs <- grant_costs |>
-  semi_join(coop_projects, by = 'project_num') |>
+  semi_join(coop_projects, by = "project_num") |>
   summarize(
     project_cost = sum(fy_cost, na.rm = TRUE),
     .by = c(project_num, institute, fiscal_year)
-    ) |>
-  mutate(type = 'cooperative agreements')
+  ) |>
+  mutate(type = "cooperative agreements")
 
 combined_tbl <- bind_rows(research_costs, program_costs, coop_costs)
 
@@ -461,21 +491,21 @@ ggplot(
     x = factor(fiscal_year),
     y = project_cost,
     fill = type
-    )
-  ) +
-  geom_boxplot(outlier.shape = NA) + 
+  )
+) +
+  geom_boxplot(outlier.shape = NA) +
   scale_y_log10(
-    limits = c(1e4,1e7),
+    limits = c(1e4, 1e7),
     labels = scales::trans_format("log10", scales::math_format(10^.x))
-    ) +
+  ) +
   facet_wrap(~institute) +
   theme_cowplot() +
-  scale_fill_brewer(palette = "Dark2") + 
-  theme(legend.position = 'top') +
+  scale_fill_brewer(palette = "Dark2") +
+  theme(legend.position = "top") +
   labs(
-    x = '',
-    y = 'Total costs, log-scaled',
-    title = 'Institute spencing by award type'
+    x = "",
+    y = "Total costs, log-scaled",
+    title = "Institute spencing by award type"
   ) +
   theme(
     axis.text.x = element_text(angle = 45, vjust = 0.5, hjust = 0.5)
@@ -486,13 +516,15 @@ ggplot(
 
 `nihexporter` exposes `project.start` and `project.end`, which we can use to examine the duration of projects. For example, we can identify the longest running R01 grants.
 
-```{r grant_stamina}
+```{r}
+#| label = "grant_stamina"
 long_grants <- projects |>
-  filter(activity == 'R01') |>
+  filter(activity == "R01") |>
   select(project_num, project_start, project_end) |>
   group_by(project_num) |>
   summarize(
-    longest_run = max(project_end, na.rm = TRUE) - min(project_start, na.rm = TRUE)) |>
+    longest_run = max(project_end, na.rm = TRUE) - min(project_start, na.rm = TRUE)
+  ) |>
   arrange(desc(longest_run)) |>
   mutate(in_years = round(as.numeric(longest_run) / 365), 3) |>
   select(project_num, in_years)
@@ -500,8 +532,8 @@ long_grants <- projects |>
 long_grants |>
   head(1000) |>
   DT::datatable(
-    caption = 'Longest running R01 grants (all-time)',
-    colnames=c('Project ID', 'Duration (years)')
+    caption = "Longest running R01 grants (all-time)",
+    colnames = c("Project ID", "Duration (years)")
   )
 ```
 
@@ -509,9 +541,15 @@ long_grants |>
 
 Geographical distribution of grant dollar is easily visualized using the package.
 
-```{r geography, fig.cap = 'Geographic distribution of NIH dollars', warning = FALSE, message = FALSE}
-state_data <- data.frame(org_state = state.abb,
-                         state_name = tolower(state.name))
+```{r}
+#| label = "geography",
+#| fig.cap = "Geographic distribution of NIH dollars",
+#| warning = FALSE,
+#| message = FALSE
+state_data <- data.frame(
+  org_state = state.abb,
+  state_name = tolower(state.name)
+)
 
 state_funding <- projects |>
   select(application_id, org_state, fy_cost) |>
@@ -522,24 +560,24 @@ cost_by_state <- state_funding |>
   left_join(state_data) |>
   select(state_name, total_fy_cost) |>
   filter(state_name != "NA") |>
-  mutate(region=state_name, cost = total_fy_cost) |>
+  mutate(region = state_name, cost = total_fy_cost) |>
   select(region, cost)
 
 state_map_data <- map_data("state")
 
 plot_data <- left_join(state_map_data, cost_by_state)
 
-ggplot() + 
+ggplot() +
   geom_polygon(
-    data=plot_data, 
-    aes(x=long, y=lat, group = group, fill=plot_data$cost),
-    colour="black"
-    ) +
-  scale_fill_continuous(low = "lightgrey", high = "red", guide="colorbar") +
+    data = plot_data,
+    aes(x = long, y = lat, group = group, fill = plot_data$cost),
+    colour = "black"
+  ) +
+  scale_fill_continuous(low = "lightgrey", high = "red", guide = "colorbar") +
   theme_bw() +
-  labs(fill = "Total Cost per year \n (USD, billions)",x="", y="") +
-  scale_y_continuous(breaks=c()) +
-  scale_x_continuous(breaks=c()) +
-  theme(panel.border =  element_blank()) +
+  labs(fill = "Total Cost per year \n (USD, billions)", x = "", y = "") +
+  scale_y_continuous(breaks = c()) +
+  scale_x_continuous(breaks = c()) +
+  theme(panel.border = element_blank()) +
   coord_fixed(ratio = 1.4)
 ```
