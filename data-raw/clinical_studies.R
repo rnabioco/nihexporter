@@ -1,8 +1,8 @@
 #' load and parse clinical studies files
 
-source('data-raw/common.R')
+source("data-raw/common.R")
 
-path <- here('data-raw/downloads/ClinicalStudies.csv')
+path <- here("data-raw/downloads/ClinicalStudies.csv")
 clinical_studies_tbl <- read_csv(path) |>
   janitor::clean_names()
 
@@ -15,4 +15,4 @@ clinical_studies <- clinical_studies_tbl |>
   mutate(study_status = as_factor(study_status)) |>
   arrange(project_num)
 
-use_data(clinical_studies, compress = 'xz', overwrite = TRUE)
+use_data(clinical_studies, compress = "xz", overwrite = TRUE)

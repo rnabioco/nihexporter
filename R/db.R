@@ -33,13 +33,14 @@ nihexporter_postgres <- function(dbname = "nihexporter", ...) {
 #' @rdname nihexporter-db
 #' @export
 has_nihexporter <- function(type = c("sqlite", "postgresql"), ...) {
-  if (!requireNamespace("nihexporter", quietly = TRUE)) return(FALSE)
+  if (!requireNamespace("nihexporter", quietly = TRUE)) {
+    return(FALSE)
+  }
 
   type <- match.arg(type)
 
   succeeds(
-    switch(
-      type,
+    switch(type,
       sqlite = nihexporter_sqlite(...),
       quiet = TRUE,
       postgres = nihexporter_postgres(...),
@@ -137,10 +138,14 @@ db_location <- function(path = NULL, filename) {
   }
 
   pkg <- file.path(system.file("db", package = "dplyr"))
-  if (is_writeable(pkg)) return(file.path(pkg, filename))
+  if (is_writeable(pkg)) {
+    return(file.path(pkg, filename))
+  }
 
   tmp <- tempdir()
-  if (is_writeable(tmp)) return(file.path(tmp, filename))
+  if (is_writeable(tmp)) {
+    return(file.path(tmp, filename))
+  }
 
   stop("Could not find writeable location to cache db", call. = FALSE)
 }

@@ -33,14 +33,15 @@
 #' @export
 rcr <- function(pmids) {
   max_pmids <- 1000
-  if (length(pmids) > max_pmids)
-    stop('maximum pubmed ids exceeded', call. = FALSE)
+  if (length(pmids) > max_pmids) {
+    stop("maximum pubmed ids exceeded", call. = FALSE)
+  }
 
   ## icite url
-  req <- request('https://icite.od.nih.gov')
+  req <- request("https://icite.od.nih.gov")
   resp <- req |>
-    req_url_path_append('api/pubs') |>
-    req_url_query('pmids' = paste0(pmids, collapse = ',')) |>
+    req_url_path_append("api/pubs") |>
+    req_url_query("pmids" = paste0(pmids, collapse = ",")) |>
     req_perform()
 
   raw <- resp |>
