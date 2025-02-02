@@ -65,3 +65,5 @@ with_progress({
     }
   )
 })
+
+usethis::use_data(abstract_words, compress = "xz", overwrite = TRUE)
