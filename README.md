@@ -19,10 +19,11 @@ Install the package from github with:
 
 ``` r
 # install.packages('pak')
-pak::pkg_install("rnabioco/nihexporter")
+pak::pak("rnabioco/nihexporter")
 ```
 
-**Note: this is a large data package (\>50 Mb)**
+⚠️**Note:** this is a large data package (\>50 Mb) and will take some
+time to download and install. ⚠️
 
 ## Tables
 

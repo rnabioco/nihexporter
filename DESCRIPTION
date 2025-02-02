@@ -1,39 +1,41 @@
 Package: nihexporter
 Title: NIH funding from 1985-2024
 Version: 0.9.0.9000
-Authors@R: person('Jay', 'Hesselberth', role = c("aut", "cre"),
-                  email = 'jay.hesselberth@gmail.com',
-                  comment = c(ORCID = '0000-0002-6299-179X'))
-Description: Provides data for biomedical research funding
-    from the National Institutes of Health spanning 2000-2021.
-Depends:
-    R (>= 4.1.0),
-    jsonlite,
-    httr2,
-    dplyr
-Suggests:
-    DT,
-    furrr,
-    gganimate,
-    here,
-    broom,
-    knitr,
-    rmarkdown,
-    maps,
-    testthat,
-    cowplot,
-    animation,
-    tidyverse,
-    RSQLite (>= 1.0.0),
-    RPostgreSQL,
-    quarto
+Authors@R:
+    person("Jay", "Hesselberth", , "jay.hesselberth@gmail.com", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0002-6299-179X"))
+Description: Provides data for biomedical research funding from the
+    National Institutes of Health spanning 2000-2021.
 License: MIT + file LICENSE
-LazyData: true
-LazyDataCompression: xz
-Encoding: UTF-8
 URL: https://github.com/rnabioco/nihexporter
 BugReports: https://github.com/rnabioco/nihexporter/issues
-VignetteBuilder: knitr
-RoxygenNote: 7.3.2
+Depends:
+    R (>= 4.1.0)
+Imports:
+    dplyr,
+    httr2,
+    jsonlite
+Suggests:
+    broom,
+    clock,
+    cowplot,
+    DT,
+    furrr,
+    ggokabeito,
+    here,
+    knitr,
+    maps,
+    quarto,
+    rmarkdown,
+    RPostgreSQL,
+    RSQLite (>= 1.0.0),
+    testthat,
+    tidyverse
+VignetteBuilder:
+    knitr
+Config/Needs/website: pkgdown, rnabioco/rbitemplate, quarto
+Encoding: UTF-8
+LazyData: true
+LazyDataCompression: xz
 Roxygen: list(markdown = TRUE)
-Config/Needs/website:pkgdown, rnabioco/rbitemplate, quarto
+RoxygenNote: 7.3.2

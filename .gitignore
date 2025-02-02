@@ -8,5 +8,7 @@ data-raw/
 OLD/*
 inst/doc
 vignettes/img
+docs/
+.vscode/
 
 **/.quarto/
