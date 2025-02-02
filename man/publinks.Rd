@@ -8,7 +8,7 @@
 A data frame with two variables: \code{pmid}, \code{project.num}
 }
 \source{
-\url{https://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=2&index=5}
+\url{https://reporter.nih.gov/exporter/linktables}
 }
 \usage{
 publinks

@@ -1,6 +1,6 @@
 #' create and save the `project_io` table
 
-source('data-raw/common.R')
+source("data-raw/common.R")
 
 project_costs <- projects |>
   filter(institute %in% nih.institutes) |>
@@ -21,8 +21,8 @@ patent_output <- project_costs |>
 project_io <- pub_output |>
   inner_join(patent_output) |>
   left_join(project_costs) |>
-  filter(project_num != '') |>
-  filter(!grepl('-', project_num)) |>
+  filter(project_num != "") |>
+  filter(!grepl("-", project_num)) |>
   arrange(project_num)
 
-use_data(project_io, compress = 'xz', overwrite = TRUE)
+use_data(project_io, compress = "xz", overwrite = TRUE)

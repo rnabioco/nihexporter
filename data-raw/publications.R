@@ -1,10 +1,10 @@
 #' create `publications` table
 
-source('data-raw/common.R')
+source("data-raw/common.R")
 
 ## provides `rcr()`
-source('R/rcr.R')
-path <- 'data-raw/downloads/pubs'
+source("R/rcr.R")
+path <- "data-raw/downloads/pubs"
 
 col_types <- cols_only(
   PMID = col_double(),
@@ -19,9 +19,9 @@ publications <- publications_tbl %>%
 
 ## chunk pmids and fetch rcr values
 
-## iCite only has data from 1995 to 2016
+## iCite only has data from 1980 to 2016
 pubs <- publications %>%
-  filter(pub_year >= 1995) %>%
+  filter(pub_year >= 1980) %>%
   select(pmid)
 pmids <- pubs$pmid
 
@@ -29,16 +29,28 @@ pmids <- pubs$pmid
 n <- 1000
 chunks <- split(pmids, ceiling(seq_along(pmids) / n))
 
-## this takes ~10 minutes
+## this takes ~20 minutes
 library(furrr)
-plan(multisession, workers = 6)
-rcrs <- furrr::future_map(chunks, rcr) |>
-  tibble() |> unnest()
+library(progressr)
+plan(multisession, workers = 12)
+with_progress({
+  p <- progressor(steps = length(chunks))
+
+  rcrs <- future_map(
+    chunks,
+    ~{
+      p()
+      rcr(.x)
+    }
+  )
+})
+
+rcrs_tbl <- tibble(rcrs) |> unnest()
 
 publications <- publications |>
-  left_join(rcrs, by = 'pmid', relationship = "many-to-many") |>
+  left_join(rcrs_tbl, by = "pmid", relationship = "many-to-many") |>
   select(pmid, pmc_id, pub_year, relative_citation_ratio) |>
   rename(rcr = relative_citation_ratio) |>
   unique()
 
-use_data(publications, compress = 'xz', overwrite = TRUE)
+use_data(publications, compress = "xz", overwrite = TRUE)

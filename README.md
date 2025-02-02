@@ -8,7 +8,7 @@
 
 The `nihexporter` R package provides a minimal set of data from the [NIH
 EXPORTER](https://reporter.nih.gov/exporter) database, which contains
-information on NIH biomedical research funding from 1985-2021.
+information on NIH biomedical research funding from 1985-2024.
 
 To keep the package lightweight, many details are omitted but can be
 easily retrieved from [NIH RePORTER](https://reporter.nih.gov/).
@@ -19,10 +19,11 @@ Install the package from github with:
 
 ``` r
 # install.packages('pak')
-pak::pkg_install("jayhesselberth/nihexporter")
+pak::pak("rnabioco/nihexporter")
 ```
 
-**Note: this is a large data package (\>40 Mb)**
+⚠️**Note:** this is a large data package (\>50 Mb) and will take some
+time to download and install. ⚠️
 
 ## Tables
 
@@ -46,10 +47,9 @@ pak::pkg_install("jayhesselberth/nihexporter")
 - `project_io`: pre-computed `n.pubs`, `n.patents` and `project.cost`
   for each `project.num`.
 
-**Note:**
-[Abstracts](https://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=0&index=1)
-from NIH EXPORTER are not provided as they significantly increase the
-size of the package.
+**Note:** [Abstracts](https://reporter.nih.gov/exporter/abstracts) from
+NIH EXPORTER are not provided as they significantly increase the size of
+the package.
 
 ## Functions
 

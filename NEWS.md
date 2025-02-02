@@ -1,14 +1,16 @@
 # nihexporter (development version)
 
+* Update tables through FY 2024.
+
 # nihexporter 0.9
 
 ## Major changes
- 
+
 - Reload `projects` data. `fy.cost` now spans 1985-2021.
 
 - Some columns in the `projects` table updated to `date` types
 
-- Recalculate `project_io` table. 
+- Recalculate `project_io` table.
 
 - New `clinical_studies` table.
 
@@ -43,13 +45,13 @@
 
 ## Minor
 
-- refactor data loading 
+- refactor data loading
 
 # nihexporter 0.6.1
 
 ## Minor
 
-- added missing `project.cost` to `project.io` table 
+- added missing `project.cost` to `project.io` table
 
 # nihexporter 0.6
 
@@ -57,7 +59,7 @@
 
 - renamed `project_output` to `project_io`
 
-- added `publications` table 
+- added `publications` table
 
 # nihexporter 0.5
 
@@ -71,13 +73,13 @@
 ## Minor
 
 - removed dots from table names
-  
+
   + rename `project.orgs` to `project_orgs`
   + rename `project.pis` to `project_pis`
 
 # nihexporter 0.4
 
-## Major 
+## Major
 
 - added `patents` table
 - updated vignette with `patents` example

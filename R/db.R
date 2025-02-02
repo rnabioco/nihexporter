@@ -33,14 +33,20 @@ nihexporter_postgres <- function(dbname = "nihexporter", ...) {
 #' @rdname nihexporter-db
 #' @export
 has_nihexporter <- function(type = c("sqlite", "postgresql"), ...) {
-  if (!requireNamespace("nihexporter", quietly = TRUE)) return(FALSE)
+  if (!requireNamespace("nihexporter", quietly = TRUE)) {
+    return(FALSE)
+  }
 
   type <- match.arg(type)
 
-  succeeds(switch(type,
-                  sqlite = nihexporter_sqlite(...), quiet = TRUE,
-                  postgres = nihexporter_postgres(...), quiet = TRUE
-  ))
+  succeeds(
+    switch(type,
+      sqlite = nihexporter_sqlite(...),
+      quiet = TRUE,
+      postgres = nihexporter_postgres(...),
+      quiet = TRUE
+    )
+  )
 }
 
 #' @export
@@ -64,12 +70,18 @@ copy_nihexporter <- function(src, ...) {
   tables <- setdiff(all, src_tbls(src))
 
   # Create missing tables
-  for(table in tables) {
+  for (table in tables) {
     df <- getExportedValue("nihexporter", table)
     message("Creating table: ", table)
 
-    copy_to(src, df, table, unique_indexes = unique_index[[table]],
-            indexes = index[[table]], temporary = FALSE)
+    copy_to(
+      src,
+      df,
+      table,
+      unique_indexes = unique_index[[table]],
+      indexes = index[[table]],
+      temporary = FALSE
+    )
   }
   src
 }
@@ -103,7 +115,6 @@ load_srcs <- function(f, src_names, quiet = NULL) {
     quiet <- !identical(Sys.getenv("NOT_CRAN"), "true")
   }
 
-
   srcs <- lapply(src_names, function(x) {
     out <- NULL
     try(out <- f(x), silent = TRUE)
@@ -116,7 +127,6 @@ load_srcs <- function(f, src_names, quiet = NULL) {
   compact(setNames(srcs, src_names))
 }
 
-
 db_location <- function(path = NULL, filename) {
   if (!is.null(path)) {
     # Check that path is a directory and is writeable
@@ -128,10 +138,14 @@ db_location <- function(path = NULL, filename) {
   }
 
   pkg <- file.path(system.file("db", package = "dplyr"))
-  if (is_writeable(pkg)) return(file.path(pkg, filename))
+  if (is_writeable(pkg)) {
+    return(file.path(pkg, filename))
+  }
 
   tmp <- tempdir()
-  if (is_writeable(tmp)) return(file.path(tmp, filename))
+  if (is_writeable(tmp)) {
+    return(file.path(tmp, filename))
+  }
 
   stop("Could not find writeable location to cache db", call. = FALSE)
 }
@@ -141,10 +155,16 @@ is_writeable <- function(x) {
 }
 
 succeeds <- function(x, quiet = FALSE) {
-  tryCatch({x; TRUE}, error = function(e) {
-    if (!quiet) message("Error: ", e$message)
-    FALSE
-  })
+  tryCatch(
+    {
+      x
+      TRUE
+    },
+    error = function(e) {
+      if (!quiet) message("Error: ", e$message)
+      FALSE
+    }
+  )
 }
 
 compact <- function(x) Filter(Negate(is.null), x)

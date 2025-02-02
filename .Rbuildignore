@@ -12,3 +12,6 @@ cran-comments.md
 ^manuscript$
 ^_pkgdown\.yml$
 ^\.github$
+^vignettes/articles/\.quarto$
+^vignettes/articles/*_files$
+^vignettes/articles$
