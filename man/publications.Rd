@@ -9,7 +9,7 @@ A data frame with 4 variables: \code{pmid}, \code{pmc.id},
 \code{pub.year}, \code{rcr}
 }
 \source{
-\url{https://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=4&index=2}
+\url{https://reporter.nih.gov/exporter/publications}
 
 \url{https://icite.od.nih.gov/}
 }

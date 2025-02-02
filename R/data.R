@@ -2,7 +2,7 @@
 #'
 #' @format A data frame with 19 variables
 #'
-#' @source \url{https://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=3&index=0}
+#' @source \url{https://reporter.nih.gov/exporter/projects}
 "projects"
 
 #' Principal investigators.
@@ -12,7 +12,7 @@
 #' The `pi.id` is a unique identifier that can be used to identify specific
 #' principal investigators in NIH REPORTER.
 #'
-#' @source \url{https://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=3&index=0}
+#' @source \url{https://reporter.nih.gov/exporter/projects}
 #'
 "project_pis"
 
@@ -20,7 +20,7 @@
 #'
 #' @format A data frame with two variables: `pmid`, `project.num`
 #'
-#' @source \url{https://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=2&index=5}
+#' @source \url{https://reporter.nih.gov/exporter/linktables}
 "publinks"
 
 #' Publication information.
@@ -32,7 +32,7 @@
 #'   downloaded on 11 May 2023. Use [rcr()] to obtain current
 #'   values for select `pmid` values.
 #'
-#' @source \url{https://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=4&index=2}
+#' @source \url{https://reporter.nih.gov/exporter/publications}
 #' @source \url{https://icite.od.nih.gov/}
 "publications"
 
@@ -40,14 +40,14 @@
 #'
 #' @format A data frame with two variables: `patent.id`, `project.num`
 #'
-#' @source \url{https://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=5&index=3}
+#' @source \url{https://reporter.nih.gov/exporter/patents}
 "patents"
 
 #' Clinical trial information.
 #'
 #' @format A data frame with three variables: `project.num`, `trial.id` and `study.status`
 #'
-#' @source \url{https://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=5&index=4}
+#' @source \url{https://reporter.nih.gov/exporter/clinicalstudies}
 "clinical_studies"
 
 #' Pre-computed total costs, number of patents and publications per project.

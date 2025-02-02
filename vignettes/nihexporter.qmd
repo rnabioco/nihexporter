@@ -1,9 +1,8 @@
 ---
-title: 'Introduction to nihexporter'
-output: rmarkdown::html_vignette
+title: Introduction to nihexporter
 vignette: >
   %\VignetteIndexEntry{Introduction to nihexporter}
-  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
 ---
 
@@ -11,15 +10,15 @@ vignette: >
 
 The National Institutes of Health (NIH) is the major source of federal funding for biomedical research in the United States. Analysis of past and current NIH funding can illustrate funding trends and identify productive research topics, but these analyses are conducted *ad hoc* by the institutes themselves and only provide a small glimpse of the available data. The NIH provides free access to funding data via NIH EXPORTER, but few tools have been developed to enable analysis of these data.
 
-We developed the `nihexporter` R package, which provides access to [NIH EXPORTER](https://reporter.nih.gov/exporter) data. We used the package to develop several analysis vignettes that show funding trends across NIH institutes over 15 years and highlight differences in how institutes change their funding profiles. Investigators and institutions can use the package to perform self-studies of their own NIH funding.
+We developed the `nihexporter` R package, which provides access to [NIH EXPORTER](https://reporter.nih.gov/exporter) data. We used the package to develop several analysis vignettes that show funding trends across NIH institutes over >20 years and highlight differences in how institutes change their funding profiles. Investigators and institutions can use the package to perform self-studies of their own NIH funding.
 
 # Introduction
 
-The National Institutes of Health (NIH) is the major source federal funds for biomedical research in the United States. The NIH budget is approved by Congress each year. The NIH is divided into 25 institutes, each with its own focus and missionj. For example, National Cancer Institute (NCI) focuses on malignant diseases; the National Institute for Allergy and Immune Disease focuses on the immune system and transmissible disease; and the National Institute for General Medical Sciences focuses on basic research, without a specific disease focus. Each institute negotiates with the NIH director for its yearly budget, with budget institutes ranging from millions to several billion dollars.
+The National Institutes of Health (NIH) is the major source federal funds for biomedical research in the United States. The NIH budget is approved by Congress each year. The NIH is divided into 25 institutes, each with its own focus and mission. For example, National Cancer Institute (NCI) focuses on malignant diseases; the National Institute for Allergy and Immune Disease focuses on the immune system and infectious disease; and the National Institute for General Medical Sciences focuses on basic research, without a specific disease focus. Each institute negotiates with the NIH director for its yearly budget, with budget institutes ranging from millions to several billion dollars.
 
 The NIH provides funds through competitive grants written by internal and external investigators, and the funds associated with these grants can be divided into 'direct' and 'indirect' costs. **Direct costs** are funds that are given to an investigator (or group of investigators) to conduct their proposed research. These funds buy supplies for the experiments and pay the salaries of people to do the work.
 
-By contrast, **indirect costs** are funds that are paid to institutions associated with investigators, and are used to "keep the lights on": they pay for infrastructure costs. However, the "indirect cost recovery" (ICR) rate of each institution, the fraction of each award the institute receives, is congressionally mandated, and there is a wide range in ICR rates. Some of the highest ICR rates are close to 100%, meaning that for every dollar an investigator receives, the institutions receive an equal amount. 
+By contrast, **indirect costs** are funds that are paid to institutions associated with investigators, and are used to "keep the lights on": they pay for infrastructure costs. However, the "indirect cost recovery" (ICR) rate of each institution, the fraction of each award the institute receives, is congressionally mandated, and there is a wide range in ICR rates. Some of the highest ICR rates are close to 100%, meaning that for every dollar an investigator receives, the institutions receive an equal amount.
 
 NIH funding is an investment strategy: the institutes invest money in specific research areas, hoping for future returns in the form of new technologies and treatents, publications, patents, and skilled trainees. As with any investment strategy, a periodic review can help rebalance the portfolio in order to maximize returns. Analysis of NIH funding data has been performed internally by the NIH, or by contracted third-parties. Several of these analyses have highlighted funding trends and suggested metrics to gauge the 'return' on the NIH 'investment'. For example, "productivity" can be examined as a function of the number of publications produced by grants per dollar of "direct costs".
 
@@ -39,7 +38,7 @@ The package also has several precomputed variables and tables that enable quick 
 
   * `nih_institutes`: Two-letter format for 27 NIH institutes
   * `project_io`: This table contains pre-computed values for overall project cost (`project_cost`), as well as the number of publications (`n_pubs`) and patents (`n_patents`) associated with each project.
-  
+
 NIH EXPORTER provides access to the total costs of each grant in each fiscal year, comprising both direct and indirect costs.
 
 # Results and Discussion
@@ -112,7 +111,7 @@ ggplot(
 
 ### By Institution
 
-Let's look *where* the money is going. 
+Let's look *where* the money is going.
 
 ```{r}
 #| label = "money_per_institution"
@@ -181,8 +180,10 @@ high_perf_not_r01 |>
   datatable(
     caption = "Productivity (publications / dollar) of non-R01 grants",
     colnames = c(
-      "Project ID", "Project cost (USD, millions)",
-      "Number of publications", "Cost per publications (USD, thousands)"
+      "Project ID",
+      "Project cost (USD, millions)",
+      "Number of publications",
+      "Cost per publications (USD, thousands)"
     )
   )
 ```
@@ -255,8 +256,13 @@ productive_pis_all_time <- projects |>
     patent_cost = total_pi_dollars / total_patents
   ) |>
   select(
-    pi_id, activity, pub_cost, patent_cost,
-    total_pubs, total_patents, total_pi_dollars
+    pi_id,
+    activity,
+    pub_cost,
+    patent_cost,
+    total_pubs,
+    total_patents,
+    total_pi_dollars
   )
 
 productive_pis_all_time |>
@@ -266,7 +272,8 @@ productive_pis_all_time |>
   DT::datatable(
     caption = "Most productive PIs all time for publications",
     colnames = c(
-      "PI ID", "Grant type",
+      "PI ID",
+      "Grant type",
       "Cost per publication (dollars)",
       "Total publications",
       "Total dollars"
@@ -280,7 +287,8 @@ productive_pis_all_time |>
   DT::datatable(
     caption = "Most productive PIs all time for patents",
     colnames = c(
-      "PI ID", "Grant type",
+      "PI ID",
+      "Grant type",
       "Cost per patent (dollars)",
       "Total patents",
       "Total dollars"
@@ -335,7 +343,8 @@ dollar_bin_grant_costs <- grant_costs |>
     dollar.tile = findInterval(
       total_cost,
       vec = breaks,
-      all.inside = TRUE, rightmost.closed = TRUE
+      all.inside = TRUE,
+      rightmost.closed = TRUE
     ),
     .by = institute
   )
@@ -382,9 +391,9 @@ ggplot(
 The NIH provides funds through differet [grant programs](https://grants.nih.gov/grants/funding/funding_program.htm):
 
   * `research`: investigator-intitiated, actvities begin with `R` (e.g., R01)
-  
+
   * `program`: activities begin with `P` (e.g. P01)
-  
+
   * `cooperative agreements`: actvities begin with `U` (e.g. U54)
 
 We can examine the total costs spent on specific grants and specific institutes over time.
@@ -523,7 +532,8 @@ long_grants <- projects |>
   select(project_num, project_start, project_end) |>
   group_by(project_num) |>
   summarize(
-    longest_run = max(project_end, na.rm = TRUE) - min(project_start, na.rm = TRUE)
+    longest_run = max(project_end, na.rm = TRUE) -
+      min(project_start, na.rm = TRUE)
   ) |>
   arrange(desc(longest_run)) |>
   mutate(in_years = round(as.numeric(longest_run) / 365), 3) |>
@@ -544,8 +554,8 @@ Geographical distribution of grant dollar is easily visualized using the package
 ```{r}
 #| label = "geography",
 #| fig.cap = "Geographic distribution of NIH dollars",
-#| warning = FALSE,
-#| message = FALSE
+#| warning = false,
+#| message = false
 state_data <- data.frame(
   org_state = state.abb,
   state_name = tolower(state.name)

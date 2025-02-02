@@ -26,6 +26,7 @@ Suggests:
     tidyverse,
     RSQLite (>= 1.0.0),
     RPostgreSQL,
+    quarto
 License: MIT + file LICENSE
 LazyData: true
 LazyDataCompression: xz
@@ -35,6 +36,4 @@ BugReports: https://github.com/rnabioco/nihexporter/issues
 VignetteBuilder: knitr
 RoxygenNote: 7.3.2
 Roxygen: list(markdown = TRUE)
-Config/Needs/website:
-    pkgdown,
-    rnabioco/rbitemplate
+Config/Needs/website:pkgdown, rnabioco/rbitemplate, quarto
