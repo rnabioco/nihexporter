@@ -5,7 +5,7 @@ Authors@R:
     person("Jay", "Hesselberth", , "jay.hesselberth@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-6299-179X"))
 Description: Provides data for biomedical research funding from the
-    National Institutes of Health spanning 2000-2021.
+    National Institutes of Health spanning 1985-2024.
 License: MIT + file LICENSE
 URL: https://github.com/rnabioco/nihexporter
 BugReports: https://github.com/rnabioco/nihexporter/issues
