@@ -1,5 +1,3 @@
-context("table integrity")
-
 test_that("table rows are unique", {
   skip("currently failing")
   expect_equal(nrow(org_info), nrow(unique(org_info)))
