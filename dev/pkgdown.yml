@@ -1,0 +1,9 @@
+pandoc: 3.1.11
+pkgdown: 2.1.1
+pkgdown_sha: ~
+articles:
+  nihexporter: nihexporter.html
+last_built: 2025-02-02T17:06Z
+urls:
+  reference: https://rnabioco.github.io/nihexporter/reference
+  article: https://rnabioco.github.io/nihexporter/articles
