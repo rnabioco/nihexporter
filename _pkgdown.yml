@@ -1,8 +1,5 @@
 url: https://rnabioco.github.io/nihexporter
 
-development:
-  mode: auto
-
 template:
   package: rbitemplate
   bootstrap: 5
