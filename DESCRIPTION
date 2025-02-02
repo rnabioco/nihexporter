@@ -9,7 +9,7 @@ Authors@R: c(
 Description: Provides data for biomedical research funding from the
     National Institutes of Health spanning 1985-2024.
 License: MIT + file LICENSE
-URL: https://github.com/rnabioco/nihexporter
+URL: https://rnabioco.github.io/nihexporter, https://github.com/rnabioco/nihexporter
 BugReports: https://github.com/rnabioco/nihexporter/issues
 Depends:
     R (>= 4.1.0)
