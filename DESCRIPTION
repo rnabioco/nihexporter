@@ -32,6 +32,8 @@ Suggests:
     RSQLite (>= 1.0.0),
     scales,
     testthat (>= 3.0.0),
+    textrecipes,
+    tidymodels,
     tidyverse
 VignetteBuilder:
     knitr
