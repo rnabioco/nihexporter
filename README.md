@@ -46,10 +46,9 @@ pak::pkg_install("rnabioco/nihexporter")
 - `project_io`: pre-computed `n.pubs`, `n.patents` and `project.cost`
   for each `project.num`.
 
-**Note:**
-[Abstracts](https://exporter.nih.gov/ExPORTER_Catalog.aspx?sid=0&index=1)
-from NIH EXPORTER are not provided as they significantly increase the
-size of the package.
+**Note:** [Abstracts](https://reporter.nih.gov/exporter/abstracts) from
+NIH EXPORTER are not provided as they significantly increase the size of
+the package.
 
 ## Functions
 
