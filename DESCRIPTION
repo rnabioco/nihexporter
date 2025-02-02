@@ -3,7 +3,7 @@ Title: NIH funding from 1985-2024
 Version: 0.10.0.9000
 Authors@R:
     person("Jay", "Hesselberth", , "jay.hesselberth@gmail.com", role = c("aut", "cre"),
-           comment = c(ORCID = "0000-0002-6299-179X")),
+           comment = c(ORCID = "0000-0002-6299-179X"),
     person("RNA Bioscience Initiative", role = c("fnd", "cph"))
 Description: Provides data for biomedical research funding from the
     National Institutes of Health spanning 1985-2024.
