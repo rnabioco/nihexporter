@@ -4,6 +4,9 @@ template:
   package: rbitemplate
   bootstrap: 5
 
+development:
+  mode: auto
+
 home:
   links:
   - text: NIH EXPORTER
