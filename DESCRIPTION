@@ -1,6 +1,6 @@
 Package: nihexporter
 Title: NIH funding from 1985-2024
-Version: 0.10.0.9000
+Version: 0.11.0
 Authors@R: c(
     person("Jay", "Hesselberth", , "jay.hesselberth@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-6299-179X")),
