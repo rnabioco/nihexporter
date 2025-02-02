@@ -1,4 +1,4 @@
-# nihexporter (development version)
+# nihexporter 0.10.0
 
 * Update tables through FY 2024.
 
