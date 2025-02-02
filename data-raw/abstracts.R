@@ -13,4 +13,8 @@ col_types <- cols_only(
   ABSTRACT_TEXT = col_character(),
 )
 
-projects_tbl <- load_tbl(path, col_types)
+abstracts_raw_tbl <- load_tbl(path, col_types) |>
+  left_join(projects, by = "application_id") |>
+  select(application_id, fiscal_year, abstract_text) |>
+  na.omit() |>
+  unique()
