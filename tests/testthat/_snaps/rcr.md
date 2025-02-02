@@ -15,3 +15,4 @@
       #   expected_citations_per_year <dbl>, field_citation_rate <dbl>,
       #   provisional <chr>, x_coord <dbl>, y_coord <dbl>, cited_by_clin <lgl>,
       #   cited_by <list>, references <list>, doi <chr>, last_modified <chr>
+

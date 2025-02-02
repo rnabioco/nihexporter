@@ -73,6 +73,7 @@ library(tidyverse)
 library(cowplot)
 library(ggokabeito)
 library(clock)
+library(scales)
 library(DT)
 ```
 
