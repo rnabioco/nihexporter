@@ -1,0 +1,23 @@
+---
+title: "sentiment-analysis"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{sentiment-analysis}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(nihexporter)
+```
+
+## Links
+- https://juliasilge.com/blog/animal-crossing/
+- https://textrecipes.tidymodels.org/articles/cookbook---using-more-complex-recipes-involving-text.html
