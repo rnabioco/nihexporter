@@ -45,10 +45,10 @@ with_progress({
   )
 })
 
-rcrs <- tibble(rcrs) |> unnest()
+rcrs_tbl <- tibble(rcrs) |> unnest()
 
 publications <- publications |>
-  left_join(rcrs, by = "pmid", relationship = "many-to-many") |>
+  left_join(rcrs_tbl, by = "pmid", relationship = "many-to-many") |>
   select(pmid, pmc_id, pub_year, relative_citation_ratio) |>
   rename(rcr = relative_citation_ratio) |>
   unique()
