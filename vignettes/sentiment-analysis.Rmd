@@ -39,17 +39,18 @@ abstract_data <-
   filter(
     abstract_words,
     institute %in% select_institutes,
-    activity %in% select_activities
+    activity %in% select_activities,
+    !str_detect(word, "[0-9]")
   )
 
-abstract_split <- initial_split(abstract_data, strata = institute)
+abstract_split <- initial_split(abstract_data, strata = activity)
 abstract_train <- training(abstract_split)
 abstract_test <- testing(abstract_split)
 
-abstract_rec <- recipe(activity + fiscal_year ~ word, data = abstract_train) |>
+abstract_rec <- recipe(institute ~ word, data = abstract_train) |>
   step_tokenize(word) |>
   step_stopwords(word) |>
-  step_tokenfilter(word, max_tokens = 1000) |>
+  step_tokenfilter(word, max_tokens = 500) |>
   step_tfidf(word) |>
   step_normalize(all_predictors())
 
@@ -68,10 +69,10 @@ lasso_wf <- workflow() |>
   add_recipe(abstract_rec) |>
   add_model(lasso_spec)
 
-lambda_grid <- grid_regular(penalty(), levels = 40)
+lambda_grid <- grid_regular(penalty(), levels = 5)
 
 set.seed(123)
-abstract_folds <- bootstraps(abstract_train, strata = institute)
+abstract_folds <- bootstraps(abstract_train, strata = activity)
 abstract_folds
 ```
 
