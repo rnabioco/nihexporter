@@ -64,3 +64,10 @@
 #'
 #' @source Computed from \link{projects} table.
 "project_io"
+
+#' Tokenized words from abstracts.
+#'
+#' @format A tibble with five variables: `activity`, `fiscal_year`, `institute`, `word`, `n`.
+#'
+#' @source \url{https://reporter.nih.gov/exporter/abstracts}
+"abstract_words"

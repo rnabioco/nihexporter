@@ -1,5 +1,7 @@
 # nihexporter (development version)
 
+* New `abstract_words` table containing tokenized words for project abstracts.
+
 * New `projects_min` table, which contains a minimal subset of projects data from 2006-2024,
   with both direct and indirect costs (2006 was the first year IC amounts were published).
 

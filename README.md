@@ -52,9 +52,8 @@ time to download and install. ⚠️
 - `project_io`: pre-computed `n.pubs`, `n.patents` and `project.cost`
   for each `project.num`.
 
-**Note:** [Abstracts](https://reporter.nih.gov/exporter/abstracts) from
-NIH EXPORTER are not provided as they significantly increase the size of
-the package.
+- `abstract_words`: tokenized words from [grant
+  abstracts](https://reporter.nih.gov/exporter/abstracts).
 
 ## Functions
 
