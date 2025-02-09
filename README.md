@@ -27,7 +27,12 @@ time to download and install. ⚠️
 
 ## Tables
 
-- `projects`: provides data on funded projects by NIH.
+- `projects`: provides data on funded projects by NIH across all years.
+
+- 
+
+- `projects_min`: a minimal set of project data from 2006-2024. Contains
+  both direct and indirect costs.
 
 - `project_pis`: links project numbers (`project.num`) to principal
   investigator IDs (`pi.id`).
