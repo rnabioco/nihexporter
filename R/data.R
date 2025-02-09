@@ -5,6 +5,13 @@
 #' @source \url{https://reporter.nih.gov/exporter/projects}
 "projects"
 
+#' A minimum set of project information from 2006-2024.
+#'
+#' @format A data frame with 14 variables
+#'
+#' @source \url{https://reporter.nih.gov/exporter/projects}
+"projects_min"
+
 #' Principal investigators.
 #'
 #' @format A data frame with 2 variables: `project.num` and `pi.id`

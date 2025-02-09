@@ -476,7 +476,7 @@ ggplot(
 
 ## Duration
 
-`nihexporter` exposes `project.start` and `project.end`, which we can use to examine the duration of projects. For example, we can identify the longest running R01 grants.
+The `projects` table contains `project_start` and `project_end`, which we can use to examine the duration of projects. For example, we can identify the longest running R01 grants.
 
 ```{r}
 #| label: grant_stamina
