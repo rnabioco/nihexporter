@@ -4,7 +4,8 @@ Version: 0.11.0.9000
 Authors@R: c(
     person("Jay", "Hesselberth", , "jay.hesselberth@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-6299-179X")),
-    person("RNA Bioscience Initiative", role = c("fnd", "cph"))
+    person("RNA Bioscience Initiative", role = c("fnd", "cph"),
+           comment = c(ROR = "https://ror.org/03wmf1y16"))
     )
 Description: Provides data for biomedical research funding from the
     National Institutes of Health spanning 1985-2024.
