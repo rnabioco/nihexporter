@@ -1,4 +1,4 @@
-# nihexporter (development version)
+# nihexporter 0.11.0
 
 * New `abstract_words` table containing tokenized words for project abstracts.
 
