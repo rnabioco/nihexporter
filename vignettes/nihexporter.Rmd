@@ -333,7 +333,7 @@ ggplot(
 
 ## Comparison of grant programs
 
-The NIH provides funds through differet [grant programs](https://grants.nih.gov/grants/funding/funding_program.htm):
+The NIH provides funds through differet [grant programs](https://grants.nih.gov/funding/funding-categories):
 
   * `research`: investigator-intitiated, actvities begin with `R` (e.g., R01)
 
