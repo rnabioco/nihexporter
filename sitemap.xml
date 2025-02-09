@@ -1,11 +1,13 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>https://rnabioco.github.io/nihexporter/404.html</loc></url>
 <url><loc>https://rnabioco.github.io/nihexporter/LICENSE-text.html</loc></url>
+<url><loc>https://rnabioco.github.io/nihexporter/LICENSE.html</loc></url>
 <url><loc>https://rnabioco.github.io/nihexporter/articles/index.html</loc></url>
 <url><loc>https://rnabioco.github.io/nihexporter/articles/nihexporter.html</loc></url>
 <url><loc>https://rnabioco.github.io/nihexporter/authors.html</loc></url>
 <url><loc>https://rnabioco.github.io/nihexporter/index.html</loc></url>
 <url><loc>https://rnabioco.github.io/nihexporter/news/index.html</loc></url>
+<url><loc>https://rnabioco.github.io/nihexporter/reference/abstract_words.html</loc></url>
 <url><loc>https://rnabioco.github.io/nihexporter/reference/clinical_studies.html</loc></url>
 <url><loc>https://rnabioco.github.io/nihexporter/reference/index.html</loc></url>
 <url><loc>https://rnabioco.github.io/nihexporter/reference/nih_institutes.html</loc></url>
@@ -14,6 +16,7 @@
 <url><loc>https://rnabioco.github.io/nihexporter/reference/project_io.html</loc></url>
 <url><loc>https://rnabioco.github.io/nihexporter/reference/project_pis.html</loc></url>
 <url><loc>https://rnabioco.github.io/nihexporter/reference/projects.html</loc></url>
+<url><loc>https://rnabioco.github.io/nihexporter/reference/projects_min.html</loc></url>
 <url><loc>https://rnabioco.github.io/nihexporter/reference/publications.html</loc></url>
 <url><loc>https://rnabioco.github.io/nihexporter/reference/publinks.html</loc></url>
 <url><loc>https://rnabioco.github.io/nihexporter/reference/rcr.html</loc></url>

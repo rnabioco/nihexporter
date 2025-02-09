@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="index.html">nihexporter</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.10.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.11.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -78,15 +78,18 @@
 <h2 id="tables">Tables<a class="anchor" aria-label="anchor" href="#tables"></a>
 </h2>
 <ul>
-<li><p><code>projects</code>: provides data on funded projects by NIH.</p></li>
+<li><p><code>projects</code>: provides data on funded projects by NIH across all years.</p></li>
+<li>
+</li>
+<li><p><code>projects_min</code>: a minimal set of project data from 2006-2024. Contains both direct and indirect costs.</p></li>
 <li><p><code>project_pis</code>: links project numbers (<code>project.num</code>) to principal investigator IDs (<code>pi.id</code>).</p></li>
 <li><p><code>publinks</code>: links Pubmed IDs (<code>pmid</code>) to project numbers (<code>project.num</code>).</p></li>
 <li><p><code>publications</code>: provides information for individual publications, including their <a href="https://icite.od.nih.gov" class="external-link">Relative Citation Ratio</a> values (<code>rcr</code>).</p></li>
 <li><p><code>patents</code>: links project IDs (<code>project.num</code>) to <code>patent.id</code>.</p></li>
 <li><p><code>clinical_studies</code>: links project IDs to associated <a href="https://clinicaltrials.gov/" class="external-link">clinical trials</a>.</p></li>
 <li><p><code>project_io</code>: pre-computed <code>n.pubs</code>, <code>n.patents</code> and <code>project.cost</code> for each <code>project.num</code>.</p></li>
+<li><p><code>abstract_words</code>: tokenized words from <a href="https://reporter.nih.gov/exporter/abstracts" class="external-link">grant abstracts</a>.</p></li>
 </ul>
-<p><strong>Note:</strong> <a href="https://reporter.nih.gov/exporter/abstracts" class="external-link">Abstracts</a> from NIH EXPORTER are not provided as they significantly increase the size of the package.</p>
 </div>
 <div class="section level2">
 <h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a>
@@ -126,9 +129,8 @@
 <div class="license">
 <h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
-<li>
-<a href="https://opensource.org/licenses/mit-license.php" class="external-link">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a>
-</li>
+<li><a href="LICENSE.html">Full license</a></li>
+<li><small><a href="https://opensource.org/licenses/mit-license.php" class="external-link">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
 </ul>
 </div>
 
@@ -150,12 +152,7 @@
 </ul>
 </div>
 
-<div class="dev-status">
-<h2 data-toc-skip>Dev status</h2>
-<ul class="list-unstyled">
-<li><a href="https://github.com/rnabioco/nihexporter/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/rnabioco/nihexporter/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
-</ul>
-</div>
+
 
   </aside>
 </div>
