@@ -1,6 +1,4 @@
-# nihexporter 0.11.0
-
-* Added `abstract_words` and sentiment analysis vignette.
+# nihexporter (development version)
 
 # nihexporter 0.10.0
 
