@@ -24,6 +24,7 @@ reference:
 - title: Tables
   contents:
   - projects
+  - projects_min
   - project_pis
   - project_io
   - publications

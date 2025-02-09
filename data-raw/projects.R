@@ -20,8 +20,8 @@ col_types <- cols_only(
   ORG_STATE = col_character(),
   ORG_DISTRICT = col_integer(),
   PI_IDS = col_character(),
-  PROJECT_START = col_date(format = "%m/%d/%Y"),
-  PROJECT_END = col_date(format = "%m/%d/%Y"),
+  PROJECT_START = col_date(format = "%Y-%m-%d"),
+  PROJECT_END = col_date(format = "%Y-%m-%d"),
   STUDY_SECTION = col_character(),
   SUFFIX = col_character(),
   TOTAL_COST = col_double()
