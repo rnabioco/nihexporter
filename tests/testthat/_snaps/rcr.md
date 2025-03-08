@@ -6,8 +6,8 @@
       # A tibble: 2 x 25
            pmid  year title authors journal is_research_article relative_citation_ra~1
           <int> <int> <chr> <chr>   <chr>   <chr>                                <dbl>
-      1  2.50e7  2014 High~ D Suzi~ Genome~ Yes                                   2.17
-      2  2.60e7  2015 Glob~ Sally ~ Nuclei~ Yes                                   0.94
+      1  2.50e7  2014 High~ D Suzi~ Genome~ Yes                                   2.14
+      2  2.60e7  2015 Glob~ Sally ~ Nuclei~ Yes                                   0.93
       # i abbreviated name: 1: relative_citation_ratio
       # i 18 more variables: nih_percentile <dbl>, human <dbl>, animal <dbl>,
       #   molecular_cellular <dbl>, apt <dbl>, is_clinical <chr>,
