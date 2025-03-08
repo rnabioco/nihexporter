@@ -40,7 +40,8 @@ has_nihexporter <- function(type = c("sqlite", "postgresql"), ...) {
   type <- match.arg(type)
 
   succeeds(
-    switch(type,
+    switch(
+      type,
       sqlite = nihexporter_sqlite(...),
       quiet = TRUE,
       postgres = nihexporter_postgres(...),

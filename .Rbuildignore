@@ -16,3 +16,5 @@ cran-comments.md
 ^vignettes/articles/*_files$
 ^vignettes/articles$
 ^LICENSE\.md$
+^[\.]?air\.toml$
+^\.vscode$
